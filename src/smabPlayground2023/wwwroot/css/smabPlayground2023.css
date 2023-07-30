@@ -1,0 +1,20 @@
+﻿:root {
+	--sb-body-bg: #082565;
+	--sb-body-color: #fff;
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--sb-body-bg: #fff;
+		--sb-body-color: #212529;
+	}
+}
+
+body {
+	background-color: var(--sb-body-bg);
+	color: var(--sb-body-color);
+}
+
+table {
+	color: var(--sb-body-color) !important;
+}
