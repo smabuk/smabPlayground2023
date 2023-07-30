@@ -11,8 +11,8 @@ public class RoutingTests : WebTestBase
 
 		string html = await response.Content.ReadAsStringAsync();
 		IDocument document = await AngleSharp.OpenAsync(req => req.Content(html));
-		string? title = document.Title?.ToLowerInvariant();
-		title.ShouldBe(expectedTitle);
+		string? title = document.Title;
+		title.ShouldBe(expectedTitle, StringCompareShould.IgnoreCase);
 	}
 
 }
