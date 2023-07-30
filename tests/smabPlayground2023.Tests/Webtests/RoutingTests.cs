@@ -2,7 +2,8 @@
 public class RoutingTests : WebTestBase
 {
 	[Theory]
-	[InlineData("/", "index")]
+	[InlineData("/", "home")]
+	[InlineData("/showdata", "weather forecast")]
 	public async Task Route_Returns_Expected_Page(string route, string expectedTitle)
 	{
 		HttpClient client = Factory.CreateClient();
