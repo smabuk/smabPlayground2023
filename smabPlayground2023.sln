@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EBFA910D-9A9F-4171-9004-3C49E005532C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
@@ -37,5 +38,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D4A9D99B-9BFF-426E-8D86-C467A0FE37F6} = {B833260A-57A3-4DBA-A129-76A60D4C9648}
 		{52D49289-19EB-4210-B7C5-6929F4897509} = {1A997177-B7B2-4C9E-9A39-B512605DC310}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95BFA95B-3CB6-4403-9B87-4878D18DEF96}
 	EndGlobalSection
 EndGlobal
