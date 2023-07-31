@@ -1,0 +1,110 @@
+﻿@page "/draganddrop01"
+@attribute [RenderModeServer]
+<PageTitle>Drag and Drop 01</PageTitle>
+<SectionContent SectionName="page-title">Drag and drop 01</SectionContent>
+
+<div>
+	<ol>
+		@foreach (var item in Movies) {
+			<li draggable="true"
+				class="@GenerateLiClass(item)"
+			@ondragenter:preventDefault
+			@ondragleave:preventDefault
+			@ondragover:preventDefault
+			@ondragstart="() => DragStart(item)"
+			@ondragenter="() => DragEnter(item)"
+			@ondragleave="() => DragLeave()"
+			@ondragover="() => DragOver()"
+			@ondragend="() => DragEnd()"
+			@ondrop="() => Drop()">
+				<div class="remove-button">
+					<Confirm
+						Title="Remove signup?"
+						ButtonCssClass=""
+						ConfirmYes="async () => await Remove(item)">
+						<ButtonContent><span class="bi bi-trash trash" /></ButtonContent>
+						<MessageTemplate>
+							<p><span>@item</span></p>
+							<p>Are you sure you don’t want to see this movie any more?</p>
+						</MessageTemplate>
+					</Confirm>
+					@* <a @onclick="async () => await Remove(item)">Remove</a> *@
+				</div>
+				<span>@item</span>
+			</li>
+		}
+	</ol>
+</div>
+
+
+@code {
+
+	private string dragId = "";
+	private string dropTarget = "";
+	private string removeId = "";
+
+	public List<string> Movies { get; set; } = new();
+
+	protected override void OnInitialized()
+	{
+		Movies = new List<string>
+		{     "Jaws"
+			, "The Terminator"
+			, "Star Wars"
+			, "Elemental"
+			, "Raiders of the Lost Ark"
+			, "Big"
+			, "Airplane II"
+			, "Groundhog Day"
+			, "Barbie"
+			, "Teenage Mutant Ninja Turtles"
+		};
+	}
+
+	private async Task Remove(string name)
+	{
+		removeId = name;
+		StateHasChanged();
+		await Task.Delay(500);
+		Movies.Remove(name);
+		removeId = "";
+	}
+
+	private void DragStart(string name) => dragId = name;
+	private void DragEnter(string name) => dropTarget = name;
+	private void DragLeave() { }
+	private void DragOver() { }
+
+	private void DragEnd()
+	{
+		dragId = "";
+		dropTarget = "";
+	}
+
+	private void Drop()
+	{
+		if (String.IsNullOrWhiteSpace(dropTarget)) return;
+		int originalPosition = Movies.IndexOf(Movies.Single(name => name == dragId));
+		int newPosition = Movies.IndexOf(Movies.Single(name => name == dropTarget));
+		if (originalPosition <= newPosition) {
+			newPosition--;
+		}
+
+		Movies.RemoveAt(originalPosition);
+		Movies.Insert(newPosition, dragId);
+
+		dragId = "";
+		dropTarget = "";
+	}
+
+	private string? GenerateLiClass(string name)
+	{
+		string? hide   = name == removeId   ? "hide shrink-height" : null;
+		string? target = name == dropTarget ? "drop-target"        : null;
+		if (hide is null && target is null) 
+		{
+			return null;
+		}
+		return $"{hide} {target}".Trim();
+	}
+}

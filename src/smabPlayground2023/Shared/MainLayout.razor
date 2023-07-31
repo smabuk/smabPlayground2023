@@ -8,11 +8,17 @@
 	<main>
 		<div class="top-row px-4 dark">
 			<h1><SectionOutlet SectionName="page-title"></SectionOutlet></h1>
-			<a href="https://github.com/smabuk/smabPlayground2023" target="_blank">About</a>
+			@* <a href="https://github.com/smabuk/smabPlayground2023" target="_blank">About</a> *@
 		</div>
 
 		<article class="content px-4">
 			@Body
 		</article>
 	</main>
+	<PageFooter
+		GithubId="https://github.com/smabuk"
+		TwitterId="https://twitter.com/smabuk"
+	>
+		© Simon Brookes (smabuk) 2023@(DateTime.Now.Year != 2023 ? $"-{DateTime.Now.Year}" : "")
+	</PageFooter>
 </div>

@@ -5,7 +5,9 @@ using smabPlayground2023;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents();
+builder.Services
+	.AddRazorComponents()
+	.AddServerComponents();
 
 var app = builder.Build();
 
@@ -27,13 +29,13 @@ app.Run();
 public partial class Program
 {
 	public static string SiteName { get; set; } = "smabPlayground2023";
-	public static string Name { get; set; } = typeof(Program).Assembly
+	public static string Name { get; } = typeof(Program).Assembly
 							.GetName().Name ?? "No assembly name";
-	public static Version Version { get; set; } = typeof(Program).Assembly
+	public static Version Version { get; } = typeof(Program).Assembly
 							.GetName().Version ?? new();
-	public static string ProductVersion { get; set; } = typeof(Program).Assembly
+	public  static string ProductVersion { get; } = typeof(Program).Assembly
 							.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
 							.InformationalVersion ?? "";
-	public static string FrameworkVersion = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+	public static string FrameworkVersion { get; } = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
 } // also required so you can reference it from tests
