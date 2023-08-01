@@ -5,9 +5,8 @@ footer {
 	left: 0;
 	right: 0;
 	padding-left: 1rem;
-	padding-top: 10px;
-	padding-bottom: 36px;
-	height: 1rem;
+	padding-top: 12px;
+	height: var(--sb-footer-size, 50px);
 	background-color: rgba(25, 25, 25, 1);
 	color: #fff;
 	text-align: left;

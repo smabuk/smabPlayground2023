@@ -6,6 +6,7 @@
 
 main {
 	flex: 1;
+	margin-bottom: var(--sb-footer-size, 50px);
 }
 
 .sidebar {
