@@ -9,6 +9,8 @@ builder.Services
 	.AddRazorComponents()
 	.AddServerComponents();
 
+builder.Services.AddLocalization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,6 +26,12 @@ app.UseStaticFiles();
 
 app.MapRazorComponents<App>();
 
+app.UseRequestLocalization(
+	new RequestLocalizationOptions()
+			.SetDefaultCulture(cultures[0])
+			.AddSupportedCultures(cultures[0])
+			.AddSupportedUICultures(cultures));
+
 app.Run();
 
 public partial class Program
@@ -38,4 +46,5 @@ public partial class Program
 							.InformationalVersion ?? "";
 	public static string FrameworkVersion { get; } = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
+	private static readonly string[] cultures = new[] { "en-GB", "en-US", "en", "fr", "es" };
 } // also required so you can reference it from tests

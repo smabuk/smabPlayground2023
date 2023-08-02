@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Globalization;
 
 <PageTitle>Home</PageTitle>
 
@@ -12,4 +13,6 @@
 	<li>The operating system is @System.Runtime.InteropServices.RuntimeInformation.OSDescription</li>
 	<li>The OS architecture is @System.Runtime.InteropServices.RuntimeInformation.OSArchitecture</li>
 	<li>The process architecture is @System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture</li>
+	<li>The current culture is @CultureInfo.CurrentCulture</li>
+	<li>The current UI culture is @CultureInfo.CurrentUICulture</li>
 </ul>
