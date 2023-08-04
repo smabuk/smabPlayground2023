@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services
 	.AddRazorComponents()
-	.AddServerComponents();
+	.AddServerComponents()
+	.AddWebAssemblyComponents();
 
 builder.Services.AddLocalization();
 
@@ -24,7 +25,9 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.MapRazorComponents<App>();
+app.MapRazorComponents<App>()
+	.AddServerRenderMode()
+	.AddWebAssemblyRenderMode();
 
 app.UseRequestLocalization(
 	new RequestLocalizationOptions()
