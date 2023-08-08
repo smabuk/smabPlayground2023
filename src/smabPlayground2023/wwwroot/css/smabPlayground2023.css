@@ -2,6 +2,11 @@
 	--sb-footer-size: 50px;
 	--sb-body-bg: #082565;
 	--sb-body-color: #fff;
+
+	--bs-body-bg: var(--sb-body-bg);
+	--bs-table-bg: var(--bs-body-bg);
+	--bs-body-color: var(--sb-body-color);
+	--bs-table-color: var(--bs-body-color);
 }
 
 @media (prefers-color-scheme: light) {
@@ -9,13 +14,4 @@
 		--sb-body-bg: #fff;
 		--sb-body-color: #212529;
 	}
-}
-
-body {
-	background-color: var(--sb-body-bg);
-	color: var(--sb-body-color);
-}
-
-table {
-	color: var(--sb-body-color) !important;
 }
