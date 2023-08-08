@@ -1,0 +1,36 @@
+﻿@using System.Globalization;
+@using System.Runtime.InteropServices;
+<h3>Simple site debug information</h3>
+
+<ul>
+	<li>The site version is <strong>@Program.ProductVersion</strong></li>
+	<li>The framework is <strong>@RuntimeInformation.FrameworkDescription</strong></li>
+	<li>The operating system is <strong>@GetFullOSVersion()</strong></li>
+	<li>The runtime identifier is <strong>@RuntimeInformation.RuntimeIdentifier</strong></li>
+	<li>The OS architecture is <strong>@RuntimeInformation.OSArchitecture</strong></li>
+	<li>The process architecture is <strong>@RuntimeInformation.ProcessArchitecture</strong></li>
+	<li>The machine name is <strong>@Environment.MachineName</strong></li>
+	<li>The current culture is <strong>@CultureInfo.CurrentCulture</strong></li>
+	<li>The current UI culture is <strong>@CultureInfo.CurrentUICulture</strong></li>
+</ul>
+
+@code {
+
+	protected string GetFullOSVersion()
+	{
+		string version = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+#if OS_WINDOWS
+		// this might not work in a secure environment so lets just try it
+		try {
+			Microsoft.Win32.RegistryKey? registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+			if (registryKey is not null) {
+				string? buildNumber = registryKey.GetValue("UBR")?.ToString();
+				version = $"{version}.{buildNumber}";
+			}
+		}
+		catch (Exception) {
+		}
+#endif
+		return version;
+	}
+}
