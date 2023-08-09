@@ -18,19 +18,20 @@
 
 	protected string GetFullOSVersion()
 	{
-		string version = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
-#if OS_WINDOWS
-		// this might not work in a secure environment so lets just try it
-		try {
-			Microsoft.Win32.RegistryKey? registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
-			if (registryKey is not null) {
-				string? buildNumber = registryKey.GetValue("UBR")?.ToString();
-				version = $"{version}.{buildNumber}";
+		string version = RuntimeInformation.OSDescription;
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+			// this might not work in a secure environment so lets just try it
+			try {
+				Microsoft.Win32.RegistryKey? registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+				if (registryKey is not null) {
+					string? buildNumber = registryKey.GetValue("UBR")?.ToString();
+					version = $"{version}.{buildNumber}";
+				}
+			}
+			catch (Exception) {
 			}
 		}
-		catch (Exception) {
-		}
-#endif
+
 		return version;
 	}
 }
