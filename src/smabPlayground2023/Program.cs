@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 
 using smabPlayground2023;
 
@@ -31,23 +32,34 @@ app.MapRazorComponents<App>()
 
 app.UseRequestLocalization(
 	new RequestLocalizationOptions()
-			.SetDefaultCulture(cultures[0])
-			.AddSupportedCultures(cultures[0])
-			.AddSupportedUICultures(cultures));
+		.SetDefaultCulture("en-GB")
+		.AddSupportedCultures("en-GB")
+		.AddSupportedUICultures(cultures)
+	);
 
 app.Run();
+
+
 
 public partial class Program
 {
 	public static string SiteName { get; set; } = "smabPlayground2023";
-	public static string Name { get; } = typeof(Program).Assembly
-							.GetName().Name ?? "No assembly name";
-	public static Version Version { get; } = typeof(Program).Assembly
-							.GetName().Version ?? new();
-	public  static string ProductVersion { get; } = typeof(Program).Assembly
-							.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-							.InformationalVersion ?? "";
+	public static string Name { get; } = typeof(Program)
+		.Assembly
+		.GetName()
+		.Name ?? "No assembly name";
+	public static Version Version { get; } = typeof(Program)
+		.Assembly
+		.GetName()
+		.Version ?? new();
+	public static string ProductVersion { get; } = typeof(Program)
+		.Assembly
+		.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+		.InformationalVersion ?? "";
 	public static string FrameworkVersion { get; } = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
-	private static readonly string[] cultures = new[] { "en-GB", "en-US", "en", "fr", "es" };
+	private static readonly string[] cultures = CultureInfo
+		.GetCultures(CultureTypes.AllCultures)
+		.Select(c => c.Name)
+		.ToArray();
 } // also required so you can reference it from tests
