@@ -1,0 +1,6 @@
+﻿<PageTitle>@ChildContent - @Program.SiteName</PageTitle>
+<SectionContent SectionName="page-title">@ChildContent</SectionContent>
+@code {
+	[Parameter]
+	public RenderFragment? ChildContent {get; set;}
+}
