@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smabPlayground2023.Client", "src\smabPlayground2023.Client\smabPlayground2023.Client.csproj", "{A6B196FB-7BC0-4B91-8107-D16AA9E37E99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "smabPlayground2023.Client", "src\smabPlayground2023.Client\smabPlayground2023.Client.csproj", "{A6B196FB-7BC0-4B91-8107-D16AA9E37E99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

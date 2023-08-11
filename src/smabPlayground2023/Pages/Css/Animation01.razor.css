@@ -1,0 +1,72 @@
+div {
+	position: relative;
+}
+
+	div > ol {
+		margin: 0;
+		padding: 0;
+	}
+
+	div ol > li {
+		list-style-position: inside;
+		border: 1px solid currentColor;
+		border-radius: 8px;
+		margin: 8px;
+		background-color: rgba(25, 25, 25, 0.5);
+		padding: 8px;
+		height: 4em;
+		font-size: 1.4em;
+	}
+
+		div ol > li.drop-target {
+			border-top: 10px solid #15d843;
+		}
+
+a {
+	background-color: hsl(0, 100%, 27%);
+	color: #fff;
+	float: right;
+	text-decoration: none;
+	padding: 8px;
+	border-radius: 8px;
+	margin: 8px;
+	cursor: pointer;
+}
+
+.remove-button {
+	display: inline-block;
+	float: right;
+}
+
+::deep .trash {
+	display: block;
+	line-height: 1em;
+	text-decoration: none;
+	border: 2px solid currentColor;
+	background-color: #900;
+	padding: 10px 11px;
+	border-radius: 40px;
+	margin-top: 14px;
+	cursor: pointer;
+	color: #fff;
+}
+
+.hide {
+	opacity: 0;
+	transition: opacity 500ms;
+}
+
+.shrink-height {
+	animation-name: shrink-height;
+	animation-duration: 500ms;
+}
+
+@keyframes shrink-height {
+	from {
+		transform: scale(1, 1);
+	}
+
+	to {
+		transform: scale(1, 0);
+	}
+}

@@ -1,0 +1,22 @@
+﻿<button title="@Title" class="button @CssClass" @onclick="OnClick">@Text</button>
+
+@code {
+
+	[Parameter]
+	public string Title { get; set; } = "Delete";
+
+	[Parameter]
+	public string Text { get; set; } = "";
+
+	[Parameter]
+	public string CssClass { get; set; } = "btn btn-danger";
+
+	[Parameter]
+	public EventCallback OnClicked { get; set; }
+
+	public async Task OnClick()
+	{
+		await OnClicked.InvokeAsync();
+	}
+
+}
