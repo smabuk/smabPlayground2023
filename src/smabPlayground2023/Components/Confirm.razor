@@ -1,7 +1,7 @@
 @if (ButtonContent is not null) {
 	<a title="@Title" class="button @ButtonCssClass" @onclick="ShowPop">@ButtonContent</a>
 } else {
-	<SmabButton CssClass="@ButtonCssClass" Title="@Title" OnClicked="ShowPop" />
+	<SmabButton CssClass="@ButtonCssClass" Title="@Title" OnClick="ShowPop" />
 }
 @if (Show) {
 	<div class="confirm-container">
@@ -17,10 +17,10 @@
 			</div>
 			<div class="row">
 				<div class="col-6">
-					<SmabButton CssClass="@($"btn {YesCssClass}")" Text="Yes" OnClicked="() => Confirmation(true)"  />
+					<SmabButton CssClass="@($"btn {YesCssClass}")" Text="Yes" OnClick="() => Confirmation(true)"  />
 				</div>
 				<div class="col-6">
-					<SmabButton CssClass="@($"btn {NoCssClass}")"  Text="No"  OnClicked="() => Confirmation(false)" />
+					<SmabButton CssClass="@($"btn {NoCssClass}")"  Text="No"  OnClick="() => Confirmation(false)" />
 				</div>
 			</div>
 		</div>

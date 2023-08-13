@@ -3,10 +3,19 @@
 <SmabPageTitle>CSS Animation 01</SmabPageTitle>
 
 <div>
+	<div>
+		<SmabButton CssClass="move-button" Title="Move" Text="Move 6 above 3"  OnClick="async () => await Move(5,  2)" />
+		<SmabButton CssClass="move-button" Title="Move" Text="Move 7 above 1"  OnClick="async () => await Move(6,  0)" />
+		<SmabButton CssClass="move-button" Title="Move" Text="Move 3 above 6"  OnClick="async () => await Move(2,  5)" />
+		<SmabButton CssClass="move-button" Title="Move" Text="Move 4 above 11" OnClick="async () => await Move(3, 10)" />
+		<SmabButton CssClass="move-button" Title="Move" Text="Move 4 below 11" OnClick="async () => await Move(3, 11)" />
+	</div>
 	<ol>
+		@{ int i = 0; }
 		@foreach (var item in Movies) {
 			<li draggable="true"
-				class="@GenerateLiClass(item)">
+				class="@GenerateLiClass(item, i)"
+				style="@GenerateLiStyle(i)">
 				<div class="remove-button">
 					<Confirm Title="Remove movie?"
 							 ButtonCssClass="bi bi-trash trash"
@@ -19,6 +28,7 @@
 				</div>
 				<span>@item</span>
 			</li>
+			i++;
 		}
 	</ol>
 </div>
@@ -26,14 +36,17 @@
 
 @code {
 
-	private string removeId = "";
+	private int moveFromPos = int.MaxValue;
+	private int moveToPos   = int.MaxValue;
+
+	private string? removeId = null;
 
 	public List<string> Movies { get; set; } = new();
 
 	protected override void OnInitialized()
 	{
 		Movies = [
-			"Jaws"
+			  "Jaws"
 			, "The Terminator"
 			, "Star Wars"
 			, "Elemental"
@@ -42,9 +55,33 @@
 			, "Airplane II"
 			, "Groundhog Day"
 			, "Barbie"
+			, "Airplane"
 			, "Teenage Mutant Ninja Turtles"
 		];
 	}
+
+	private async Task Move(int originalPosition, int newPosition)
+	{
+		moveFromPos = originalPosition;
+		moveToPos = newPosition;
+		if (originalPosition <= newPosition) {
+			newPosition--;
+		}
+
+		string movieName = Movies[originalPosition];
+		StateHasChanged();
+		await Task.Delay(700);
+		Movies.RemoveAt(originalPosition);
+		if (newPosition < Movies.Count) {
+			Movies.Insert(newPosition, movieName);
+		} else {
+			Movies.Add(movieName);
+		}
+
+		moveFromPos = int.MaxValue;
+		moveToPos = int.MaxValue;
+	}
+
 
 	private async Task Remove(string name)
 	{
@@ -52,15 +89,57 @@
 		StateHasChanged();
 		await Task.Delay(500);
 		Movies.Remove(name);
-		removeId = "";
+		removeId = null;
 	}
 
-	private string? GenerateLiClass(string name)
+	private string? GenerateLiStyle(int position)
 	{
-		string? hide = name == removeId ? "hide shrink-height" : null;
-		if (hide is null) {
+		int? movePlaces = null;
+		int newPosition = moveToPos;
+		if (moveFromPos <= moveToPos) {
+			newPosition--;
+		}
+
+		if (position == moveFromPos) {
+			movePlaces = newPosition - moveFromPos;
+		} else if (moveToPos < moveFromPos) {
+			if ((position >= moveToPos && position <= moveFromPos)) {
+				movePlaces = 1;
+			}
+		} else if (position >= moveFromPos && position <= newPosition) {
+			movePlaces = -1;
+		}
+
+		return movePlaces switch
+		{
+			null => null,
+			_    => $"--sb-move-places: {movePlaces};",
+		};
+	}
+
+	private string? GenerateLiClass(string name, int position)
+	{
+		string? hide = (name == removeId) ? "hide shrink-height" : null;
+
+		string? moveMe = (position == moveFromPos) ? "moveme" : null;
+
+		string? down = null;
+
+		if (moveMe is null) {
+			if (moveToPos < moveFromPos) {
+				if ((position >= moveToPos && position <= moveFromPos)) {
+					down = "move";
+				}
+			} else {
+				if (position >= moveFromPos && position < moveToPos) {
+					down = "move";
+				}
+			}
+		}
+
+		if (hide is null && moveMe is null && down is null) {
 			return null;
 		}
-		return $"{hide}".Trim();
+		return $"{hide} {moveMe} {down}".Trim();
 	}
 }

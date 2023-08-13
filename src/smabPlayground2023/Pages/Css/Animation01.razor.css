@@ -51,9 +51,25 @@ a {
 	color: #fff;
 }
 
+::deep .move-button {
+	background-color: var(--bs-warning);
+}
+
+/*animation css*/
 .hide {
 	opacity: 0;
 	transition: opacity 500ms;
+}
+
+.moveme {
+	animation-name: updown;
+	animation-duration: 700ms;
+}
+
+.move {
+	animation-delay: 200ms;
+	animation-name: updown;
+	animation-duration: 500ms;
 }
 
 .shrink-height {
@@ -68,5 +84,15 @@ a {
 
 	to {
 		transform: scale(1, 0);
+	}
+}
+
+@keyframes updown {
+	0% {
+		transform: translateY(0%);
+	}
+
+	100% {
+		transform: translateY(calc(var(--sb-move-places, 1) * (100% + 8px)));
 	}
 }
