@@ -18,10 +18,6 @@ div {
 		font-size: 1.4em;
 	}
 
-		div ol > li.drop-target {
-			border-top: 10px solid #15d843;
-		}
-
 a {
 	background-color: hsl(0, 100%, 27%);
 	color: #fff;
@@ -38,7 +34,7 @@ a {
 	float: right;
 }
 
-.trash {
+::deep .trash {
 	display: block;
 	line-height: 1em;
 	text-decoration: none;
@@ -51,6 +47,7 @@ a {
 	color: #fff;
 }
 
+/* animation css*/
 .hide {
 	opacity: 0;
 	transition: opacity 500ms;
@@ -68,26 +65,5 @@ a {
 
 	to {
 		transform: scale(1, 0);
-	}
-}
-
-.moveme {
-	animation-duration: 700ms;
-	animation-name: updown;
-}
-
-.move {
-	animation-delay: 200ms;
-	animation-duration: 500ms;
-	animation-name: updown;
-}
-
-@keyframes updown {
-	0% {
-		transform: translateY(0%);
-	}
-
-	100% {
-		transform: translateY(calc(var(--sb-move-places, 1) * (100% + 8px)));
 	}
 }

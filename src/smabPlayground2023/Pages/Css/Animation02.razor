@@ -1,0 +1,63 @@
+﻿@page "/css/animation02"
+@attribute [RenderModeServer]
+<SmabPageTitle>CSS Animation 02</SmabPageTitle>
+
+<div>
+	<ol>
+		@foreach (var item in Movies) {
+			<li draggable="true"
+				class="@GenerateLiClass(item)">
+				<div class="remove-button">
+					<Confirm Title="Remove movie?"
+							 ButtonCssClass="bi bi-trash trash"
+							 ConfirmYes="async () => await Remove(item)">
+						<MessageTemplate>
+							<p><span>@item</span></p>
+							<p>Are you sure you don’t want to see this movie any more?</p>
+						</MessageTemplate>
+					</Confirm>
+				</div>
+				<span>@item</span>
+			</li>
+		}
+	</ol>
+</div>
+
+
+@code {
+	private string? removeId = null;
+
+	public List<string> Movies { get; set; } = new();
+
+	protected override void OnInitialized()
+	{
+		Movies = [
+			  "Jaws"
+			, "The Terminator"
+			, "Star Wars"
+			, "Elemental"
+			, "Raiders of the Lost Ark"
+			, "Big"
+			, "Airplane II"
+			, "Groundhog Day"
+			, "Barbie"
+			, "Airplane"
+			, "Teenage Mutant Ninja Turtles"
+		];
+	}
+
+	private async Task Remove(string name)
+	{
+		removeId = name;
+
+		await Task.Delay(500);
+
+		Movies.Remove(name);
+		removeId = null;
+	}
+
+	private string? GenerateLiClass(string name)
+	{
+		return (name == removeId) ? "hide shrink-height" : null;
+	}
+}

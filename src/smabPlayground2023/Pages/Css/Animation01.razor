@@ -4,6 +4,7 @@
 
 <div>
 	<div>
+		<SmabButton CssClass="move-button" Title="Move" Text="Random"  OnClick="async () => await RandomMove()" />
 		<SmabButton CssClass="move-button" Title="Move" Text="Move 6 above 3"  OnClick="async () => await Move(5,  2)" />
 		<SmabButton CssClass="move-button" Title="Move" Text="Move 7 above 1"  OnClick="async () => await Move(6,  0)" />
 		<SmabButton CssClass="move-button" Title="Move" Text="Move 3 above 6"  OnClick="async () => await Move(2,  5)" />
@@ -16,16 +17,6 @@
 			<li draggable="true"
 				class="@GenerateLiClass(item, i)"
 				style="@GenerateLiStyle(i)">
-				<div class="remove-button">
-					<Confirm Title="Remove movie?"
-							 ButtonCssClass="bi bi-trash trash"
-							 ConfirmYes="async () => await Remove(item)">
-						<MessageTemplate>
-							<p><span>@item</span></p>
-							<p>Are you sure you don’t want to see this movie any more?</p>
-						</MessageTemplate>
-					</Confirm>
-				</div>
 				<span>@item</span>
 			</li>
 			i++;
@@ -39,14 +30,12 @@
 	private int moveFromPos = int.MaxValue;
 	private int moveToPos   = int.MaxValue;
 
-	private string? removeId = null;
-
 	public List<string> Movies { get; set; } = new();
 
 	protected override void OnInitialized()
 	{
 		Movies = [
-			  "Jaws"
+					"Jaws"
 			, "The Terminator"
 			, "Star Wars"
 			, "Elemental"
@@ -60,6 +49,19 @@
 		];
 	}
 
+	private async Task RandomMove()
+	{
+		int noOfMovies = Movies.Count;
+
+		int from = Random.Shared.Next(noOfMovies);
+		int to = Random.Shared.Next(noOfMovies + 1);
+		while (from == to - 1) {
+			to = Random.Shared.Next(noOfMovies + 1);
+		}
+
+		await Move(from, to);
+	}
+
 	private async Task Move(int originalPosition, int newPosition)
 	{
 		moveFromPos = originalPosition;
@@ -69,8 +71,9 @@
 		}
 
 		string movieName = Movies[originalPosition];
-		StateHasChanged();
+
 		await Task.Delay(700);
+
 		Movies.RemoveAt(originalPosition);
 		if (newPosition < Movies.Count) {
 			Movies.Insert(newPosition, movieName);
@@ -80,16 +83,6 @@
 
 		moveFromPos = int.MaxValue;
 		moveToPos = int.MaxValue;
-	}
-
-
-	private async Task Remove(string name)
-	{
-		removeId = name;
-		StateHasChanged();
-		await Task.Delay(500);
-		Movies.Remove(name);
-		removeId = null;
 	}
 
 	private string? GenerateLiStyle(int position)
@@ -119,27 +112,25 @@
 
 	private string? GenerateLiClass(string name, int position)
 	{
-		string? hide = (name == removeId) ? "hide shrink-height" : null;
-
 		string? moveMe = (position == moveFromPos) ? "moveme" : null;
 
-		string? down = null;
+		string? move = null;
 
 		if (moveMe is null) {
 			if (moveToPos < moveFromPos) {
 				if ((position >= moveToPos && position <= moveFromPos)) {
-					down = "move";
+					move = "move";
 				}
 			} else {
 				if (position >= moveFromPos && position < moveToPos) {
-					down = "move";
+					move = "move";
 				}
 			}
 		}
 
-		if (hide is null && moveMe is null && down is null) {
+		if (moveMe is null && move is null) {
 			return null;
 		}
-		return $"{hide} {moveMe} {down}".Trim();
+		return $"{moveMe} {move}".Trim();
 	}
 }
