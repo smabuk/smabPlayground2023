@@ -1,5 +1,6 @@
-div {
+﻿div {
 	position: relative;
+	--sb-drop-gap: 70px;
 }
 
 	div > ol {
@@ -19,8 +20,15 @@ div {
 	}
 
 		div ol > li.drop-target {
-			border-top: 10px solid #15d843;
+			margin-top: var(--sb-drop-gap);
 		}
+
+			div ol > li.drop-target::before {
+				display: block;
+				position: absolute;
+				content: '→';
+				transform: translateY(calc(-60px - (var(--sb-drop-gap)/2)));
+			}
 
 a {
 	background-color: hsl(0, 100%, 27%);
@@ -76,10 +84,8 @@ a {
 	animation-name: updown;
 }
 
-.move {
-	animation-delay: 200ms;
-	animation-duration: 500ms;
-	animation-name: updown;
+.moveto {
+	margin-top: var(--sb-drop-gap);
 }
 
 @keyframes updown {

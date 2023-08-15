@@ -3,7 +3,7 @@
 <SmabPageTitle>Drag and Drop 01</SmabPageTitle>
 
 <div>
-	<ol>
+	<ol @ondragover:preventDefault @ondrop="() => Drop()">
 		@{ int i = 0; }
 		@foreach (var item in Movies) {
 			<li draggable="true"
@@ -19,10 +19,9 @@
 			@ondragend="() => DragEnd()"
 			@ondrop="() => Drop()">
 				<div class="remove-button">
-					<Confirm
-						Title="Remove signup?"
-						ButtonCssClass=""
-						ConfirmYes="async () => await Remove(item)">
+					<Confirm Title="Remove movie from Watch List?"
+							 ButtonCssClass=""
+							 ConfirmYes="async () => await Remove(item)">
 						<ButtonContent><span class="bi bi-trash trash" /></ButtonContent>
 						<MessageTemplate>
 							<p><span>@item</span></p>
@@ -37,21 +36,9 @@
 	</ol>
 </div>
 
-
 @code {
 
-	private string dragId = "";
-	private string dropTarget = "";
-	private int moveFromPos = int.MaxValue;
-	private int moveToPos = int.MaxValue;
-	private string removeId = "";
-
-	public List<string> Movies { get; set; } = new();
-
-	protected override void OnInitialized()
-	{
-		Movies = new List<string>
-		{     "Jaws"
+	public List<string> Movies = ["Jaws"
 			, "The Terminator"
 			, "Star Wars"
 			, "Elemental"
@@ -61,32 +48,53 @@
 			, "Groundhog Day"
 			, "Barbie"
 			, "Teenage Mutant Ninja Turtles"
-		};
-	}
+		];
+
+	private string? dragId = null;
+	private string? dropTarget = null;
+	private bool dropIsProcessing = false;
+
+	private int moveFromPos = int.MaxValue;
+	private int moveToPos = int.MaxValue;
+	private bool moveIsInProcess => moveFromPos != int.MaxValue;
+
+	private string? removeId = null;
 
 	private async Task Remove(string name)
 	{
 		removeId = name;
 		await Task.Delay(500);
 		Movies.Remove(name);
-		removeId = "";
+		removeId = null;
 	}
 
 	private void DragStart(string name) => dragId = name;
-	private void DragEnter(string name) => dropTarget = name;
+	private void DragEnter(string name)
+	{
+		if (String.IsNullOrEmpty(name) || dropTarget == name) {
+			return;
+		}
+		dropTarget = name;
+	}
+
 	private void DragLeave() { }
 	private void DragOver() { }
 
 	private void DragEnd()
 	{
-		dragId = "";
-		dropTarget = "";
+		dragId = null;
+		dropTarget = null;
 	}
 
 	private async Task Drop()
 	{
-		string movieName = dragId;
-		if (String.IsNullOrWhiteSpace(dropTarget)) return;
+		if (String.IsNullOrWhiteSpace(dropTarget) || String.IsNullOrWhiteSpace(dragId) || dropIsProcessing) {
+			return;
+		}
+
+		dropIsProcessing = true;
+
+		string movieName = dragId!;
 		int originalPosition = Movies.IndexOf(Movies.Single(name => name == movieName));
 		int newPosition = Movies.IndexOf(Movies.Single(name => name == dropTarget));
 		moveFromPos = originalPosition;
@@ -101,61 +109,46 @@
 		Movies.Insert(newPosition, movieName);
 
 		moveFromPos = int.MaxValue;
-		moveToPos   = int.MaxValue;
-		dragId = "";
-		dropTarget = "";
+		moveToPos = int.MaxValue;
+		dragId = null;
+		dropTarget = null;
+		dropIsProcessing = false;
 	}
 
 	private string? GenerateLiClass(string name, int position)
 	{
-		string? hide   = name == removeId   ? " hide shrink-height" : null;
-		string? target = name == dropTarget ? " drop-target"        : null;
+		string? hide = name == removeId ? " hide shrink-height" : null;
+		string? target = name == dropTarget ? " drop-target" : null;
+		string? moveMe = null;
+		string? moveTo = null;
 
-		string? moveMe = (position == moveFromPos) ? " moveme" : null;
-
-		string? move = null;
-
-		if (moveMe is null) {
-			if (moveToPos < moveFromPos) {
-				if ((position >= moveToPos && position <= moveFromPos)) {
-					move = " move";
-				}
-			} else {
-				if (position >= moveFromPos && position < moveToPos) {
-					move = " move";
-				}
-			}
+		if (moveIsInProcess) {
+			moveMe = (position == moveFromPos) ? " moveme" : null;
+			moveTo = (position == moveToPos) ? " moveto" : null;
 		}
 
-		if (hide is null && target is null && moveMe is null && move is null) {
+		if (hide is null && target is null && moveMe is null && moveTo is null) {
 			return null;
 		}
-		return $"{hide}{target}{moveMe}{move}".Trim();
+		return $"{hide}{target}{moveMe}{moveTo}".Trim();
 	}
 
 	private string? GenerateLiStyle(int position)
 	{
-		int? movePlaces = null;
+		if (moveIsInProcess is false || position != moveFromPos) {
+			return null;
+		}
+
+		int directionOffset = -1;
 		int newPosition = moveToPos;
 		if (moveFromPos <= moveToPos) {
 			newPosition--;
+			directionOffset = 1;
 		}
 
-		if (position == moveFromPos) {
-			movePlaces = newPosition - moveFromPos;
-		} else if (moveToPos < moveFromPos) {
-			if ((position >= moveToPos && position <= moveFromPos)) {
-				movePlaces = 1;
-			}
-		} else if (position >= moveFromPos && position <= newPosition) {
-			movePlaces = -1;
-		}
+		int movePlaces = directionOffset + newPosition - moveFromPos;
 
-		return movePlaces switch
-		{
-			null => null,
-			_ => $"--sb-move-places: {movePlaces};",
-		};
+		return $"--sb-move-places: {movePlaces};";
 	}
 
 }

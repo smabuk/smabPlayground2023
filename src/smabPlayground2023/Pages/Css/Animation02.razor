@@ -27,11 +27,7 @@
 @code {
 	private string? removeId = null;
 
-	public List<string> Movies { get; set; } = new();
-
-	protected override void OnInitialized()
-	{
-		Movies = [
+	public List<string> Movies = [
 			  "Jaws"
 			, "The Terminator"
 			, "Star Wars"
@@ -44,7 +40,6 @@
 			, "Airplane"
 			, "Teenage Mutant Ninja Turtles"
 		];
-	}
 
 	private async Task Remove(string name)
 	{
