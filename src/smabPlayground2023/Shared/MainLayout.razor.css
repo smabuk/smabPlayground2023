@@ -88,3 +88,7 @@ h1 {
 		padding-right: 1.5rem !important;
 	}
 }
+
+.page-description {
+	margin: var(--sb-footer-size) 1rem 1rem 1rem;
+}

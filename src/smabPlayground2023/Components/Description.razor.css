@@ -1,0 +1,12 @@
+article {
+	box-sizing: border-box;
+	border-block-style: solid;
+	border-block-width: 1px;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+
+p {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}

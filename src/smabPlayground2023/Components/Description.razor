@@ -1,0 +1,23 @@
+﻿<SectionContent SectionName="page-description">
+	<article>
+		<p>@Text</p>
+		@if (Technologies?.Any() ?? false) {
+			<p>Technologies: @String.Join(", ", Technologies).</p>
+		}
+		@if (Concepts?.Any() ?? false) {
+			<p>Concepts: @String.Join(", ", Concepts).</p>
+		}
+	</article>
+</SectionContent>
+@code {
+
+	[Parameter]
+	public string? Text { get; set; }
+
+	[Parameter]
+	public IEnumerable<string>? Technologies { get; set; }
+
+	[Parameter]
+	public IEnumerable<string>? Concepts { get; set; }
+
+}

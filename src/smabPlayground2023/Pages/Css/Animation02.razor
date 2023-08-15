@@ -1,6 +1,7 @@
 ﻿@page "/css/animation02"
 @attribute [RenderModeServer]
 <SmabPageTitle>CSS Animation 02</SmabPageTitle>
+<Description Text="@descText" Technologies="@descTechnologies" Concepts="@descConcepts" />
 
 <div>
 	<ol>
@@ -28,18 +29,18 @@
 	private string? removeId = null;
 
 	public List<string> Movies = [
-			  "Jaws"
-			, "The Terminator"
-			, "Star Wars"
-			, "Elemental"
-			, "Raiders of the Lost Ark"
-			, "Big"
-			, "Airplane II"
-			, "Groundhog Day"
-			, "Barbie"
-			, "Airplane"
-			, "Teenage Mutant Ninja Turtles"
-		];
+		"Jaws",
+		"The Terminator",
+		"Star Wars",
+		"Elemental",
+		"Raiders of the Lost Ark",
+		"Big",
+		"Airplane II",
+		"Groundhog Day",
+		"Barbie",
+		"Airplane",
+		"Teenage Mutant Ninja Turtles",
+	];
 
 	private async Task Remove(string name)
 	{
@@ -55,4 +56,17 @@
 	{
 		return (name == removeId) ? "hide shrink-height" : null;
 	}
+
+	private readonly string descText = "";
+
+	private readonly string[] descConcepts = [
+		"NO JavaScript",
+		"css3",
+	];
+
+	private readonly string[] descTechnologies = [
+		"css3 animation",
+		"Modal component",
+	];
+
 }

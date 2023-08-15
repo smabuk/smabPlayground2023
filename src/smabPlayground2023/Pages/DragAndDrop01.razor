@@ -1,6 +1,7 @@
 ﻿@page "/draganddrop01"
 @attribute [RenderModeServer]
 <SmabPageTitle>Drag and Drop 01</SmabPageTitle>
+<Description Text="@descText" Technologies="@descTechnologies" Concepts="@descConcepts" />
 
 <div>
 	<ol @ondragover:preventDefault @ondrop="() => Drop()">
@@ -37,18 +38,19 @@
 </div>
 
 @code {
-
-	public List<string> Movies = ["Jaws"
-			, "The Terminator"
-			, "Star Wars"
-			, "Elemental"
-			, "Raiders of the Lost Ark"
-			, "Big"
-			, "Airplane II"
-			, "Groundhog Day"
-			, "Barbie"
-			, "Teenage Mutant Ninja Turtles"
-		];
+	public List<string> Movies = [
+		"Jaws",
+		"The Terminator",
+		"Star Wars",
+		"Elemental",
+		"Raiders of the Lost Ark",
+		"Big",
+		"Airplane II",
+		"Groundhog Day",
+		"Barbie",
+		"Airplane",
+		"Teenage Mutant Ninja Turtles",
+	];
 
 	private string? dragId = null;
 	private string? dropTarget = null;
@@ -150,5 +152,18 @@
 
 		return $"--sb-move-places: {movePlaces};";
 	}
+
+	private readonly string descText = "";
+
+	private readonly string[] descConcepts = [
+		"NO JavaScript",
+		"css3",
+	];
+
+	private readonly string[] descTechnologies = [
+		  "html5 drag and drop"
+		, "css3 animation"
+		, "css3 variables"
+		];
 
 }

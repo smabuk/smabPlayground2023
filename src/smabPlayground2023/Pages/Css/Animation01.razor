@@ -1,6 +1,7 @@
 ﻿@page "/css/animation01"
 @attribute [RenderModeServer]
 <SmabPageTitle>CSS Animation 01</SmabPageTitle>
+<Description Text="@descText" Technologies="@descTechnologies" Concepts="@descConcepts" />
 
 <div>
 	<div>
@@ -14,9 +15,7 @@
 	<ol>
 		@{ int i = 0; }
 		@foreach (var item in Movies) {
-			<li draggable="true"
-				class="@GenerateLiClass(item, i)"
-				style="@GenerateLiStyle(i)">
+			<li class="@GenerateLiClass(item, i)" style="@GenerateLiStyle(i)">
 				<span>@item</span>
 			</li>
 			i++;
@@ -32,18 +31,18 @@
 	private bool moveIsInProcess => moveFromPos != int.MaxValue;
 
 	public List<string> Movies = [
-			  "Jaws"
-			, "The Terminator"
-			, "Star Wars"
-			, "Elemental"
-			, "Raiders of the Lost Ark"
-			, "Big"
-			, "Airplane II"
-			, "Groundhog Day"
-			, "Barbie"
-			, "Airplane"
-			, "Teenage Mutant Ninja Turtles"
-		];
+		"Jaws",
+		"The Terminator",
+		"Star Wars",
+		"Elemental",
+		"Raiders of the Lost Ark",
+		"Big",
+		"Airplane II",
+		"Groundhog Day",
+		"Barbie",
+		"Airplane",
+		"Teenage Mutant Ninja Turtles",
+	];
 
 	private async Task RandomMove()
 	{
@@ -135,4 +134,17 @@
 		}
 		return $"{moveMe} {move}".Trim();
 	}
+
+	private readonly string descText = "";
+
+	private readonly string[] descConcepts = [
+		"NO JavaScript",
+		"css3",
+	];
+
+	private readonly string[] descTechnologies = [
+		"css3 variables",
+		"css3 animation",
+	];
+
 }

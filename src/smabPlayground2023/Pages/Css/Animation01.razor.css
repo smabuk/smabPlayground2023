@@ -13,8 +13,8 @@ div {
 		border-radius: 8px;
 		margin: 8px;
 		background-color: rgba(25, 25, 25, 0.5);
-		padding: 8px;
-		height: 4em;
+		padding: 0.75rem;
+		padding-left: 0.5em;
 		font-size: 1.4em;
 	}
 
