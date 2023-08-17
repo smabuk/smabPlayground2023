@@ -25,21 +25,11 @@
 
 			div ol > li.drop-target::before {
 				display: block;
+				width: 100%;
 				position: absolute;
 				content: '→';
 				transform: translateY(calc(-60px - (var(--sb-drop-gap)/2)));
 			}
-
-a {
-	background-color: hsl(0, 100%, 27%);
-	color: #fff;
-	float: right;
-	text-decoration: none;
-	padding: 8px;
-	border-radius: 8px;
-	margin: 8px;
-	cursor: pointer;
-}
 
 .remove-button {
 	display: inline-block;

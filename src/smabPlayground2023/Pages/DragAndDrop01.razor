@@ -1,7 +1,6 @@
 ﻿@page "/draganddrop01"
 @attribute [RenderModeServer]
 <SmabPageTitle>Drag and Drop 01</SmabPageTitle>
-<Description Text="@descText" Technologies="@descTechnologies" Concepts="@descConcepts" />
 
 <div>
 	<ol @ondragover:preventDefault @ondrop="() => Drop()">
@@ -153,17 +152,33 @@
 		return $"--sb-move-places: {movePlaces};";
 	}
 
-	private readonly string descText = "";
-
 	private readonly string[] descConcepts = [
 		"NO JavaScript",
 		"css3",
+		"Modal confirmation",
 	];
 
 	private readonly string[] descTechnologies = [
-		  "html5 drag and drop"
-		, "css3 animation"
-		, "css3 variables"
-		];
+		"html5 drag and drop",
+		"css3 animation",
+		"bootstrap icons",
+	];
 
 }
+
+<Description Technologies="@descTechnologies" Concepts="@descConcepts">
+	<TextContent>
+		<div class="alert alert-warning" role="alert">
+			This doesn't work on mobile.
+		</div>
+		<p>
+			The primary focus of this page is to demonstrate how to use drag and drop with <strong>no JavaScript</strong>.
+			By reacting to the drag events we can make use of Blazors smarts to generate the class and style
+			on each change and have the css cause an animated reaction. 
+		</p>
+		<p>
+			For more information on the animations see
+			<a href="css/animation01">css animation 01</a> and <a href="css/animation02">css animation 02</a>.
+		</p>
+	</TextContent>
+</Description>

@@ -1,7 +1,6 @@
 ﻿@page "/css/animation02"
 @attribute [RenderModeServer]
 <SmabPageTitle>CSS Animation 02</SmabPageTitle>
-<Description Text="@descText" Technologies="@descTechnologies" Concepts="@descConcepts" />
 
 <div>
 	<ol>
@@ -57,16 +56,28 @@
 		return (name == removeId) ? "hide shrink-height" : null;
 	}
 
-	private readonly string descText = "";
-
 	private readonly string[] descConcepts = [
 		"NO JavaScript",
 		"css3",
+		"Modal confirmation",
 	];
 
 	private readonly string[] descTechnologies = [
 		"css3 animation",
-		"Modal component",
+		"bootstrap icons",
 	];
 
 }
+
+<Description Technologies="@descTechnologies" Concepts="@descConcepts">
+	<TextContent>
+		<p>
+			This page uses a button to prompt the user for a movie to delete, and then requests confirmation.
+			It uses <code>animation-duration</code> and <code>transform: scale()</code> to shrink the item,
+			and <code>transition</code> with <code>opacity</code> and a <code>duration</code> to hide it.
+		</p>
+		<p>
+			By using <code>Task.Delay()</code> in the c# code we allow time for the animation to play out.
+		</p>
+	</TextContent>
+</Description>

@@ -1,7 +1,6 @@
 ﻿@page "/css/animation01"
 @attribute [RenderModeServer]
 <SmabPageTitle>CSS Animation 01</SmabPageTitle>
-<Description Text="@descText" Technologies="@descTechnologies" Concepts="@descConcepts" />
 
 <div>
 	<div>
@@ -135,8 +134,6 @@
 		return $"{moveMe} {move}".Trim();
 	}
 
-	private readonly string descText = "";
-
 	private readonly string[] descConcepts = [
 		"NO JavaScript",
 		"css3",
@@ -148,3 +145,15 @@
 	];
 
 }
+
+<Description Technologies="@descTechnologies" Concepts="@descConcepts">
+	<TextContent>
+		<p>
+			This page uses <code>transform: translateY</code> in combination with a CSS variable
+			to calculate how many places to move an item.
+		</p>
+		<p>
+			By using <code>Task.Delay()</code> in the c# code we allow time for the animation to play out.
+		</p>
+	</TextContent>
+</Description>

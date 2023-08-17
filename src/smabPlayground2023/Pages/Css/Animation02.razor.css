@@ -18,17 +18,6 @@ div {
 		font-size: 1.4em;
 	}
 
-a {
-	background-color: hsl(0, 100%, 27%);
-	color: #fff;
-	float: right;
-	text-decoration: none;
-	padding: 8px;
-	border-radius: 8px;
-	margin: 8px;
-	cursor: pointer;
-}
-
 .remove-button {
 	display: inline-block;
 	float: right;
