@@ -9,9 +9,9 @@
 } else {
 	<p>Contents of the file: @fileName</p>
 	<div>
-		<code>
+		<pre>
 			@fileContent
-		</code>
+		</pre>
 	</div>
 }
 
@@ -29,10 +29,9 @@
 		if (response.IsSuccessStatusCode) {
 			fileContent = await response.Content.ReadAsStringAsync();
 			fileName = response.Content.Headers.ContentDisposition?.FileName;
-			// Console.WriteLine("File Content:");
-			// Console.WriteLine(fileContent);
 		} else {
-			// Console.WriteLine($"Error: {response.StatusCode}");
+			fileContent = $"Error: {response.StatusCode}";
+			fileName = null;
 		}
 	}
 
