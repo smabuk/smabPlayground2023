@@ -1,0 +1,55 @@
+﻿@page "/onedrivefiles01"
+@inject HttpClient httpClient
+@attribute [StreamRendering(true)]
+<SmabPageTitle>OneDrive files reader 01</SmabPageTitle>
+
+<h3>File contents</h3>
+@if (fileContent is null) {
+	<p><em>Loading...</em></p>
+} else {
+	<p>Contents of the file: @fileName</p>
+	<div>
+		<code>
+			@fileContent
+		</code>
+	</div>
+}
+
+@code {
+
+	string sharingLink = @"https://v795qw.db.files.1drv.com/y4m2aECraclg5LRAQhk7vIANxbvzHpmtOXmsWzeyvNlkNDI-9YYOwj7zHdQsrYj8KEWf8aChO55i7yPBNkuBpDqRfEh5krgFutPKvEAEArb5tVOeRUJe2cUyeHrbAZCAFoIi2uVi-7Hdvua43NsIH8WlAfR7fohINgsTyDbjlUNovtgF8rtUj2VkSjhRaS1LleLk1NnR9p9L2K6GXf--WWSjw";
+
+	private string? fileContent { get; set; }
+	private string? fileName { get; set; }
+
+	protected override async Task OnParametersSetAsync()
+	{
+		HttpResponseMessage response = await httpClient.GetAsync(sharingLink);
+
+		if (response.IsSuccessStatusCode) {
+			fileContent = await response.Content.ReadAsStringAsync();
+			fileName = response.Content.Headers.ContentDisposition?.FileName;
+			// Console.WriteLine("File Content:");
+			// Console.WriteLine(fileContent);
+		} else {
+			// Console.WriteLine($"Error: {response.StatusCode}");
+		}
+	}
+
+	private readonly string[] descConcepts = [
+	];
+
+	private readonly string[] descTechnologies = [
+		"OneDrive",
+		"HttpClient",
+	];
+
+}
+
+<Description Technologies="@descTechnologies" Concepts="@descConcepts">
+	<TextContent>
+		<p>
+			Reading shared files from a Personal OneDrive account.
+		</p>
+	</TextContent>
+</Description>

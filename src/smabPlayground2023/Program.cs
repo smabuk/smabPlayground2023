@@ -13,6 +13,8 @@ builder.Services
 
 builder.Services.AddLocalization();
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
