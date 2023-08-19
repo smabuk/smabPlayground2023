@@ -4,16 +4,17 @@
 
 <div>
 	<ol @ondragover:preventDefault @ondrop="() => Drop()">
-		@{ int i = 0; }
+		@{ int index = 0; }
 		@foreach (var item in Movies) {
+			int i = index;
 			<li draggable="true"
 				class="@GenerateLiClass(item, i)"
 				style="@GenerateLiStyle(i)"
 			@ondragenter:preventDefault
 			@ondragleave:preventDefault
 			@ondragover:preventDefault
-			@ondragstart="() => DragStart(item)"
-			@ondragenter="() => DragEnter(item)"
+			@ondragstart="() => DragStart(item, i)"
+			@ondragenter="() => DragEnter(item, i)"
 			@ondragleave="() => DragLeave()"
 			@ondragover="() => DragOver()"
 			@ondragend="() => DragEnd()"
@@ -31,7 +32,7 @@
 				</div>
 				<span>@item</span>
 			</li>
-			i++;
+			index++;
 		}
 	</ol>
 </div>
@@ -55,9 +56,8 @@
 	private string? dropTarget = null;
 	private bool dropIsProcessing = false;
 
-	private int moveFromPos = int.MaxValue;
-	private int moveToPos = int.MaxValue;
-	private bool moveIsInProcess => moveFromPos != int.MaxValue;
+	private int? moveFromPos = null;
+	private int? moveToPos = null;
 
 	private string? removeId = null;
 
@@ -69,13 +69,19 @@
 		removeId = null;
 	}
 
-	private void DragStart(string name) => dragId = name;
-	private void DragEnter(string name)
+	private void DragStart(string name, int position)
+	{
+		dragId = name;
+		moveFromPos = position;
+	}
+
+	private void DragEnter(string name, int position)
 	{
 		if (String.IsNullOrEmpty(name) || dropTarget == name) {
 			return;
 		}
 		dropTarget = name;
+		moveToPos = position;
 	}
 
 	private void DragLeave() { }
@@ -93,14 +99,16 @@
 			return;
 		}
 
+		if ((moveToPos is null) || (moveFromPos is null)) {
+			return;
+		}
+
 		dropIsProcessing = true;
 
 		string movieName = dragId!;
-		int originalPosition = Movies.IndexOf(Movies.Single(name => name == movieName));
-		int newPosition = Movies.IndexOf(Movies.Single(name => name == dropTarget));
-		moveFromPos = originalPosition;
-		moveToPos = newPosition;
-		if (originalPosition <= newPosition) {
+		int originalPosition = (int)moveFromPos;
+		int newPosition = (int)moveToPos;
+		if (moveFromPos <= moveToPos) {
 			newPosition--;
 		}
 
@@ -109,8 +117,8 @@
 		Movies.RemoveAt(originalPosition);
 		Movies.Insert(newPosition, movieName);
 
-		moveFromPos = int.MaxValue;
-		moveToPos = int.MaxValue;
+		moveFromPos = null;
+		moveToPos = null;
 		dragId = null;
 		dropTarget = null;
 		dropIsProcessing = false;
@@ -119,11 +127,11 @@
 	private string? GenerateLiClass(string name, int position)
 	{
 		string? hide = name == removeId ? " hide shrink-height" : null;
-		string? target = name == dropTarget ? " drop-target" : null;
+		string? target = (name == dropTarget && (moveToPos != moveFromPos) && (moveToPos != moveFromPos + 1)) ? " drop-target" : null;
 		string? moveMe = null;
 		string? moveTo = null;
 
-		if (moveIsInProcess) {
+		if (dropIsProcessing) {
 			moveMe = (position == moveFromPos) ? " moveme" : null;
 			moveTo = (position == moveToPos) ? " moveto" : null;
 		}
@@ -136,18 +144,22 @@
 
 	private string? GenerateLiStyle(int position)
 	{
-		if (moveIsInProcess is false || position != moveFromPos) {
+		if (dropIsProcessing is false
+			|| position != moveFromPos
+			|| (moveToPos is null)
+			|| (moveFromPos is null)
+		) {
 			return null;
 		}
 
 		int directionOffset = -1;
-		int newPosition = moveToPos;
+		int newPosition = (int)moveToPos;
 		if (moveFromPos <= moveToPos) {
 			newPosition--;
 			directionOffset = 1;
 		}
 
-		int movePlaces = directionOffset + newPosition - moveFromPos;
+		int movePlaces = directionOffset + newPosition - (int)moveFromPos;
 
 		return $"--sb-move-places: {movePlaces};";
 	}
