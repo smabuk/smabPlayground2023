@@ -1,17 +1,20 @@
 ﻿@page "/onedrivefiles01"
+@using System.Text;
+@using OfficeOpenXml;
 @inject HttpClient httpClient
 @attribute [RenderModeServer]
 @attribute [StreamRendering(true)]
 <SmabPageTitle>OneDrive files reader 01</SmabPageTitle>
 
 <div>
-	<SmabButton CssClass="load-button" Title="Load text file" Text="Load text file" OnClick="async () => (fileContent, fileName) = await ReadFile(sharingLinks[0])" />
-	<SmabButton CssClass="load-button" Title="Load json file" Text="Load json file" OnClick="async () => (fileContent, fileName) = await ReadFile(sharingLinks[1])" />
+	<SmabButton CssClass="load-button" Title="Load text file"  Text="Load text file"  OnClick="async () => await ReadFile(sharingLinks[0])" />
+	<SmabButton CssClass="load-button" Title="Load json file"  Text="Load json file"  OnClick="async () => await ReadFile(sharingLinks[1])" />
+	<SmabButton CssClass="load-button" Title="Load Excel file" Text="Load Excel file" OnClick="async () => await ReadExcelFile(sharingLinks[2])" />
 </div>
 
 <h3>File contents</h3>
 
-<p>Contents of the file: @fileName</p>
+<p>Contents of: @fileName</p>
 <pre>
 	@fileContent
 </pre>
@@ -19,28 +22,31 @@
 @code {
 
 	string[] sharingLinks = [
-		// this is a text file
-		@"https://v795qw.db.files.1drv.com/y4m2aECraclg5LRAQhk7vIANxbvzHpmtOXmsWzeyvNlkNDI-9YYOwj7zHdQsrYj8KEWf8aChO55i7yPBNkuBpDqRfEh5krgFutPKvEAEArb5tVOeRUJe2cUyeHrbAZCAFoIi2uVi-7Hdvua43NsIH8WlAfR7fohINgsTyDbjlUNovtgF8rtUj2VkSjhRaS1LleLk1NnR9p9L2K6GXf--WWSjw",
-		// this is a json file
-		@"https://pakrpq.db.files.1drv.com/y4mjU8yonEudZ2PwKo6sSp6lAukT1XU_kZX-5U3YQgD4t__DAM36O85NhufaHouy3BRQQNBgtDIiutIn5Lht1RdkDO_zV7dEHPNGVtIbrJeMHMaFydN-f-gR93xynMGoC2EGTpMpPbHsj5_5Ag0QU3zPukhTwCcbk65clvVNtdufXWSWwfYBLSz9vyVhs2mNU_0VmSuP3iPYJX6ixWSdweY5A",
-	];
+			// this is a text file
+			@"https://v795qw.db.files.1drv.com/y4m2aECraclg5LRAQhk7vIANxbvzHpmtOXmsWzeyvNlkNDI-9YYOwj7zHdQsrYj8KEWf8aChO55i7yPBNkuBpDqRfEh5krgFutPKvEAEArb5tVOeRUJe2cUyeHrbAZCAFoIi2uVi-7Hdvua43NsIH8WlAfR7fohINgsTyDbjlUNovtgF8rtUj2VkSjhRaS1LleLk1NnR9p9L2K6GXf--WWSjw",
+			// this is a json file
+			@"https://pakrpq.db.files.1drv.com/y4mjU8yonEudZ2PwKo6sSp6lAukT1XU_kZX-5U3YQgD4t__DAM36O85NhufaHouy3BRQQNBgtDIiutIn5Lht1RdkDO_zV7dEHPNGVtIbrJeMHMaFydN-f-gR93xynMGoC2EGTpMpPbHsj5_5Ag0QU3zPukhTwCcbk65clvVNtdufXWSWwfYBLSz9vyVhs2mNU_0VmSuP3iPYJX6ixWSdweY5A",
+			// this is an Excel file
+			//   short link @"https://1drv.ms/x/s!Au16kPjxqpZvgaqnc1e5EurmwIPllBA?e=eayrWN",
+			@"https://4nmnxw.db.files.1drv.com/y4m5Cw7_LcD_aO-C-8UTvgi0_WH5Nyw2NzmiI4iIoOI8ilnNxlGr_f0xejTwRshm4G51NW0aFt0_HWax_aRvZQSt3UKijhssmxjhdms4JyP0qLfiIElCRvfvYuQHQMG5VUlyfIky7ruKB9tS3I-lzepjDqeA5NU3oV2GarJkG7LEjw",
+		];
 
 	private string? fileContent { get; set; }
 	private string? fileName { get; set; } = "... not loaded ...";
 
-	private async Task<ReadResponse> ReadFile(string url)
+	private async Task ReadFile(string url)
 	{
+		fileContent = "Loading ...";
+		fileName = null;
+
 		HttpResponseMessage response = await httpClient.GetAsync(url);
-		string? content;
-		string? name = "... not loaded ...";
+		string? content = null;
+		string? name = null;
 
 		if (response.IsSuccessStatusCode) {
 			content = await response.Content.ReadAsStringAsync();
-			name = response.Content.Headers.ContentDisposition?.FileName;
-			if (name is not null) {
-				// strip the quotes from the name
-				name = name[1..^1];
-			}
+			name = StripQuotesFromName(response.Content.Headers.ContentDisposition?.FileName);
+			fileName = name;
 			if (name is not null && name.EndsWith("json", StringComparison.InvariantCultureIgnoreCase)) {
 				content = JsonPrettify(content);
 			}
@@ -49,7 +55,46 @@
 			name = null;
 		}
 
-		return new ReadResponse(content, name);
+		fileContent = content;
+	}
+
+	private async Task ReadExcelFile(string url)
+	{
+		fileContent = "Loading ...";
+		fileName = null;
+
+		HttpResponseMessage response = await httpClient.GetAsync(url);
+		string? content = null;
+		string? name = null;
+
+		if (response.IsSuccessStatusCode)
+		{
+			name = StripQuotesFromName(response.Content.Headers.ContentDisposition?.FileName);
+			fileName = name;
+
+			Stream stream = await response.Content.ReadAsStreamAsync();
+
+			using ExcelPackage package = new(stream);
+			ExcelWorksheet? worksheet = package.Workbook.Worksheets["Watched Movies"];
+
+			StringBuilder sb = new ();
+
+			int rowCount = worksheet.Dimension.Rows;
+			for (int row = 2; row < rowCount; row++) {
+				DateOnly date = DateOnly.FromDateTime(DateTime.FromOADate((double)worksheet.Cells[row, 2].Value));
+				sb.Append($"{worksheet.Cells[row, 1].Value,4}");
+				sb.Append($"  {date:ddd} {date:dd}-{date.ToString("MMM")[..3]}-{date:yyyy}");
+				sb.Append($"  {worksheet.Cells[row, 4].Value,4}");
+				sb.Append($"  {worksheet.Cells[row, 3].Value}");
+				if (!String.IsNullOrWhiteSpace(worksheet.Cells[row, 5].Text)) {
+					sb.Append($" ({worksheet.Cells[row, 5].Value})");
+				}
+				sb.AppendLine();
+			}
+			content = sb.ToString();
+		}
+
+		fileContent = content;
 	}
 
 	private string JsonPrettify(string json)
@@ -58,12 +103,25 @@
 		return JsonSerializer.Serialize(jDoc, new JsonSerializerOptions { WriteIndented = true });
 	}
 
+	private string? StripQuotesFromName(string? name)
+	{
+		return name switch
+		{
+			not null => name = name[1..^1],
+			null     => null,
+		};
+
+	}
+
 	private record ReadResponse(string? Content, string? Name);
 
 	private readonly string[] descConcepts = [
+		"Reading OneDrive files",	
+		"Reading Excel from a web app",	
 	];
 
 	private readonly string[] descTechnologies = [
+		"EPPlusSoftware.EPPlus",
 		"OneDrive",
 		"HttpClient",
 	];
@@ -73,7 +131,20 @@
 <Description Technologies="@descTechnologies" Concepts="@descConcepts">
 	<TextContent>
 		<p>
-			Reading shared files from a Personal OneDrive account.
+			Reading files that have been shared from a Personal OneDrive account.
+		</p>
+		<p>
+			There are 4 stages to finding the correct url to use:
+			<ol>
+				<li>Get the short link by sharing out the file.</li>
+				<li>Open the <em>Network</em> tab in the <em>Dev Tools</em> in your browser</li>
+				<li>Navigate to the url from step 1 and choose download</li>
+				<li>Grab the long url from when the file is downloaded</li>
+			</ol>
+		</p>
+		<p>
+			If you are dealing with a special file like an Excel file then you will need
+			to rename it before steps 3 and 4 (don't forget to rename it back).
 		</p>
 	</TextContent>
 </Description>
