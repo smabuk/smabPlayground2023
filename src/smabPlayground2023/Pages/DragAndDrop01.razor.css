@@ -27,7 +27,8 @@
 				display: block;
 				width: 100%;
 				position: absolute;
-				content: '';
+				content: '→';
+				color: transparent;
 				transform: translateY(calc(-60px - (var(--sb-drop-gap)/2)));
 			}
 
