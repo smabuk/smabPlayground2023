@@ -1,0 +1,35 @@
+﻿@page "/dev/showhttpcontext"
+@inject IHttpContextAccessor httpContextAccessor
+<SmabPageTitle>Show HttpContext</SmabPageTitle>
+
+<div>
+	<h3>Request Headers</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>Header key</th>
+				<th>Header value</th>
+			</tr>
+		</thead>
+		@foreach (string key in Headers.Keys!.Where(k => k != "Cookie")) {
+			<tr><td>@key</td><td>@Headers[key]</td></tr>		
+		}
+	</table>
+	<h3>Remote IP Address</h3>
+	<p>IPAddress = @IPAddress</p>
+</div>
+
+@code {
+	public string? IPAddress { get; set; }
+
+	public required IHeaderDictionary Headers { get; set; }
+
+	protected override void OnInitialized()
+	{
+		if (httpContextAccessor.HttpContext?.Request.Headers is not null) {
+			Headers = httpContextAccessor.HttpContext.Request.Headers;
+		}
+		IPAddress = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+	}
+
+}

@@ -13,6 +13,7 @@ builder.Services
 
 builder.Services.AddLocalization();
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
