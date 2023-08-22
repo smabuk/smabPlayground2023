@@ -1,4 +1,4 @@
-﻿@page "/onedrivefiles01"
+﻿@page "/onedrivefiles01/{fileNumber:int?}"
 @using System.Text;
 @using OfficeOpenXml;
 @inject HttpClient httpClient
@@ -9,7 +9,7 @@
 <div>
 	<SmabButton CssClass="load-button" Title="Load text file"  Text="Load text file"  OnClick="async () => await ReadFile(sharingLinks[0])" />
 	<SmabButton CssClass="load-button" Title="Load json file"  Text="Load json file"  OnClick="async () => await ReadFile(sharingLinks[1])" />
-	<SmabButton CssClass="load-button" Title="Load Excel file" Text="Load Excel file" OnClick="async () => await ReadExcelFile(sharingLinks[2])" />
+	<SmabButton CssClass="load-button" Title="Load Excel file" Text="Load Excel file" OnClick="async () => await ReadFile(sharingLinks[2])" />
 </div>
 
 <h3>File contents</h3>
@@ -20,6 +20,9 @@
 </pre>
 
 @code {
+
+	[Parameter]
+	public int? FileNumber { get; set; }
 
 	string[] sharingLinks = [
 			// this is a text file
@@ -34,8 +37,22 @@
 	private string? fileContent { get; set; }
 	private string? fileName { get; set; } = "... not loaded ...";
 
-	private async Task ReadFile(string url)
+	protected override async Task OnParametersSetAsync()
 	{
+		if (FileNumber is null) {
+			return;
+		}
+
+		if (FileNumber > sharingLinks.Length - 1) {
+			fileContent = $"Error: Invalid file index";
+			fileName = null;
+			return;
+		}
+		await ReadFile(sharingLinks[(int)FileNumber]);
+    }
+
+    private async Task ReadFile(string url)
+    {
 		fileContent = "Loading ...";
 		fileName = null;
 
@@ -47,8 +64,14 @@
 			content = await response.Content.ReadAsStringAsync();
 			name = StripQuotesFromName(response.Content.Headers.ContentDisposition?.FileName);
 			fileName = name;
-			if (name is not null && name.EndsWith("json", StringComparison.InvariantCultureIgnoreCase)) {
-				content = JsonPrettify(content);
+			if (name is not null) {
+				string extension = Path.GetExtension(name);
+				content = extension.ToLower() switch
+				{
+					".json" => JsonPrettify(content),
+					".xlsx" => await ReadExcelContent(response.Content),
+					_ => content,
+				};
 			}
 		} else {
 			content = $"""Error: {response.StatusCode} - "{response.ReasonPhrase}" """;
@@ -58,43 +81,28 @@
 		fileContent = content;
 	}
 
-	private async Task ReadExcelFile(string url)
+	private async Task<string> ReadExcelContent(HttpContent httpContent)
 	{
-		fileContent = "Loading ...";
-		fileName = null;
+		Stream stream = await httpContent.ReadAsStreamAsync();
 
-		HttpResponseMessage response = await httpClient.GetAsync(url);
-		string? content = null;
-		string? name = null;
+		using ExcelPackage package = new(stream);
+		ExcelWorksheet? worksheet = package.Workbook.Worksheets["Watched Movies"];
 
-		if (response.IsSuccessStatusCode)
-		{
-			name = StripQuotesFromName(response.Content.Headers.ContentDisposition?.FileName);
-			fileName = name;
+		StringBuilder sb = new ();
 
-			Stream stream = await response.Content.ReadAsStreamAsync();
-
-			using ExcelPackage package = new(stream);
-			ExcelWorksheet? worksheet = package.Workbook.Worksheets["Watched Movies"];
-
-			StringBuilder sb = new ();
-
-			int rowCount = worksheet.Dimension.Rows;
-			for (int row = 2; row < rowCount; row++) {
-				DateOnly date = DateOnly.FromDateTime(DateTime.FromOADate((double)worksheet.Cells[row, 2].Value));
-				sb.Append($"{worksheet.Cells[row, 1].Value,4}");
-				sb.Append($"  {date:ddd} {date:dd}-{date.ToString("MMM")[..3]}-{date:yyyy}");
-				sb.Append($"  {worksheet.Cells[row, 4].Value,4}");
-				sb.Append($"  {worksheet.Cells[row, 3].Value}");
-				if (!String.IsNullOrWhiteSpace(worksheet.Cells[row, 5].Text)) {
-					sb.Append($" ({worksheet.Cells[row, 5].Value})");
-				}
-				sb.AppendLine();
+		int rowCount = worksheet.Dimension.Rows;
+		for (int row = 2; row < rowCount; row++) {
+			DateOnly date = DateOnly.FromDateTime(DateTime.FromOADate((double)worksheet.Cells[row, 2].Value));
+			sb.Append($"{worksheet.Cells[row, 1].Value,4}");
+			sb.Append($"  {date:ddd} {date:dd}-{date.ToString("MMM")[..3]}-{date:yyyy}");
+			sb.Append($"  {worksheet.Cells[row, 4].Value,4}");
+			sb.Append($"  {worksheet.Cells[row, 3].Value}");
+			if (!String.IsNullOrWhiteSpace(worksheet.Cells[row, 5].Text)) {
+				sb.Append($" ({worksheet.Cells[row, 5].Value})");
 			}
-			content = sb.ToString();
+			sb.AppendLine();
 		}
-
-		fileContent = content;
+		return sb.ToString();
 	}
 
 	private string JsonPrettify(string json)
@@ -103,15 +111,8 @@
 		return JsonSerializer.Serialize(jDoc, new JsonSerializerOptions { WriteIndented = true });
 	}
 
-	private string? StripQuotesFromName(string? name)
-	{
-		return name switch
-		{
-			not null => name = name[1..^1],
-			null     => null,
-		};
-
-	}
+	private string? StripQuotesFromName(string? name) =>
+		(name is not null) ? name[1..^1] : null;
 
 	private record ReadResponse(string? Content, string? Name);
 
