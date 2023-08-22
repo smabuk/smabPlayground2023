@@ -6,6 +6,9 @@ public class RoutingTests : WebTestBase
 	[InlineData("/showdata", "weather forecast")]
 	public async Task Route_Returns_Expected_Page(string route, string expectedTitle)
 	{
+		const string siteNameSuffix = " - smabPlayground2023";
+		expectedTitle += siteNameSuffix;
+
 		HttpClient client = Factory.CreateClient();
 		HttpResponseMessage response = await client.GetAsync(route);
 		response.IsSuccessStatusCode.ShouldBe(true);
