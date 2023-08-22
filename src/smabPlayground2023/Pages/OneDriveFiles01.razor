@@ -1,4 +1,5 @@
-﻿@page "/onedrivefiles01/{fileNumber:int?}"
+﻿@page "/onedrivefiles01"
+@page "/onedrivefiles01/{fileNumber:int?}"
 @using System.Text;
 @using OfficeOpenXml;
 @inject HttpClient httpClient
@@ -43,7 +44,7 @@
 			return;
 		}
 
-		if (FileNumber > sharingLinks.Length - 1) {
+		if (FileNumber > sharingLinks.Length - 1 || FileNumber < 0) {
 			fileContent = $"Error: Invalid file index";
 			fileName = null;
 			return;
@@ -56,7 +57,7 @@
 		fileContent = "Loading ...";
 		fileName = null;
 
-		HttpResponseMessage response = await httpClient.GetAsync(url);
+		using HttpResponseMessage response = await httpClient.GetAsync(url);
 		string? content = null;
 		string? name = null;
 
