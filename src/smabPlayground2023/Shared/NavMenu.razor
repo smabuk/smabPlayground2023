@@ -1,4 +1,5 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@attribute [RenderModeServer]
+<div class="top-row ps-3 navbar navbar-dark">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="">smabPlayground2023</a>
 		<button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -21,9 +22,28 @@
 			</NavLink>
 		</div>
 
+
 		<div class="nav-item px-3">
 			<NavLink class="nav-link" href="onedrivefiles01">
 				<span class="bi bi-body-text" aria-hidden="true"></span> OneDrive file contents
+			</NavLink>
+		</div>
+
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="onedrivefiles01/0">
+				<span class="bi bi-filetype-txt" aria-hidden="true"></span> OneDrive text file
+			</NavLink>
+		</div>
+
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="onedrivefiles01/1">
+				<span class="bi bi-filetype-json" aria-hidden="true"></span> OneDrive json file
+			</NavLink>
+		</div>
+
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="onedrivefiles01/2">
+				<span class="bi bi-filetype-xlsx" aria-hidden="true"></span> OneDrive Excel file
 			</NavLink>
 		</div>
 
