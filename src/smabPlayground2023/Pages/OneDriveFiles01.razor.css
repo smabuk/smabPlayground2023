@@ -19,3 +19,6 @@ pre {
 	background-color: var(--bs-warning);
 }
 
+a {
+	padding: 0 5px 0 5px;
+}
