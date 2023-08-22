@@ -7,10 +7,16 @@
 @attribute [StreamRendering(true)]
 <SmabPageTitle>OneDrive files reader 01</SmabPageTitle>
 
-<div>
+<div hidden="@hideButtons">
 	<SmabButton CssClass="load-button" Title="Load text file"  Text="Load text file"  OnClick="async () => await ReadFile(sharingLinks[0])" />
 	<SmabButton CssClass="load-button" Title="Load json file"  Text="Load json file"  OnClick="async () => await ReadFile(sharingLinks[1])" />
 	<SmabButton CssClass="load-button" Title="Load Excel file" Text="Load Excel file" OnClick="async () => await ReadFile(sharingLinks[2])" />
+</div>
+
+<div hidden="@(!hideButtons)">
+	<a href="/onedrivefiles01/0" class="btn btn-default btn-warning" Title="Load text file" >Load text file</a>
+	<a href="/onedrivefiles01/1" class="btn btn-default btn-warning" Title="Load json file">Load json file</a>
+	<a href="/onedrivefiles01/2" class="btn btn-default btn-warning" Title="Load Excel file">Load Excel file</a>
 </div>
 
 <h3>File contents</h3>
@@ -24,6 +30,8 @@
 
 	[Parameter]
 	public int? FileNumber { get; set; }
+
+	bool hideButtons = false;
 
 	string[] sharingLinks = [
 			// this is a text file
@@ -43,6 +51,8 @@
 		if (FileNumber is null) {
 			return;
 		}
+
+		hideButtons = true;
 
 		if (FileNumber > sharingLinks.Length - 1 || FileNumber < 0) {
 			fileContent = $"Error: Invalid file index";
