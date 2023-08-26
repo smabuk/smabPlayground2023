@@ -1,5 +1,5 @@
-﻿@attribute [RenderModeServer]
-<div class="top-row ps-3 navbar navbar-dark">
+﻿@* @attribute [RenderModeServer]
+ *@<div class="top-row ps-3 navbar navbar-dark">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="">smabPlayground2023</a>
 		<button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -80,7 +80,7 @@
 
 @code {
 	private bool collapseNavMenu = true;
-	private bool collapseOneDriveSubmenu = true;
+	private bool collapseOneDriveSubmenu = false;
 
 	private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
