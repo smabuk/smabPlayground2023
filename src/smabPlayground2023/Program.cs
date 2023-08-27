@@ -55,14 +55,21 @@ public partial class Program
 		.Assembly
 		.GetName()
 		.Version ?? new();
-	public static string ProductVersion { get; } = typeof(Program)
+	public static string ProductVersion { get; } =
+		VersionWithoutGuid(typeof(Program)
 		.Assembly
 		.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-		.InformationalVersion ?? "";
+		.InformationalVersion ?? "");
 	public static string FrameworkVersion { get; } = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
 	private static readonly string[] cultures = CultureInfo
 		.GetCultures(CultureTypes.AllCultures)
 		.Select(c => c.Name)
 		.ToArray();
+
+	private static string VersionWithoutGuid(string version)
+	{
+		int indexOfPlus = version.IndexOf('+');
+		return (indexOfPlus > 0) ? version[..indexOfPlus] : version;
+	}
 } // also required so you can reference it from tests
