@@ -12,6 +12,7 @@ builder.Services
 	.AddWebAssemblyComponents();
 
 builder.Services.AddLocalization();
+builder.Services.AddHealthChecks();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
@@ -39,6 +40,8 @@ app.UseRequestLocalization(
 		.AddSupportedCultures("en-GB")
 		.AddSupportedUICultures(cultures)
 	);
+
+app.MapHealthChecks("/healthz");
 
 app.Run();
 
