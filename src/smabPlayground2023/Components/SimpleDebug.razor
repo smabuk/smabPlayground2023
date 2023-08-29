@@ -12,6 +12,7 @@
 	<li>The machine name is <strong>@Environment.MachineName</strong></li>
 	<li>The current culture is <strong>@CultureInfo.CurrentCulture</strong></li>
 	<li>The current UI culture is <strong>@CultureInfo.CurrentUICulture</strong></li>
+	<li>The current server time is <strong>@DateTime.Now.ToString("F") (@TimeZoneName())</strong></li>
 </ul>
 
 @code {
@@ -34,4 +35,9 @@
 
 		return version;
 	}
+
+	protected string TimeZoneName() =>
+		TimeZoneInfo.Local.IsDaylightSavingTime(DateTime.Now)
+		? TimeZoneInfo.Local.DaylightName
+		: TimeZoneInfo.Local.StandardName;
 }
