@@ -9,26 +9,14 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 	<link rel="stylesheet" href="css/app.css" />
 	<link rel="stylesheet" href="css/smabPlayground2023.css" />
-	<link rel="icon" type="image/png" href="favicon.png" />
 	<link rel="stylesheet" href="smabPlayground2023.styles.css" />
+	<link rel="stylesheet" href="smabPlayground2023.Client.styles.css" />
+	<link rel="icon" type="image/png" href="favicon.png" />
 	<HeadOutlet />
 </head>
 
 <body>
-
-	<Router AppAssembly="@typeof(App).Assembly">
-		<Found Context="routeData">
-			<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-			<FocusOnNavigate RouteData="@routeData" Selector="h1" />
-		</Found>
-		<NotFound>
-			<PageTitle>Not found</PageTitle>
-			<LayoutView Layout="@typeof(MainLayout)">
-				<p role="alert">Sorry, there's nothing at this address.</p>
-			</LayoutView>
-		</NotFound>
-	</Router>
-
+	<Routes />
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 	<script src="_framework/blazor.web.js" suppress-error="BL9992"></script>
 </body>

@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection;
 
-using smabPlayground2023;
+using smabPlayground2023.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +32,8 @@ app.UseStaticFiles();
 
 app.MapRazorComponents<App>()
 	.AddServerRenderMode()
-	.AddWebAssemblyRenderMode();
+	.AddWebAssemblyRenderMode()
+	.AddAdditionalAssemblies(typeof(smabPlayground2023.Client.Pages.Counter).Assembly);
 
 app.UseRequestLocalization(
 	new RequestLocalizationOptions()

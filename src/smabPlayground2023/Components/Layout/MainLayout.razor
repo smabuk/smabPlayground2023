@@ -1,14 +1,8 @@
 ﻿@inherits LayoutComponentBase
-@inject IWebHostEnvironment env
 
 <div class="page">
 	<div class="sidebar">
-		@if (env.IsDevelopment())
-		{
-			<NavMenu @rendermode="@RenderMode.Server"/>
-		} else {
-			<NavMenu />
-		}
+		<NavMenu />
 	</div>
 
 	<main>
@@ -28,4 +22,10 @@
 	>
 		© Simon Brookes (smabuk) 2023@(DateTime.Now.Year != 2023 ? $"-{DateTime.Now.Year}" : "")
 	</PageFooter>
+</div>
+
+<div id="blazor-error-ui">
+	An unhandled error has occurred.
+	<a href="" class="reload">Reload</a>
+	<a class="dismiss">🗙</a>
 </div>
