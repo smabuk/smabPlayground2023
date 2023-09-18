@@ -3,7 +3,7 @@ public class RoutingTests : WebTestBase
 {
 	[Theory]
 	[InlineData("/", "home")]
-	[InlineData("/showdata", "weather forecast")]
+	[InlineData("/weather", "weather forecast")]
 	public async Task Route_Returns_Expected_Page(string route, string expectedTitle)
 	{
 		const string siteNameSuffix = " - smabPlayground2023";
