@@ -5,8 +5,7 @@ div {
 pre {
 	height: 58dvh;
 	max-height: 58dvh;
-	width: 75dvw;
-	max-width: 75dvw;
+	width: 100%;
 	overflow: auto;
 	overflow-x: auto;
 	overflow-y: auto;
