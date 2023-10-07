@@ -1,10 +1,10 @@
 ﻿<SectionContent SectionName="page-description">
 	<article>
 		<div>@TextContent</div>
-		@if (Technologies?.Any() ?? false) {
+		@if (Technologies is [..]) {
 			<p>Technologies: @String.Join(", ", Technologies).</p>
 		}
-		@if (Concepts?.Any() ?? false) {
+		@if (Concepts is [..]) {
 			<p>Concepts: @String.Join(", ", Concepts).</p>
 		}
 	</article>
@@ -15,10 +15,10 @@
 	public RenderFragment? TextContent { get; set; }
 
 	[Parameter]
-	public IEnumerable<string>? Technologies { get; set; }
+	public IReadOnlyList<string>? Technologies { get; set; }
 
 	[Parameter]
-	public IEnumerable<string>? Concepts { get; set; }
+	public IReadOnlyList<string>? Concepts { get; set; }
 
 	[Parameter]
 	public string? SourceLink { get; set; }

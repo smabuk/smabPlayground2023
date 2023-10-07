@@ -1,4 +1,4 @@
-﻿namespace smabPlayground2023.Tests.Webtests;
+﻿namespace smabPlayground2023.Tests.WebTests;
 public class RoutingTests : WebTestBase
 {
 	[Theory]
