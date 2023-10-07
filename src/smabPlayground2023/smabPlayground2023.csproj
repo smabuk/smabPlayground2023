@@ -1,35 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<LangVersion>preview</LangVersion>
-		<RazorLangVersion>8.0</RazorLangVersion>
+		<UserSecretsId>3288c882-9fea-4548-ab9c-a2fecb5d633c</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-rc.1.*" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="EPPlus" Version="6.2.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+		<PackageReference Include="EPPlus" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\smabPlayground2023.Client\smabPlayground2023.Client.csproj" />
 	</ItemGroup>
-
-	<PropertyGroup>
-		<Authors>Simon Brookes</Authors>
-		<Company>Simon Brookes</Company>
-		<Copyright>Copyright © Simon Brookes (smabuk)</Copyright>
-		<Description>Latest playground started in mid 2023</Description>
-		<VersionPrefix>1.0.23</VersionPrefix>
-		<VersionSuffix Condition=" '$(ComputerName)' != '' ">$(ComputerName)-$([System.DateTime]::get_Now().get_Year())$([System.DateTime]::get_Now().get_Month().ToString("D2"))$([System.DateTime]::get_Now().get_Day().ToString("D2"))-$([System.DateTime]::get_Now().get_Hour().ToString("D2"))$([System.DateTime]::get_Now().get_Minute().ToString("D2"))</VersionSuffix>
-		<VersionSuffix Condition=" '$(Name)' != '' And '$(ComputerName)' == '' ">$(Name)-$([System.DateTime]::get_Now().get_Year())$([System.DateTime]::get_Now().get_Month().ToString("D2"))$([System.DateTime]::get_Now().get_Day().ToString("D2"))-$([System.DateTime]::get_Now().get_Hour().ToString("D2"))$([System.DateTime]::get_Now().get_Minute().ToString("D2"))</VersionSuffix>
-		<VersionSuffix Condition=" '$(Name)' == '' And '$(ComputerName)' == '' ">$([System.DateTime]::get_Now().get_Year())$([System.DateTime]::get_Now().get_Month().ToString("D2"))$([System.DateTime]::get_Now().get_Day().ToString("D2"))-$([System.DateTime]::get_Now().get_Hour().ToString("D2"))$([System.DateTime]::get_Now().get_Minute().ToString("D2"))</VersionSuffix>
-		<UserSecretsId>3288c882-9fea-4548-ab9c-a2fecb5d633c</UserSecretsId>
-	</PropertyGroup>
 
 </Project>
