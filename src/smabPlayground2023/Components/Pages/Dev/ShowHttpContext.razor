@@ -1,5 +1,4 @@
 ﻿@page "/dev/showhttpcontext"
-@inject IHttpContextAccessor httpContextAccessor
 <SmabPageTitle>Show HttpContext</SmabPageTitle>
 
 <div>
@@ -20,16 +19,19 @@
 </div>
 
 @code {
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
+
 	public string? IPAddress { get; set; }
 
 	public required IHeaderDictionary Headers { get; set; }
 
 	protected override void OnInitialized()
 	{
-		if (httpContextAccessor.HttpContext?.Request.Headers is not null) {
-			Headers = httpContextAccessor.HttpContext.Request.Headers;
+		if (HttpContext?.Request.Headers is not null) {
+			Headers = HttpContext.Request.Headers;
 		}
-		IPAddress = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+		IPAddress = HttpContext?.Connection.RemoteIpAddress?.ToString();
 	}
 
 }
