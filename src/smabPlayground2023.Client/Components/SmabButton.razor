@@ -1,4 +1,5 @@
-﻿@attribute [RenderModeAuto]
+﻿@rendermode InteractiveAuto
+
 <button type="button" title="@Title" class="button @CssClass" @onclick="Click">@Text</button>
 
 @code {
@@ -16,5 +17,4 @@
 	public EventCallback OnClick { get; set; }
 
 	public async Task Click() => await OnClick.InvokeAsync();
-
 }
