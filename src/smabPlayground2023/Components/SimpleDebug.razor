@@ -13,6 +13,9 @@
 	<li>The runtime identifier is <strong>@RuntimeInformation.RuntimeIdentifier</strong></li>
 	<li>The OS architecture is <strong>@RuntimeInformation.OSArchitecture</strong></li>
 	<li>The process architecture is <strong>@RuntimeInformation.ProcessArchitecture</strong></li>
+	@if ((Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "").Equals("true", StringComparison.InvariantCultureIgnoreCase)) {
+		<li>The process is running <strong>in a container</strong></li>
+	}
 	<li>The machine name is <strong>@Environment.MachineName</strong></li>
 	<li>The current culture is <strong>@CultureInfo.CurrentCulture</strong></li>
 	<li>The current UI culture is <strong>@CultureInfo.CurrentUICulture</strong></li>

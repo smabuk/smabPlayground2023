@@ -8,6 +8,7 @@ public class RoutingTests(ITestOutputHelper testOutputHelper) : WebTestBase
 	[InlineData("/weather", "weather forecast")]
 	public async Task Route_Returns_Expected_Page(string route, string expectedTitle)
 	{
+		testOutputHelper.WriteLine($"Loading: {route}");
 		const string siteNameSuffix = " - smabPlayground2023";
 		expectedTitle += siteNameSuffix;
 

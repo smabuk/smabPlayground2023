@@ -11,6 +11,7 @@ public class OneDriveTests(ITestOutputHelper testOutputHelper) : WebTestBase
 	[InlineData("-1", "Error: Invalid file index")]
 	public async Task OneDrive_File_Contains_Expected_String(string fileNumber, string expectedString)
 	{
+		testOutputHelper.WriteLine($"Loading: onedrivefiles01/{fileNumber}");
 		HttpClient client = Factory.CreateClient();
 		using HttpResponseMessage response = await client.GetAsync($"onedrivefiles01/{fileNumber}");
 		response.IsSuccessStatusCode.ShouldBe(true);
