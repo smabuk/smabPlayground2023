@@ -1,5 +1,7 @@
-﻿namespace smabPlayground2023.Tests.WebTests;
-public class OneDriveTests : WebTestBase
+﻿using Xunit.Abstractions;
+
+namespace smabPlayground2023.Tests.WebTests;
+public class OneDriveTests(ITestOutputHelper testOutputHelper) : WebTestBase
 {
 	[Theory]
 	[InlineData("0", "Lorem ipsum dolor sit amet")]

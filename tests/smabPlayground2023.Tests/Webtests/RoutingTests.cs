@@ -1,5 +1,7 @@
-﻿namespace smabPlayground2023.Tests.WebTests;
-public class RoutingTests : WebTestBase
+﻿using Xunit.Abstractions;
+
+namespace smabPlayground2023.Tests.WebTests;
+public class RoutingTests(ITestOutputHelper testOutputHelper) : WebTestBase
 {
 	[Theory]
 	[InlineData("/", "home")]
