@@ -1,0 +1,21 @@
+::deep .col-title {
+	color: var(--sb-body-text);
+}
+
+::deep .col-sort-desc .sort-indicator,
+::deep .col-sort-asc .sort-indicator {
+	background-color: white;
+}
+
+
+::deep table {
+	min-width: 100%;
+}
+
+::deep tbody td {
+	white-space: nowrap;
+	overflow: hidden;
+	/*max-width: 0;*/
+	text-overflow: ellipsis;
+	padding-left: .3rem;
+}

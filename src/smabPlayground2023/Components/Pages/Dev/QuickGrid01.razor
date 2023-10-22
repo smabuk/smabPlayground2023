@@ -1,0 +1,66 @@
+﻿@page "/dev/quickgrid01"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@rendermode InteractiveServer
+<SmabPageTitle>QuickGrid 01</SmabPageTitle>
+
+
+@if (Journals is not null) {
+	<div>
+		<QuickGrid Items="@Journals">
+			<PropertyColumn Property="@(j => j.EntryNo)" Sortable="true" />
+			<PropertyColumn Property="@(j => j.Date)"    Sortable="true"  Format="yyyy-MM-dd"  />
+			<PropertyColumn Property="@(j => j.Title)"   Sortable="true" />
+			<PropertyColumn Property="@(j => j.Version)" Sortable="true" />
+			<PropertyColumn Property="@(j => j.Year)"    Sortable="true" />
+		</QuickGrid>
+	</div>
+}
+
+@code {
+	record MovieJournal(int EntryNo, DateOnly Date, string Title, int Year, string? Version);
+	private IQueryable<MovieJournal>? Journals { get; set; }
+
+	public string[] Movies = [
+		"Jaws",
+		"The Terminator",
+		"Star Wars",
+		"Elemental",
+		"Raiders of the Lost Ark",
+		"Big",
+		"Airplane II",
+		"Groundhog Day",
+		"Barbie",
+		"Airplane",
+		"Teenage Mutant Ninja Turtles",
+	];
+
+	protected override void OnInitialized()
+	{
+		var startDate = DateOnly.FromDateTime(DateTime.Now);
+		Journals = Enumerable.Range(1, 45).Select(index => 
+			new MovieJournal(
+				index,
+				startDate.AddDays(0 - index),
+				Movies[Random.Shared.Next(Movies.Length)],
+				Random.Shared.Next(1963, 2023),
+				Random.Shared.Next(0, 5) == 3 ? "3D" : ""
+		)).AsQueryable();
+	}
+
+
+	private readonly string[] descConcepts = [
+		"Grids",
+	];
+
+	private readonly string[] descTechnologies = [
+		"QuickGrid Blazor component",
+	];
+}
+
+<Description Technologies="@descTechnologies" Concepts="@descConcepts">
+	<TextContent>
+		<p>
+			Using the new QuickGrid component.
+		</p>
+	</TextContent>
+</Description>
