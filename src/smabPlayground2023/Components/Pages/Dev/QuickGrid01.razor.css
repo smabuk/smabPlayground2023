@@ -3,10 +3,9 @@
 }
 
 ::deep .col-sort-desc .sort-indicator,
-::deep .col-sort-asc .sort-indicator {
+::deep .col-sort-asc  .sort-indicator {
 	background-color: white;
 }
-
 
 ::deep table {
 	min-width: 100%;

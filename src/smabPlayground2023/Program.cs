@@ -54,7 +54,13 @@ app.Run();
 
 public partial class Program
 {
+	private static readonly string[] cultures = CultureInfo
+		.GetCultures(CultureTypes.AllCultures)
+		.Select(c => c.Name)
+		.ToArray();
+
 	public static string SiteName { get; set; } = "smabPlayground2023";
+
 	public static string Name { get; } = typeof(Program)
 		.Assembly
 		.GetName()
@@ -69,11 +75,6 @@ public partial class Program
 		.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
 		.InformationalVersion ?? "");
 	public static string FrameworkVersion { get; } = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
-
-	private static readonly string[] cultures = CultureInfo
-		.GetCultures(CultureTypes.AllCultures)
-		.Select(c => c.Name)
-		.ToArray();
 
 	private static string VersionWithoutGuid(string version)
 	{
