@@ -3,16 +3,16 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.0-rc.2.23480.2" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-rc.2.23480.2" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-rc.2.23480.2" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0-rc.2.23480.2" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
-    <PackageVersion Include="xunit" Version="2.5.1" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.1" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageVersion Include="xunit" Version="2.6.1" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.3" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
-    <PackageVersion Include="AngleSharp" Version="1.0.5" />
-    <PackageVersion Include="EPPlus" Version="6.2.10" />
+    <PackageVersion Include="AngleSharp" Version="1.0.6" />
+    <PackageVersion Include="EPPlus" Version="7.0.1" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
   </ItemGroup>
 </Project>
