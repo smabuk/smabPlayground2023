@@ -1,0 +1,52 @@
+.board {
+	background-color: orange;
+	display: grid;
+	grid-gap: 0.1rem;
+	grid-template-columns: repeat(12, 1fr);
+	grid-template-rows:    repeat( 9, 1fr);
+	padding: 0.4rem;
+	color: var(--bs-primary)
+}
+
+.rack {
+	background-color: orange;
+	display: grid;
+	grid-gap: 0.1rem;
+	grid-template-columns: repeat(12, 1fr);
+	grid-template-rows:    repeat( 1, 1fr);
+	padding: 0.4rem;
+}
+
+.win {
+	background-color: #7cfc00; /* lawngreen */
+}
+
+.slot {
+	width: 4vw;
+	aspect-ratio: 1/1;
+	color: var(--bs-primary);
+	border: thin solid;
+	display: inline-block;
+	background-color: #fffae7;
+}
+
+	.slot.error {
+		background-color: #edaeae;
+	}
+
+.die {
+	font-size: 3vw;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-weight: bold;
+	background-color: transparent;
+}
+	.die:hover {
+		color: blue;
+	}
+
+.move .die {
+	color: lightblue;
+}

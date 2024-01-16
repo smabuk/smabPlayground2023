@@ -17,6 +17,10 @@ builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
+string? dictionaryFileName = builder.Configuration.GetValue<string>("DictionaryOfWords");
+Smab.DiceAndTiles.DictionaryOfWords dictionaryOfWords = File.Exists(dictionaryFileName) ? new(dictionaryFileName) : new();
+_ = builder.Services.AddSingleton(dictionaryOfWords);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,192 @@
+﻿@page "/games/qless"
+@rendermode InteractiveServer
+@inject DictionaryOfWords _dictionary;
+
+<SmabPageTitle>Q-Less</SmabPageTitle>
+<div class="row my-auto">
+	<button class="btn btn-primary w-80" @onclick="() => StartNewGame()">@(gameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
+</div>
+@if (qLessDice is not null) {
+	<div class="row my-auto mt-2">
+		<div class="mt-xl-2 d-flex col-xl">
+			<div class="m-auto rounded user-select-none">
+				<div class="board m-auto rounded user-select-none row @(gameOver ? "win" : null)" @oncontextmenu:preventDefault>
+					@for (int r = 0; r < BOARD_HEIGHT; r++) {
+						@for (int c = 0; c < BOARD_WIDTH; c++) {
+							int row = r;
+							int col = c;
+							PositionedDie? positionedDie = qLessDice.Board.Where(d => d.Row == row && d.Col == col).SingleOrDefault();
+							<div class="card rounded slot @(positionedDie?.Index == dragId ? "move" : null) @(errorDice.Any(d => d.Row == row && d.Col == col) ? "error" : null)"
+								draggable="@(positionedDie is null ? "false" : "true")"
+								@ondragenter:preventDefault
+								@ondragleave:preventDefault
+								@ondragover:preventDefault
+								@ondragstart="() => DragStart(positionedDie?.Index)"
+								@ondragenter="() => DragEnter(positionedDie?.Index)"
+								@ondragleave="() => DragLeave()"
+								@ondragover= "() => DragOver()"
+								@ondragend=  "() => DragEnd()"
+								@ondrop=     "() => Drop(col, row)"
+								@onclick=    "() => OnClick(positionedDie?.Index, col, row)">
+								<div class="die">@(positionedDie is null ? " " : positionedDie.Die.Display)</div>
+							</div>
+						}}
+				</div>
+
+				<div class="rack m-auto mt-3 rounded user-select-none row @(gameOver ? "win" : null)" @oncontextmenu:preventDefault>
+					@for (int i = 0; i < RACK_SIZE; i++) {
+						int ix = i;
+						bool isOnTheRack = qLessDice.Board[ix].Row == RACK_ROW;
+						<div class="slot card rounded @(ix == dragId ? "move" : null)"
+							draggable="@(isOnTheRack ? "true" : null)"
+							@ondragenter:preventDefault
+							@ondragleave:preventDefault
+							@ondragover:preventDefault
+							@ondragstart="() => DragStart(ix)"
+							@ondragenter="() => DragEnter(ix)"
+							@ondragleave="() => DragLeave()"
+							@ondragover= "() => DragOver()"
+							@ondragend=  "() => DragEnd()"
+							@ondrop=     "() => Drop(ix, RACK_ROW)"
+							@onclick=    "() => OnClick(ix, ix, RACK_ROW)">
+							<div class="die">@(isOnTheRack ? qLessDice.Rack[ix].Display : " ")</div>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+@code {
+	private const int BOARD_HEIGHT =  9;
+	private const int BOARD_WIDTH  = 12;
+	private const int RACK_ROW     = -1;
+	private const int RACK_SIZE    = 12;
+
+	private bool       gameOver = false;
+	private QLessDice? qLessDice;
+	private HashSet<PositionedDie> errorDice = [];
+
+	private int dragId     = RACK_ROW;
+	private int dropTarget = RACK_ROW;
+	private bool isClickToMove = false;
+
+	void StartNewGame()
+	{
+		errorDice = [];
+		gameOver = false;
+		qLessDice = new();
+		qLessDice.Board = [.. qLessDice.Rack.Select((d, ix) => new PositionedDie(d, ix, RACK_ROW, ix))];
+	}
+
+	private bool GameStatus()
+	{
+		ScrabbleWordFinder swf = new(qLessDice!.Board, _dictionary);
+		List<string> words = swf.FindWords();
+		bool notFinished = false;
+		errorDice = [];
+
+		if (swf.ValidWordsAsTiles.Concat(swf.InvalidWordsAsTiles).Where(t => t.Count == 2).Any()) {
+			notFinished = true;
+			errorDice = [.. errorDice,
+				.. swf
+				.ValidWordsAsTiles
+				.Concat(swf.InvalidWordsAsTiles)
+				.Where(t => t.Count == 2)
+				.SelectMany(t => t)
+				.Distinct()
+				.Select(t => new PositionedDie(qLessDice.Board.Where(d => d.Col == t.Col && d.Row == t.Row).Single().Die, t.Col, t.Row))
+			];
+		}
+		
+		if (swf.IsBlockInMoreThanOnePiece()) {
+			notFinished = true;
+			errorDice = [.. errorDice, 
+				.. swf
+				.Islands
+				.OrderByDescending(i => i.Count)
+				.Skip(1)
+				.Where(i => i.Count != 0)
+				.SelectMany(t => t)
+				.Select(t => new PositionedDie(qLessDice.Board.Where(d => d.Col == t.Col && d.Row == t.Row).Single().Die, t.Col, t.Row))
+			];
+		}
+
+		if (_dictionary is not null && _dictionary.HasWords) {
+			if (notFinished is false && swf.InvalidWordsAsTiles.Count == 0) {
+				return true;
+			}
+	
+			foreach (List<PositionedTile> tiles in swf.InvalidWordsAsTiles) {
+				tiles.ForEach(t => errorDice.Add(new PositionedDie(qLessDice.Board.Where(d => d.Col == t.Col && d.Row == t.Row).Single().Die, t.Col, t.Row)));
+			}
+		} else if (notFinished is false && errorDice.Count == 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private void DragStart(int? index)
+	{
+		if (index is null) {
+			return;
+		}
+		dragId = (int)index;
+	}
+
+	private void DragEnter(int? index)
+	{
+		if (index is null) {
+			return;
+		}
+		dropTarget = (int)index;
+	}
+
+	private void DragLeave() { }
+	private void DragOver() { }
+
+	private void DragEnd()
+	{
+		dragId     = RACK_ROW;
+		dropTarget = RACK_ROW;
+	}
+
+	private void Drop(int col, int row)
+	{
+		if (qLessDice!.Board.Any(d => d.Row == row && d.Col == col)) {
+			dragId     = RACK_ROW;
+			dropTarget = RACK_ROW;
+			return;
+		}
+
+		qLessDice.Board[dragId] = qLessDice.Board[dragId] with { Col = row == RACK_ROW ? (int)(qLessDice.Board[dragId].Index!) : col, Row = row };
+
+		dragId     = RACK_ROW;
+		dropTarget = RACK_ROW;
+
+		gameOver = GameStatus();
+	}
+
+	private void OnClick(int? index, int col, int row)
+	{
+		if (isClickToMove) {
+			isClickToMove = false;
+			Drop(col, row);
+			return;
+		}
+
+		if (index is null) {
+			return;
+		}
+
+		int ix = (int)index;
+		if (row == RACK_ROW && qLessDice!.Board[ix].Row != RACK_ROW) {
+			return;
+		}
+
+		isClickToMove = true;
+		dragId = ix;
+	}
+}
