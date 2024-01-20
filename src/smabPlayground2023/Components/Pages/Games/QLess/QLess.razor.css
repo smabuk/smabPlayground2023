@@ -2,8 +2,8 @@
 	background-color: orange;
 	display: grid;
 	grid-gap: 0.1rem;
-	grid-template-columns: repeat(12, 1fr);
-	grid-template-rows:    repeat( 9, 1fr);
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows:    repeat(10, 1fr);
 	padding: 0.4rem;
 	color: var(--bs-primary)
 }

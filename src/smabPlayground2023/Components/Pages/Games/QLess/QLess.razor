@@ -10,46 +10,46 @@
 	<div class="row my-auto mt-2">
 		<div class="mt-xl-2 d-flex col-xl">
 			<div class="m-auto rounded user-select-none">
-				<div class="board m-auto rounded user-select-none row @(gameOver ? "win" : null)" @oncontextmenu:preventDefault>
+				<div class="board mx-5 rounded user-select-none row @(gameOver ? WIN_CLASS : null)" @oncontextmenu:preventDefault>
 					@for (int r = 0; r < BOARD_HEIGHT; r++) {
 						@for (int c = 0; c < BOARD_WIDTH; c++) {
 							int row = r;
 							int col = c;
 							PositionedDie? positionedDie = qLessDice.Board.Where(d => d.Row == row && d.Col == col).SingleOrDefault();
-							<div class="card rounded slot @(positionedDie?.Index == dragId ? "move" : null) @(errorDice.Any(d => d.Row == row && d.Col == col) ? "error" : null)"
-								draggable="@(positionedDie is null ? "false" : "true")"
+							<div class="card rounded slot @(positionedDie?.Die.Name == dragId ? MOVE_CLASS : null) @(errorDice.Any(d => d.Row == row && d.Col == col) ? "error" : null)"
+								draggable="@(positionedDie is not null ? "true" : null)"
 								@ondragenter:preventDefault
 								@ondragleave:preventDefault
 								@ondragover:preventDefault
-								@ondragstart="() => DragStart(positionedDie?.Index)"
-								@ondragenter="() => DragEnter(positionedDie?.Index)"
+								@ondragstart="() => DragStart(positionedDie?.Die.Name)"
+								@ondragenter="() => DragEnter()"
 								@ondragleave="() => DragLeave()"
 								@ondragover= "() => DragOver()"
 								@ondragend=  "() => DragEnd()"
-								@ondrop=     "() => Drop(col, row)"
-								@onclick=    "() => OnClick(positionedDie?.Index, col, row)">
-								<div class="die">@(positionedDie is null ? " " : positionedDie.Die.Display)</div>
+								@ondrop=     "() => DropOnBoard(col, row)"
+								@onclick=    "() => OnBoardClick(positionedDie?.Die.Name, col, row)">
+								<div class="die">@(positionedDie is null ? NO_DIE : positionedDie.Die.Display)</div>
 							</div>
 						}}
 				</div>
 
-				<div class="rack m-auto mt-3 rounded user-select-none row @(gameOver ? "win" : null)" @oncontextmenu:preventDefault>
-					@for (int i = 0; i < RACK_SIZE; i++) {
-						int ix = i;
-						bool isOnTheRack = qLessDice.Board[ix].Row == RACK_ROW;
-						<div class="slot card rounded @(ix == dragId ? "move" : null)"
-							draggable="@(isOnTheRack ? "true" : null)"
+				<div class="rack m-auto mt-3 rounded user-select-none row @(gameOver ? WIN_CLASS : null)" @oncontextmenu:preventDefault>
+					@for (int i = 0; i < qLessDice.Dice.Count; i++) {
+						int col = i;
+						Die? die = qLessDice.Rack.Where(posDie => posDie.Col == col).SingleOrDefault()?.Die;
+						<div class="slot card rounded @(die?.Name == dragId ? MOVE_CLASS : null)"
+							draggable="@(die is not null ? "true" : null)"
 							@ondragenter:preventDefault
 							@ondragleave:preventDefault
 							@ondragover:preventDefault
-							@ondragstart="() => DragStart(ix)"
-							@ondragenter="() => DragEnter(ix)"
+							@ondragstart="() => DragStart(die?.Name)"
+							@ondragenter="() => DragEnter()"
 							@ondragleave="() => DragLeave()"
 							@ondragover= "() => DragOver()"
 							@ondragend=  "() => DragEnd()"
-							@ondrop=     "() => Drop(ix, RACK_ROW)"
-							@onclick=    "() => OnClick(ix, ix, RACK_ROW)">
-							<div class="die">@(isOnTheRack ? qLessDice.Rack[ix].Display : " ")</div>
+							@ondrop=     "() => DropOnRack(col)"
+							@onclick=    "() => OnRackClick(die?.Name, col)">
+							<div class="die">@die?.Display</div>
 						</div>
 					}
 				</div>
@@ -59,134 +59,94 @@
 }
 
 @code {
-	private const int BOARD_HEIGHT =  9;
-	private const int BOARD_WIDTH  = 12;
-	private const int RACK_ROW     = -1;
+	private const int BOARD_HEIGHT = 10;
+	private const int BOARD_WIDTH  = 10;
 	private const int RACK_SIZE    = 12;
 
-	private bool       gameOver = false;
-	private QLessDice? qLessDice;
-	private HashSet<PositionedDie> errorDice = [];
+	private const string NO_DIE      = " ";
+	private const string WIN_CLASS   = "win";
+	private const string MOVE_CLASS  = "move";
 
-	private int dragId     = RACK_ROW;
-	private int dropTarget = RACK_ROW;
+	private bool gameOver => gameStatus is QLessDice.Win;
+	private QLessDice.Status gameStatus = default!;
+	private QLessDice qLessDice = null!;
+	private HashSet<PositionedDie> errorDice => gameStatus is QLessDice.Errors errors ? [.. errors.DiceWithErrors] : [];
+
+	private string? dragId = null;
 	private bool isClickToMove = false;
 
 	void StartNewGame()
 	{
-		errorDice = [];
-		gameOver = false;
-		qLessDice = new();
-		qLessDice.Board = [.. qLessDice.Rack.Select((d, ix) => new PositionedDie(d, ix, RACK_ROW, ix))];
+		qLessDice = new(_dictionary);
+		gameStatus = qLessDice.GameStatus();
 	}
 
-	private bool GameStatus()
+	private void DragStart(string? name)
 	{
-		ScrabbleWordFinder swf = new(qLessDice!.Board, _dictionary);
-		List<string> words = swf.FindWords();
-		bool notFinished = false;
-		errorDice = [];
-
-		if (swf.ValidWordsAsTiles.Concat(swf.InvalidWordsAsTiles).Where(t => t.Count == 2).Any()) {
-			notFinished = true;
-			errorDice = [.. errorDice,
-				.. swf
-				.ValidWordsAsTiles
-				.Concat(swf.InvalidWordsAsTiles)
-				.Where(t => t.Count == 2)
-				.SelectMany(t => t)
-				.Distinct()
-				.Select(t => new PositionedDie(qLessDice.Board.Where(d => d.Col == t.Col && d.Row == t.Row).Single().Die, t.Col, t.Row))
-			];
-		}
-		
-		if (swf.IsBlockInMoreThanOnePiece()) {
-			notFinished = true;
-			errorDice = [.. errorDice, 
-				.. swf
-				.Islands
-				.OrderByDescending(i => i.Count)
-				.Skip(1)
-				.Where(i => i.Count != 0)
-				.SelectMany(t => t)
-				.Select(t => new PositionedDie(qLessDice.Board.Where(d => d.Col == t.Col && d.Row == t.Row).Single().Die, t.Col, t.Row))
-			];
-		}
-
-		if (_dictionary is not null && _dictionary.HasWords) {
-			if (notFinished is false && swf.InvalidWordsAsTiles.Count == 0) {
-				return true;
-			}
-	
-			foreach (List<PositionedTile> tiles in swf.InvalidWordsAsTiles) {
-				tiles.ForEach(t => errorDice.Add(new PositionedDie(qLessDice.Board.Where(d => d.Col == t.Col && d.Row == t.Row).Single().Die, t.Col, t.Row)));
-			}
-		} else if (notFinished is false && errorDice.Count == 0) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private void DragStart(int? index)
-	{
-		if (index is null) {
+		if (name is null) {
 			return;
 		}
-		dragId = (int)index;
+		dragId = name;
 	}
 
-	private void DragEnter(int? index)
-	{
-		if (index is null) {
-			return;
-		}
-		dropTarget = (int)index;
-	}
-
+	private void DragEnter(int col = 0, int row = 0) { }
 	private void DragLeave() { }
 	private void DragOver() { }
 
 	private void DragEnd()
 	{
-		dragId     = RACK_ROW;
-		dropTarget = RACK_ROW;
+		dragId     = null;
 	}
 
-	private void Drop(int col, int row)
+	private void DropOnBoard(int col, int row)
 	{
-		if (qLessDice!.Board.Any(d => d.Row == row && d.Col == col)) {
-			dragId     = RACK_ROW;
-			dropTarget = RACK_ROW;
+		if (dragId is null) {
 			return;
 		}
-
-		qLessDice.Board[dragId] = qLessDice.Board[dragId] with { Col = row == RACK_ROW ? (int)(qLessDice.Board[dragId].Index!) : col, Row = row };
-
-		dragId     = RACK_ROW;
-		dropTarget = RACK_ROW;
-
-		gameOver = GameStatus();
+		_ = qLessDice.PlaceOnBoard(dragId, col, row);
+		dragId     = null;
+		gameStatus = qLessDice.GameStatus();
 	}
 
-	private void OnClick(int? index, int col, int row)
+	private void DropOnRack(int col)
+	{
+		if (dragId is null) {
+			return;
+		}
+		_ = qLessDice.PlaceOnRack(dragId, col);
+		dragId = null;
+		gameStatus = qLessDice.GameStatus();
+	}
+
+	private void OnBoardClick(string? name, int col, int row)
 	{
 		if (isClickToMove) {
 			isClickToMove = false;
-			Drop(col, row);
+			DropOnBoard(col, row);
 			return;
 		}
 
-		if (index is null) {
-			return;
-		}
-
-		int ix = (int)index;
-		if (row == RACK_ROW && qLessDice!.Board[ix].Row != RACK_ROW) {
+		if (name is null) {
 			return;
 		}
 
 		isClickToMove = true;
-		dragId = ix;
+		dragId = name;
+	}
+
+	private void OnRackClick(string? name, int col)
+	{
+		if (isClickToMove) {
+			isClickToMove = false;
+			DropOnRack(col);
+			return;
+		}
+
+		if (name is null) {
+			return;
+		}
+
+		isClickToMove = true;
+		dragId = name;
 	}
 }
