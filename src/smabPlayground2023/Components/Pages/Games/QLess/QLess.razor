@@ -10,13 +10,13 @@
 	<div class="row my-auto mt-2">
 		<div class="mt-xl-2 d-flex col-xl">
 			<div class="m-auto rounded user-select-none">
-				<div class="board mx-5 rounded user-select-none row @(gameOver ? WIN_CLASS : null)" @oncontextmenu:preventDefault>
+				<div class="board m-auto rounded user-select-none row @(gameOver ? WIN_CLASS : null)" @oncontextmenu:preventDefault>
 					@for (int r = 0; r < BOARD_HEIGHT; r++) {
 						@for (int c = 0; c < BOARD_WIDTH; c++) {
 							int row = r;
 							int col = c;
 							PositionedDie? positionedDie = qLessDice.Board.Where(d => d.Row == row && d.Col == col).SingleOrDefault();
-							<div class="card rounded slot @(positionedDie?.Die.Name == dragId ? MOVE_CLASS : null) @(errorDice.Any(d => d.Row == row && d.Col == col) ? "error" : null)"
+							<div class="card rounded slot @(positionedDie?.Die.Name == dragId ? MOVE_CLASS : null) @(gameStatus is QLessDice.Errors gs ? gs.DiceWithErrors.Any(d => d.Row == row && d.Col == col) ? "error" : null : null)"
 								draggable="@(positionedDie is not null ? "true" : null)"
 								@ondragenter:preventDefault
 								@ondragleave:preventDefault
@@ -60,7 +60,7 @@
 
 @code {
 	private const int BOARD_HEIGHT = 10;
-	private const int BOARD_WIDTH  = 10;
+	private const int BOARD_WIDTH  = 12;
 	private const int RACK_SIZE    = 12;
 
 	private const string NO_DIE      = " ";
@@ -70,7 +70,6 @@
 	private bool gameOver => gameStatus is QLessDice.Win;
 	private QLessDice.Status gameStatus = default!;
 	private QLessDice qLessDice = null!;
-	private HashSet<PositionedDie> errorDice => gameStatus is QLessDice.Errors errors ? [.. errors.DiceWithErrors] : [];
 
 	private string? dragId = null;
 	private bool isClickToMove = false;

@@ -2,7 +2,7 @@
 	background-color: orange;
 	display: grid;
 	grid-gap: 0.1rem;
-	grid-template-columns: repeat(10, 1fr);
+	grid-template-columns: repeat(12, 1fr);
 	grid-template-rows:    repeat(10, 1fr);
 	padding: 0.4rem;
 	color: var(--bs-primary)
@@ -22,12 +22,13 @@
 }
 
 .slot {
-	width: 4vw;
+	width: 4.6dvmin;
 	aspect-ratio: 1/1;
 	color: var(--bs-primary);
 	border: thin solid;
 	display: inline-block;
 	background-color: #fffae7;
+
 }
 
 	.slot.error {
@@ -35,7 +36,7 @@
 	}
 
 .die {
-	font-size: 3vw;
+	font-size: 3.5dvmin;
 	position: absolute;
 	top: 50%;
 	left: 50%;
