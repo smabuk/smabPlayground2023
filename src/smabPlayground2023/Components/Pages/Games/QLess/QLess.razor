@@ -32,7 +32,6 @@
 							</div>
 						}}
 				</div>
-
 				<div class="rack m-auto mt-3 rounded user-select-none row @(gameOver ? WIN_CLASS : null)" @oncontextmenu:preventDefault>
 					@for (int i = 0; i < qLessDice.Dice.Count; i++) {
 						int col = i;
@@ -53,6 +52,9 @@
 						</div>
 					}
 				</div>
+				@if (qLessDice.HasDictionary) {
+					<div class="m-auto text-center user-select-none" ><span>with dictionary</span></div>
+				}
 			</div>
 		</div>
 	</div>
