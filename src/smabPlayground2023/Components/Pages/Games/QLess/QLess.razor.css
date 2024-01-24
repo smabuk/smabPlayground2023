@@ -2,8 +2,8 @@
 	background-color: orange;
 	display: grid;
 	grid-gap: 0.1rem;
-	grid-template-columns: repeat(12, 1fr);
-	grid-template-rows:    repeat(10, 1fr);
+	grid-template-columns: repeat(var(--board-width,  12), 1fr);
+	grid-template-rows:    repeat(var(--board-height, 10), 1fr);
 	padding: 0.4rem;
 	color: var(--bs-primary)
 }
@@ -12,8 +12,8 @@
 	background-color: orange;
 	display: grid;
 	grid-gap: 0.1rem;
-	grid-template-columns: repeat(12, 1fr);
-	grid-template-rows:    repeat( 1, 1fr);
+	grid-template-columns: repeat(var(--rack-width, 12), 1fr);
+	grid-template-rows:    repeat(var(--rack-height, 1), 1fr);
 	padding: 0.4rem;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .slot {
-	width: 4.6dvmin;
+	width: 6dvmin;
 	aspect-ratio: 1/1;
 	color: var(--bs-primary);
 	border: thin solid;
@@ -36,7 +36,7 @@
 	}
 
 .die {
-	font-size: 3.5dvmin;
+	font-size: 4.5dvmin;
 	position: absolute;
 	top: 50%;
 	left: 50%;

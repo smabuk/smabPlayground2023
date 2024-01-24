@@ -45,9 +45,12 @@ h1 {
 	margin-bottom: 0px;
 }
 
-@media (max-width: 640.98px) {
+@media (max-width: 1199.98px) {
 	.top-row:not(.auth) {
-		display: none;
+		/*display: none;*/
+		position: absolute;
+		background-color: transparent;
+		top: 0;
 	}
 
 	.top-row.auth {
@@ -59,7 +62,7 @@ h1 {
 	}
 }
 
-@media (min-width: 641px) {
+@media (min-width: 1200px) {
 	.page {
 		flex-direction: row;
 	}

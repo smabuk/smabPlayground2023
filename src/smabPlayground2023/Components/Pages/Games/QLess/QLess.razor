@@ -60,6 +60,17 @@
 	</div>
 }
 
+<style>
+	.board {
+		--board-width:  @BOARD_WIDTH;
+		--board-height: @BOARD_HEIGHT;
+	}
+	.rack {
+		--rack-width:  @RACK_SIZE;
+		--rack-height: @((qLessDice?.Dice.Count ?? 12) / RACK_SIZE);
+	}
+</style>
+
 @code {
 	private const int BOARD_HEIGHT = 10;
 	private const int BOARD_WIDTH  = 12;
