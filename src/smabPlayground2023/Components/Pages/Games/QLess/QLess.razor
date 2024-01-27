@@ -16,41 +16,27 @@
 							int row = r;
 							int col = c;
 							PositionedDie? positionedDie = qLessDice.Board.Where(d => d.Row == row && d.Col == col).SingleOrDefault();
-							<div class="card rounded slot @(positionedDie?.Die.Name == dragId ? MOVE_CLASS : null) @(gameStatus is QLessDice.Errors gs ? gs.DiceWithErrors.Any(d => d.Row == row && d.Col == col) ? "error" : null : null)"
-								draggable="@(positionedDie is not null ? "true" : null)"
-								@ondragenter:preventDefault
-								@ondragleave:preventDefault
-								@ondragover:preventDefault
-								@ondragstart="() => DragStart(positionedDie?.Die.Name)"
-								@ondragenter="() => DragEnter()"
-								@ondragleave="() => DragLeave()"
-								@ondragover= "() => DragOver()"
-								@ondragend=  "() => DragEnd()"
-								@ondrop=     "() => DropOnBoard(col, row)"
-								@onclick=    "() => OnBoardClick(positionedDie?.Die.Name, col, row)">
-								<div class="die">@(positionedDie is null ? NO_DIE : positionedDie.Die.Display)</div>
-							</div>
+							<QLessDie
+								Css="@($"{(positionedDie?.Die.Name == dragId ? MOVE_CLASS : null)}  {(gameStatus is QLessDice.Errors gs ? gs.DiceWithErrors.Any(d => d.Row == row && d.Col == col) ? "error" : null : null)}".Trim())"
+								DisplayLetter="@(positionedDie is null ? NO_DIE : positionedDie.Die.Display)"
+								Draggable="@(positionedDie is not null)"
+								OnDragStartCallback = "() => DragStart(positionedDie?.Die.Name)"
+								OnDropCallback      = "() => DropOnBoard(col, row)"
+								OnClickCallback     = "() => OnBoardClick(positionedDie?.Die.Name, col, row)" />
 						}}
 				</div>
 				<div class="rack m-auto mt-3 rounded user-select-none row @(gameOver ? WIN_CLASS : null)" @oncontextmenu:preventDefault>
 					@for (int i = 0; i < qLessDice.Dice.Count; i++) {
 						int col = i;
 						Die? die = qLessDice.Rack.Where(posDie => posDie.Col == col).SingleOrDefault()?.Die;
-						<div class="slot card rounded @(die?.Name == dragId ? MOVE_CLASS : null)"
-							draggable="@(die is not null ? "true" : null)"
-							@ondragenter:preventDefault
-							@ondragleave:preventDefault
-							@ondragover:preventDefault
-							@ondragstart="() => DragStart(die?.Name)"
-							@ondragenter="() => DragEnter()"
-							@ondragleave="() => DragLeave()"
-							@ondragover= "() => DragOver()"
-							@ondragend=  "() => DragEnd()"
-							@ondrop=     "() => DropOnRack(col)"
-							@onclick=    "() => OnRackClick(die?.Name, col)">
-							<div class="die">@die?.Display</div>
-						</div>
-					}
+					<QLessDie
+						Css="@(die?.Name == dragId ? MOVE_CLASS : null)"
+						DisplayLetter = "@die?.Display"
+						Draggable     = "@(die is not null)"
+						OnDragStartCallback = "() => DragStart(die?.Name)"
+						OnDropCallback      = "() => DropOnRack(col)"
+						OnClickCallback     = "() => OnRackClick(die?.Name, col)"/>
+				}
 				</div>
 				@if (qLessDice.HasDictionary) {
 					<div class="m-auto text-center user-select-none" ><span>with dictionary</span></div>
@@ -100,11 +86,6 @@
 		}
 		dragId = name;
 	}
-
-	private void DragEnter(int col = 0, int row = 0) { }
-	private void DragLeave() { }
-	private void DragOver() { }
-
 	private void DragEnd()
 	{
 		dragId     = null;
