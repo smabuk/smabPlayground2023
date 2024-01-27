@@ -1,20 +1,41 @@
+#board_and_rack {
+	display: flex;
+}
+
+#dictionary {
+	text-align: right;
+}
+
+div {
+	user-select: none;
+	border-radius: 0.375rem;
+	margin: auto;
+	text-align: center;
+}
+
+button {
+	margin-bottom: 1rem;
+}
+
 .board {
 	background-color: orange;
+	color: var(--bs-primary);
 	display: grid;
 	grid-gap: 0.1rem;
 	grid-template-columns: repeat(var(--board-width,  12), 1fr);
 	grid-template-rows:    repeat(var(--board-height, 10), 1fr);
 	padding: 0.4rem;
-	color: var(--bs-primary)
 }
 
 .rack {
 	background-color: orange;
+	color: var(--bs-primary);
 	display: grid;
 	grid-gap: 0.1rem;
 	grid-template-columns: repeat(var(--rack-width, 12), 1fr);
 	grid-template-rows:    repeat(var(--rack-height, 1), 1fr);
 	padding: 0.4rem;
+	margin-top: 1rem;
 }
 
 .win {

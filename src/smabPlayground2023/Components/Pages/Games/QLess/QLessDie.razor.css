@@ -1,11 +1,12 @@
-
 .slot {
+	position: relative;
 	width: 6dvmin;
 	aspect-ratio: 1/1;
-	color: var(--bs-primary);
 	border: thin solid;
 	display: inline-block;
 	background-color: #fffae7;
+	margin: 0px;
+	padding: 0px;
 }
 
 	.slot.error {
@@ -20,6 +21,7 @@
 	transform: translate(-50%, -50%);
 	font-weight: bold;
 	background-color: transparent;
+	width: 100%;
 }
 
 	.die:hover {

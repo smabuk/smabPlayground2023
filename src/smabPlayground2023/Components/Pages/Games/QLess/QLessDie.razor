@@ -1,48 +1,38 @@
-﻿<div class="card rounded slot @Css"
-	 draggable="@(Draggable ? "true" : null)"
-@ondragenter:preventDefault
-@ondragleave:preventDefault
-@ondragover:preventDefault
-	 @ondragstart="() => OnDragStartCallback.InvokeAsync()"
-	 @ondragenter="() => OnDragEnterCallback.InvokeAsync()"
-	 @ondragleave="() => OnDragLeaveCallback.InvokeAsync()"
-	 @ondragover="()  => OnDragOverCallback.InvokeAsync()"
-	 @ondragend="()   => OnDragEndCallback.InvokeAsync()"
-	 @ondrop="()      => OnDropCallback.InvokeAsync()"
-	 @onclick="()     => OnClickCallback.InvokeAsync()">
+﻿<div class="@css"
+		draggable="@(IsDraggable ? "true" : null)"
+		@ondragenter:preventDefault
+		@ondragleave:preventDefault
+		@ondragover:preventDefault
+		@ondragstart = "() => OnDragStartCallback.InvokeAsync()"
+		@ondragenter = "() => OnDragEnterCallback.InvokeAsync()"
+		@ondragleave = "() => OnDragLeaveCallback.InvokeAsync()"
+		@ondragover  = "() => OnDragOverCallback.InvokeAsync()"
+		@ondragend   = "() => OnDragEndCallback.InvokeAsync()"
+		@ondrop      = "() => OnDropCallback.InvokeAsync()"
+		@onclick     = "() => OnClickCallback.InvokeAsync()">
 	<div class="die">@DisplayLetter</div>
 </div>
 
 @code {
+	private const string BASE_CSS  = "slot";
+	private const string ERROR_CSS = "error";
+	private const string MOVE_CSS  = "move";
 
-	[Parameter]
-	public string? Css { get; set; }
+	[Parameter] public string? DisplayLetter { get; set; }
 
-	[Parameter]
-	public string? DisplayLetter { get; set; }
+	[Parameter] public bool IsDraggable { get; set; } = false;
+	[Parameter] public bool IsError     { get; set; } = false;
+	[Parameter] public bool IsMoving    { get; set; } = false;
 
-	[Parameter]
-	public bool Draggable { get; set; } = false;
+	private string  css       => $"{BASE_CSS} {errorCss} {movingCss}".Trim();
+	private string? errorCss  => IsError  ? ERROR_CSS : null;
+	private string? movingCss => IsMoving ? MOVE_CSS  : null;
 
-	[Parameter]
-	public EventCallback OnDragStartCallback { get; set; }
-
-	[Parameter]
-	public EventCallback OnDragEnterCallback { get; set; }
-
-	[Parameter]
-	public EventCallback OnDragLeaveCallback { get; set; }
-
-	[Parameter]
-	public EventCallback OnDragOverCallback { get; set; }
-
-	[Parameter]
-	public EventCallback OnDragEndCallback { get; set; }
-
-	[Parameter]
-	public EventCallback OnDropCallback { get; set; }
-
-	[Parameter]
-	public EventCallback OnClickCallback { get; set; }
-
+	[Parameter] public EventCallback OnDragStartCallback { get; set; }
+	[Parameter] public EventCallback OnDragEnterCallback { get; set; }
+	[Parameter] public EventCallback OnDragLeaveCallback { get; set; }
+	[Parameter] public EventCallback OnDragOverCallback  { get; set; }
+	[Parameter] public EventCallback OnDragEndCallback   { get; set; }
+	[Parameter] public EventCallback OnDropCallback      { get; set; }
+	[Parameter] public EventCallback OnClickCallback     { get; set; }
 }
