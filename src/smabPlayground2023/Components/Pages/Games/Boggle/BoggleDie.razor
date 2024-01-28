@@ -1,0 +1,32 @@
+﻿<div class="@css"
+		@oncontextmenu:preventDefault
+		@onclick       = "() => OnClickCallback.InvokeAsync()"
+		@oncontextmenu = "() => OnContextMenuCallback.InvokeAsync()">
+	@if (ArrowDirection is not "" and not "NONE") {
+		<div class="arrow arrow-@ArrowDirection"><i class="bi bi-arrow-up-circle-fill"></i></div>
+	}
+	<div class="inner-circle rounded-circle @orientationCss @selectedCss" @oncontextmenu:preventDefault>
+		<div class="die @showOrientationCss">@Die?.Display</div>
+	</div>
+</div>
+
+@code {
+	private const string BASE_CSS  = "slot";
+	private const string ERROR_CSS = "error";
+
+	[Parameter] public LetterDie? Die { get; set; }
+
+	[Parameter] public string ArrowDirection { get; set; } = "";
+	[Parameter] public bool IsError     { get; set; } = false;
+	[Parameter] public bool IsReversed  { get; set; } = false;
+	[Parameter] public bool IsSelected  { get; set; } = false;
+
+	private string  css       => $"{BASE_CSS} {selectedCss} {errorCss}".Trim();
+	private string? errorCss  => IsError  ? ERROR_CSS : null;
+	private string? showOrientationCss  => ("MNWZ".Contains(Die?.FaceValue.Display ?? "")) ? "show-orientation" : null;
+	private string? orientationCss      => $"rot-{(IsReversed == true ? "reverse-" : null)}{Die?.Orientation}";
+	private string? selectedCss         => IsSelected ? "selected" : null;
+
+	[Parameter] public EventCallback OnClickCallback       { get; set; }
+	[Parameter] public EventCallback OnContextMenuCallback { get; set; }
+}
