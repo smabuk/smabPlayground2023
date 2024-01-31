@@ -1,4 +1,7 @@
 table {
+	--sb-error-colour: red;
+	--sb-already-played-colour: darkgray;
+
 	border-width: 2px;
 	border-style: solid;
 	width: 30em;
@@ -8,15 +11,16 @@ table {
 
 caption {
 	text-align: center;
+
+	span {
+		margin: 1em;
+	}
 }
 
-th, td {
+th,
+td {
 	border-width: 2px;
 	border-style: solid;
-}
-
-caption span {
-	margin: 1em;
 }
 
 td:first-of-type {
@@ -35,18 +39,12 @@ td:nth-of-type(3) {
 	width: 10em;
 }
 
-.alreadyplayed {
-	color: darkgray;
+[data-reason="misspelt"],
+[data-reason="tooshort"],
+[data-reason="unplayable"] {
+	color: var(--sb-error-colour);
 }
 
-.misspelt {
-	color: red;
-}
-
-.tooshort {
-	color: red;
-}
-
-.unplayable {
-	color: red;
+[data-reason="alreadyplayed"] {
+	color: var(--sb-already-played-colour);
 }

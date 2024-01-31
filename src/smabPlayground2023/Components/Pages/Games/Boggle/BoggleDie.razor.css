@@ -1,158 +1,166 @@
 .slot {
+	--selected-primary-colour: green;
+	--selected-secondary-colour: yellow;
+	--error-colour: #edaeae;
+	--hover-colour: red;
+	--slot-colour: cornsilk;
+	--underline-colour: #808080;
+
 	position: relative;
 	width: 12dvmin;
 	aspect-ratio: 1/1;
 	border: thin solid;
 	display: inline-block;
-	background-color: #fffae7;
+	background-color: var(--slot-colour);
 	margin: 0px;
 	padding: 0px;
-}
 
-	.slot.selected {
-		background-color: green;
-		color: yellow;
+	&[selected] {
+		background-color: var(--selected-primary-colour);
+		color: var(--selected-secondary-colour);
 	}
 
+	&[error] {
+		background-color: var(--error-colour);
+		color: var(--error-colour);
+	}
+}
+
+.inner-circle {
+	width: 96%;
+	aspect-ratio: 1/1;
+	margin: 2%;
+	background-color: var(--slot-colour);
+	border-radius: 50%;
+
+	&[selected] {
+		background-color: var(--selected-secondary-colour);
+		color: var(--selected-primary-colour);
+
+		&:hover {
+			color: var(--selected-primary-colour);
+		}
+	}
+
+	&:hover {
+		background-color: var(--selected-secondary-colour);
+		color: var(--hover-colour);
+	}
+}
+
 .die {
-	font-size: 8dvmin;
 	position: absolute;
+	font-size: 8dvmin;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	font-weight: bold;
 	background-color: transparent;
 	width: 100%;
-}
 
-.inner-circle {
-	width: 96%;
-	height: 96%;
-	margin: 2%;
-	background-color: cornsilk;
-}
-
-	.inner-circle.selected {
-		background-color: yellow;
-		color: green;
+	&[data-letter="M"],
+	&[data-letter="N"],
+	&[data-letter="W"],
+	&[data-letter="Z"]
+	{
+		text-decoration: underline;
+		text-decoration: underline dashed var(--underline-colour);
 	}
-
-		.inner-circle.selected:hover {
-			color: green;
-		}
-
-	.inner-circle:hover {
-		background-color: yellow;
-		color: red;
-	}
+}
 
 .arrow {
 	color: hotpink;
 	font-weight: bold;
 	font-size: 3dvmin;
 	position: absolute;
-	margin: 0rem;
-	padding: 0rem;
+	margin: 0px;
+	padding: 0px;
 	z-index: 10;
+
+	&[data-direction="NONE"] {
+		display: none;
+	}
+
+	&[data-direction="START"] {
+		display: none;
+		top: 0;
+		left: 0;
+	}
+
+	&[data-direction="END"] {
+		display: none;
+		top: 0;
+		right: 0;
+	}
+
+	&[data-direction="N"] {
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, 0) rotate(0deg);
+	}
+
+	&[data-direction="NE"] {
+		top: 0;
+		right: 0;
+		margin-right: 0.5rem;
+		transform: rotate(45deg);
+	}
+
+	&[data-direction="E"] {
+		top: 50%;
+		right: 0;
+		margin-right: 0.5rem;
+		transform: translate(0, -50%) rotate(90deg);
+	}
+
+	&[data-direction="SE"] {
+		bottom: 0;
+		right: 0;
+		margin-right: 0.5rem;
+		transform: rotate(135deg);
+	}
+
+	&[data-direction="S"] {
+		bottom: 0;
+		left: 50%;
+		transform: translate(-50%, 0) rotate(180deg);
+	}
+
+	&[data-direction="SW"] {
+		bottom: 0;
+		left: 0;
+		margin-left: 0.5rem;
+		transform: rotate(225deg);
+	}
+
+	&[data-direction="W"] {
+		top: 50%;
+		left: 0;
+		margin-left: 0.5rem;
+		transform: translate(0, -50%) rotate(270deg);
+	}
+
+	&[data-direction="NW"] {
+		top: 0;
+		left: 0;
+		margin-left: 0.5rem;
+		transform: rotate(315deg);
+	}
 }
 
-.arrow-NONE {
-	display: none;
-}
 
-.arrow-START {
-	display: none;
-	top: 0;
-	left: 0;
-}
-
-.arrow-END {
-	display: none;
-	top: 0;
-	right: 0;
-}
-
-.arrow-N {
-	top: 0;
-	left: 50%;
-	transform: translate(-50%, 0) rotate(0deg);
-}
-
-.arrow-NE {
-	top: 0;
-	right: 0;
-	transform: rotate(45deg);
-}
-
-.arrow-E {
-	top: 50%;
-	right: 0;
-	transform: translate(0, -50%) rotate(90deg);
-}
-
-.arrow-SE {
-	bottom: 0;
-	right: 0;
-	transform: rotate(135deg);
-}
-
-.arrow-S {
-	bottom: 0;
-	left: 50%;
-	transform: translate(-50%, 0) rotate(180deg);
-}
-
-.arrow-SW {
-	bottom: 0;
-	left: 0;
-	transform: rotate(225deg);
-}
-
-.arrow-W {
-	top: 50%;
-	left: 0;
-	transform: translate(0, -50%) rotate(270deg);
-}
-
-.arrow-NW {
-	top: 0;
-	left: 0;
-	transform: rotate(315deg);
-}
-
-.show-orientation {
-	text-decoration: underline;
-	text-decoration: underline dashed #808080;
-}
-
-.rot-0 {
+[data-rotation="0"] {
 	transform: rotate(0deg);
 }
 
-.rot-90 {
+[data-rotation="90"] {
 	transform: rotate(90deg);
 }
 
-.rot-180 {
+[data-rotation="180"] {
 	transform: rotate(180deg);
 }
 
-.rot-270 {
+[data-rotation="270"] {
 	transform: rotate(270deg);
-}
-
-.rot-reverse-0 {
-	transform: rotate(180deg);
-}
-
-.rot-reverse-90 {
-	transform: rotate(270deg);
-}
-
-.rot-reverse-180 {
-	transform: rotate(0deg);
-}
-
-.rot-reverse-270 {
-	transform: rotate(90deg);
 }

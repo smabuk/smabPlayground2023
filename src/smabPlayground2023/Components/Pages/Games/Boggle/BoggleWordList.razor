@@ -1,6 +1,6 @@
 ﻿<table>
 	<caption>
-		<span>Score: @($"{Score}")</span><span>Time remaining: @($"{TimeRemaining:mm\\:ss}")</span>
+		<span>Score: @($"{Score}")</span><span>Time remaining: @($"{TimeRemaining:m\\:ss}")</span>
 	</caption>
 	<thead>
 		<tr>
@@ -11,7 +11,7 @@
 	</thead>
 	<tbody>
 		@foreach (BoggleDice.WordScore wordScore in WordScores.Reverse()) {
-			<tr class="@(wordScore.Reason is BoggleDice.ScoreReason.Success ? null : wordScore.Reason.ToString().ToLowerInvariant())">
+			<tr data-reason="@(wordScore.Reason is BoggleDice.ScoreReason.Success ? null : wordScore.Reason.ToString().ToLowerInvariant())">
 				<td>@wordScore.Score</td>
 				<td>@wordScore.Word</td>
 				<td>@GetReason(wordScore.Reason)</td>

@@ -9,10 +9,10 @@
 	<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">New Game</button>
 </div>
 @if (boggleDice is not null) {
-	<div class="row">
+	<div>
 		<div id="board_container">
 			<div>
-				<div class="board row" @oncontextmenu:preventDefault>
+				<div id="board" @oncontextmenu:preventDefault>
 					@for (int r = 0; r < boggleDice.BoardHeight; r++) {
 						@for (int c = 0; c < boggleDice.BoardWidth; c++) {
 							int row = r;
@@ -31,12 +31,10 @@
 				}
 			</div>
 		</div>
-		<div class="row">
-			<BoggleWordList Score="boggleDice.Score" WordScores="boggleDice.WordScores" TimeRemaining="new TimeSpan(1,2,3)" />
-		</div>
+		<BoggleWordList Score="boggleDice.Score" WordScores="boggleDice.WordScores" TimeRemaining="new TimeSpan(0, 3, 0)" />
 	</div>
 	<style>
-		.board {
+		#board {
 			--board-width:  @boggleDice.BoardWidth;
 			--board-height: @boggleDice.BoardHeight;
 		}

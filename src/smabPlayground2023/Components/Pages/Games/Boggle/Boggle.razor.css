@@ -1,9 +1,7 @@
 #board_container {
-	display: flex;
-}
+	--board-colour: orange;
 
-#dictionary {
-	text-align: right;
+	display: flex;
 }
 
 div {
@@ -17,12 +15,16 @@ button {
 	margin-bottom: 1rem;
 }
 
-.board {
-	background-color: orange;
+#board {
+	background-color: var(--board-colour);
 	color: var(--bs-primary);
 	display: grid;
 	grid-gap: 0.1rem;
-	grid-template-columns: repeat(var(--board-width,  12), 1fr);
-	grid-template-rows:    repeat(var(--board-height, 10), 1fr);
+	grid-template-columns: repeat(var(--board-width,  4), 1fr);
+	grid-template-rows:    repeat(var(--board-height, 4), 1fr);
 	padding: 0.4rem;
+}
+
+#dictionary {
+	text-align: right;
 }
