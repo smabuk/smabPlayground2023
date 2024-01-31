@@ -4,14 +4,15 @@
 	aspect-ratio: 1/1;
 	border: thin solid;
 	display: inline-block;
-	background-color: #fffae7;
+	background-color: var(--slot-colour);
 	margin: 0px;
 	padding: 0px;
+	&[error] {
+		background-color: var(--error-colour);
+	}
 }
 
-	.slot.error {
-		background-color: #edaeae;
-	}
+
 
 .die {
 	font-size: 4.5dvmin;
@@ -22,12 +23,16 @@
 	font-weight: bold;
 	background-color: transparent;
 	width: 100%;
-}
 
-	.die:hover {
-		color: blue;
+	&:hover {
+		color: var(--hover-colour);
 	}
 
-.move .die {
-	color: lightblue;
+	.slot[moving] & {
+		color: var(--moving-colour);
+
+		&:hover {
+			color: var(--moving-colour);
+		}
+	}
 }

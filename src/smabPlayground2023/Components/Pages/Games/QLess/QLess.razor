@@ -7,10 +7,10 @@
 	<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(gameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 </div>
 @if (qLessDice is not null) {
-	<div class="row">
+	<div>
 		<div id="board_and_rack">
 			<div>
-				<div class="board row @(gameOver ? WIN_CLASS : null)" @oncontextmenu:preventDefault>
+				<div id="board" win="@gameOver" @oncontextmenu:preventDefault>
 					@for (int r = 0; r < BOARD_HEIGHT; r++) {
 						@for (int c = 0; c < BOARD_WIDTH; c++) {
 							int row = r;
@@ -26,7 +26,7 @@
 								OnClickCallback     = "() => OnBoardClick(positionedDie?.Die.Name, col, row)" />
 						}}
 				</div>
-				<div class="rack row @(gameOver ? WIN_CLASS : null)" @oncontextmenu:preventDefault>
+				<div id="rack" win="@gameOver" @oncontextmenu:preventDefault>
 					@for (int i = 0; i < qLessDice.Dice.Count; i++) {
 						int col = i;
 						Die? die = qLessDice.Rack.Where(posDie => posDie.Col == col).SingleOrDefault()?.Die;
@@ -64,7 +64,6 @@
 	private const int RACK_SIZE    = 12;
 
 	private const string NO_DIE      = " ";
-	private const string WIN_CLASS   = "win";
 
 	private bool gameOver => gameStatus is QLessDice.Win;
 	private QLessDice.Status gameStatus = default!;

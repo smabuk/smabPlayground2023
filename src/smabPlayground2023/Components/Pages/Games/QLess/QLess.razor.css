@@ -1,4 +1,25 @@
 #board_and_rack {
+	--board-colour: orange;
+	--letter-colour: var(--bs-primary);
+	--win-colour:   lawngreen;
+
+	--slot-colour: #e5d79e;
+	--error-colour: #fd7a7a;
+	--moving-colour: #52c8ef;
+	--hover-colour: blue;
+}
+
+@media (prefers-color-scheme: light) {
+	#board_and_rack {
+		--slot-colour: cornsilk;
+		--error-colour: #edaeae;
+		--moving-colour: lightblue;
+		--hover-colour: blue;
+	}
+}
+
+#board_and_rack {
+
 	display: flex;
 }
 
@@ -17,9 +38,9 @@ button {
 	margin-bottom: 1rem;
 }
 
-.board {
-	background-color: orange;
-	color: var(--bs-primary);
+#board {
+	background-color: var(--board-colour);
+	color: var(--letter-colour);
 	display: grid;
 	grid-gap: 0.1rem;
 	grid-template-columns: repeat(var(--board-width,  12), 1fr);
@@ -27,9 +48,9 @@ button {
 	padding: 0.4rem;
 }
 
-.rack {
-	background-color: orange;
-	color: var(--bs-primary);
+#rack {
+	background-color: var(--board-colour);
+	color: var(--letter-colour);
 	display: grid;
 	grid-gap: 0.1rem;
 	grid-template-columns: repeat(var(--rack-width, 12), 1fr);
@@ -38,6 +59,7 @@ button {
 	margin-top: 1rem;
 }
 
-.win {
-	background-color: #7cfc00; /* lawngreen */
+#board[win],
+#rack[win] {
+	background-color: var(--win-colour);
 }

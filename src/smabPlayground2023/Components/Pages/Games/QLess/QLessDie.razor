@@ -1,5 +1,7 @@
-﻿<div class="@css"
+﻿<div class="slot"
 		draggable="@(IsDraggable ? "true" : null)"
+		error="@IsError"
+		moving="@IsMoving"
 		@ondragenter:preventDefault
 		@ondragleave:preventDefault
 		@ondragover:preventDefault
@@ -14,19 +16,11 @@
 </div>
 
 @code {
-	private const string BASE_CSS  = "slot";
-	private const string ERROR_CSS = "error";
-	private const string MOVE_CSS  = "move";
-
 	[Parameter] public string? DisplayLetter { get; set; }
 
 	[Parameter] public bool IsDraggable { get; set; } = false;
 	[Parameter] public bool IsError     { get; set; } = false;
 	[Parameter] public bool IsMoving    { get; set; } = false;
-
-	private string  css       => $"{BASE_CSS} {errorCss} {movingCss}".Trim();
-	private string? errorCss  => IsError  ? ERROR_CSS : null;
-	private string? movingCss => IsMoving ? MOVE_CSS  : null;
 
 	[Parameter] public EventCallback OnDragStartCallback { get; set; }
 	[Parameter] public EventCallback OnDragEnterCallback { get; set; }
