@@ -1,10 +1,10 @@
 table {
-	--sb-error-colour: red;
-	--sb-already-played-colour: darkgray;
+	--error-colour: red;
+	--already-played-colour: darkgray;
 
 	border-width: 2px;
 	border-style: solid;
-	width: 30em;
+	width: calc(var(--slot-width, 12dvmin) * var(--board-width, 6) + 4rem);
 	margin: auto;
 	caption-side: top;
 }
@@ -24,27 +24,27 @@ td {
 }
 
 td:first-of-type {
-	width: 4em;
+	width: 10%;
+	padding-right: 2dvw;
 	text-align: right;
-	padding-right: 1em;
 }
 
 td:nth-of-type(2) {
-	width: 12em;
+	width: 45%;
+	padding-left: 2dvw;
 	text-align: left;
-	padding-left: 2em;
 }
 
 td:nth-of-type(3) {
-	width: 10em;
+	width: 40%;
 }
 
 [data-reason="misspelt"],
 [data-reason="tooshort"],
 [data-reason="unplayable"] {
-	color: var(--sb-error-colour);
+	color: var(--error-colour);
 }
 
 [data-reason="alreadyplayed"] {
-	color: var(--sb-already-played-colour);
+	color: var(--already-played-colour);
 }

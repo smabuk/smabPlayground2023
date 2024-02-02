@@ -1,6 +1,27 @@
-#board_container {
-	--board-colour: orange;
+#boggle {
+	--board-colour:              orange;
+	--selected-primary-colour:   green;
+	--selected-secondary-colour: yellow;
+	--error-colour:              #edaeae;
+	--hover-colour:              red;
+	--slot-colour:               #e5d79e;
+	--underline-colour:          #808080;
+	--slot-size: 12dvmin;
+}
 
+@media (prefers-color-scheme: light) {
+	#boggle {
+		--board-colour: orange;
+		--selected-primary-colour: green;
+		--selected-secondary-colour: yellow;
+		--error-colour: #edaeae;
+		--hover-colour: red;
+		--slot-colour: cornsilk;
+		--underline-colour: #808080;
+	}
+}
+
+#board_container {
 	display: flex;
 }
 

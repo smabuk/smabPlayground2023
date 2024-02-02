@@ -9,7 +9,7 @@
 	<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">New Game</button>
 </div>
 @if (boggleDice is not null) {
-	<div>
+	<div id="boggle">
 		<div id="board_container">
 			<div>
 				<div id="board" @oncontextmenu:preventDefault>
@@ -34,7 +34,7 @@
 		<BoggleWordList Score="boggleDice.Score" WordScores="boggleDice.WordScores" TimeRemaining="new TimeSpan(0, 3, 0)" />
 	</div>
 	<style>
-		#board {
+		#boggle {
 			--board-width:  @boggleDice.BoardWidth;
 			--board-height: @boggleDice.BoardHeight;
 		}
