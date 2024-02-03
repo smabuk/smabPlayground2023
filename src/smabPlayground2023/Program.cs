@@ -41,7 +41,7 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
 	.AddInteractiveServerRenderMode()
 	.AddInteractiveWebAssemblyRenderMode()
-	.AddAdditionalAssemblies(typeof(smabPlayground2023.Client.Pages.Counter).Assembly);
+	.AddAdditionalAssemblies(typeof(smabPlayground2023.Client.Components.Pages.Counter).Assembly);
 
 app.UseRequestLocalization(
 	new RequestLocalizationOptions()
