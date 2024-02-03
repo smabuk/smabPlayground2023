@@ -1,0 +1,24 @@
+﻿<div class="slot"
+	 selected="@IsSelected"
+	 error="@IsError"
+		@oncontextmenu:preventDefault
+		@onclick       = "() => OnClickCallback.InvokeAsync()"
+		@oncontextmenu = "() => OnContextMenuCallback.InvokeAsync()">
+	@if (ArrowDirection is not "" and not "NONE") {
+		<div class="arrow" data-direction="@ArrowDirection"><i class="bi bi-arrow-up-circle-fill"></i></div>
+	}
+	<div class="inner-circle" selected="@IsSelected" data-rotation="@Die?.Orientation" @oncontextmenu:preventDefault>
+		<div class="die" data-letter="@Die?.Display">@Die?.Display</div>
+	</div>
+</div>
+
+@code {
+	[Parameter] public LetterDie? Die { get; set; }
+
+	[Parameter] public string ArrowDirection { get; set; } = "";
+	[Parameter] public bool IsError     { get; set; } = false;
+	[Parameter] public bool IsSelected  { get; set; } = false;
+
+	[Parameter] public EventCallback OnClickCallback       { get; set; }
+	[Parameter] public EventCallback OnContextMenuCallback { get; set; }
+}

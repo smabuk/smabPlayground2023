@@ -4,4 +4,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Smab.DiceAndTiles" />
+	</ItemGroup>
+
 </Project>

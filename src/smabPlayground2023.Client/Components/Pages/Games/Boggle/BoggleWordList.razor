@@ -1,0 +1,45 @@
+﻿<table>
+	<caption>
+		<span>Score: @($"{Score}")</span><span>Time remaining: @($"{TimeRemaining:m\\:ss}")</span>
+	</caption>
+	<thead>
+		<tr>
+			<th>Score</th>
+			<th>Word</th>
+			<th>Reason</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (BoggleDice.WordScore wordScore in WordScores.Reverse()) {
+			<tr data-reason="@(wordScore.Reason is BoggleDice.ScoreReason.Success ? null : wordScore.Reason.ToString().ToLowerInvariant())">
+				<td>@wordScore.Score</td>
+				<td>@wordScore.Word</td>
+				<td>@GetReason(wordScore.Reason)</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code {
+	[Parameter]
+	public IEnumerable<BoggleDice.WordScore> WordScores { get; set; } = [];
+
+	[Parameter]
+	public int Score { get; set; } = 0;
+
+	[Parameter]
+	public TimeSpan TimeRemaining { get; set; } = new(0, 0, 0);
+
+	private string GetReason(BoggleDice.ScoreReason reason)
+	{
+		return reason switch {
+			BoggleDice.ScoreReason.Success       => "",
+			BoggleDice.ScoreReason.AlreadyPlayed => "Duplicate word",
+			BoggleDice.ScoreReason.Misspelt      => "Spelling error",
+			BoggleDice.ScoreReason.TooShort      => "Too short",
+			BoggleDice.ScoreReason.Unplayable    => "Unplayable",
+			_ => ""
+		};
+	}
+
+}
