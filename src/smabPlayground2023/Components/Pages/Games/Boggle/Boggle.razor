@@ -92,7 +92,7 @@
 	private void OnBoardClick(PositionedDie positionedDie, int col, int row, bool isEnd = false)
 	{
 		LetterDie die = ((LetterDie)(positionedDie.Die));
-		string letter = die.FaceValue.Value ?? "";
+		string letter = die.Display;
 		(int Col, int Row) position = (col, row);
 		BoggleSlot slot = boggleSlots[position];
 		BoggleSlot? prevSlot = previousSlots.Count > 0 ? previousSlots.Peek() : null;
@@ -118,7 +118,6 @@
 			currentWord += letter;
 			previousSlots.Push(boggleSlots[position]);
 		} else if (prevSlot?.Col == slot.Col && prevSlot?.Row == slot.Row) {
-			// ToDo - rewrite "prev" logic to use a stack so we can undo properly
 			slot.IsSelected = false;
 			currentWord = currentWord?[..^(letter.Length)];
 			_ = previousSlots.Pop();
@@ -143,7 +142,7 @@
 		public string ArrowDirection { get; set; } = NoArrowDirection;
 
 		public bool IsSelected { get; set; } = false;
-		public bool IsSelectable => (Die?.FaceValue.Value != "#" && !IsSelected);
+		public bool IsSelectable => (Die.UpperFace.StringValue != "#" && !IsSelected);
 
 		public bool IsAdjacent(int col, int row)
 		{

@@ -7,7 +7,7 @@
 	@if (ArrowDirection is not "" and not "NONE") {
 		<div class="arrow" data-direction="@ArrowDirection"><i class="bi bi-arrow-up-circle-fill"></i></div>
 	}
-	<div class="inner-circle" selected="@IsSelected" data-rotation="@Die?.Orientation" @oncontextmenu:preventDefault>
+	<div class="inner-circle" selected="@IsSelected" blank="@isBlank" data-rotation="@Die?.Orientation" @oncontextmenu:preventDefault>
 		<div class="die" data-letter="@Die?.Display">@Die?.Display</div>
 	</div>
 </div>
@@ -21,4 +21,6 @@
 
 	[Parameter] public EventCallback OnClickCallback       { get; set; }
 	[Parameter] public EventCallback OnContextMenuCallback { get; set; }
+
+	private bool isBlank => Die?.UpperFace.StringValue == "#";
 }

@@ -35,7 +35,7 @@
 		}
 	}
 
-	&:hover {
+	&:not([blank]):hover {
 		background-color: var(--selected-secondary-colour);
 		color: var(--hover-colour);
 	}
