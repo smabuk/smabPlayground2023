@@ -11,13 +11,7 @@
 
 @media (prefers-color-scheme: light) {
 	#boggle {
-		--board-colour: orange;
-		--selected-primary-colour: green;
-		--selected-secondary-colour: yellow;
-		--error-colour: #edaeae;
-		--hover-colour: red;
 		--slot-colour: cornsilk;
-		--underline-colour: #808080;
 	}
 }
 
@@ -42,7 +36,6 @@ button {
 	display: grid;
 	grid-gap: 0.1rem;
 	grid-template-columns: repeat(var(--board-width,  4), 1fr);
-	grid-template-rows:    repeat(var(--board-height, 4), 1fr);
 	padding: 0.4rem;
 }
 

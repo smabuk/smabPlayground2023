@@ -54,7 +54,6 @@ button {
 	display: grid;
 	grid-gap: 0.1rem;
 	grid-template-columns: repeat(var(--rack-width, 12), 1fr);
-	grid-template-rows:    repeat(var(--rack-height, 1), 1fr);
 	padding: 0.4rem;
 	margin-top: 1rem;
 }

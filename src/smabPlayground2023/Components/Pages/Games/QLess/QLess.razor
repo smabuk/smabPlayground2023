@@ -8,7 +8,6 @@
 	<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(gameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 </div>
 @if (qLessDice is not null) {
-	<div>
 		<div id="board_and_rack">
 			<div>
 				<div id="board" win="@gameOver" @oncontextmenu:preventDefault>
@@ -21,10 +20,10 @@
 								DisplayLetter = "@(positionedDie is null ? NO_DIE : positionedDie.Die.Display)"
 								IsDraggable   = "@(positionedDie is not null)"
 								IsError       = "@(gameStatus is QLessDice.Errors gs ? gs.DiceWithErrors.Any(d => d.Row == row && d.Col == col) ? true : false : false)"
-								IsMoving      = "@(positionedDie?.Die.Name is not null && positionedDie.Die.Name == dragId)"
-								OnDragStartCallback = "() => DragStart(positionedDie?.Die.Name)"
+								IsMoving      = "@(positionedDie?.Die.Id is not null && positionedDie.Die.Id == dragId)"
+								OnDragStartCallback = "() => DragStart(positionedDie?.Die.Id)"
 								OnDropCallback      = "() => DropOnBoard(col, row)"
-								OnClickCallback     = "() => OnBoardClick(positionedDie?.Die.Name, col, row)" />
+								OnClickCallback     = "() => OnBoardClick(positionedDie?.Die.Id, col, row)" />
 						}}
 				</div>
 				<div id="rack" win="@gameOver" @oncontextmenu:preventDefault>
@@ -34,10 +33,10 @@
 					<QLessDie
 						DisplayLetter = "@die?.Display"
 						IsDraggable   = "@(die is not null)"
-						IsMoving      = "@(die?.Name is not null && die.Name == dragId)"
-						OnDragStartCallback = "() => DragStart(die?.Name)"
+						IsMoving      = "@(die?.Id is not null && die.Id == dragId)"
+						OnDragStartCallback = "() => DragStart(die?.Id)"
 						OnDropCallback      = "() => DropOnRack(col)"
-						OnClickCallback     = "() => OnRackClick(die?.Name, col)"/>
+						OnClickCallback     = "() => OnRackClick(die?.Id, col)"/>
 				}
 				</div>
 				@if (qLessDice.HasDictionary) {
@@ -45,17 +44,13 @@
 				}
 			</div>
 		</div>
-	</div>
 }
 
 <style>
-	.board {
+	#board_and_rack {
 		--board-width:  @BOARD_WIDTH;
 		--board-height: @BOARD_HEIGHT;
-	}
-	.rack {
-		--rack-width:  @RACK_SIZE;
-		--rack-height: @((qLessDice?.Dice.Count ?? 12) / RACK_SIZE);
+		--rack-width:   @RACK_SIZE;
 	}
 </style>
 
@@ -98,7 +93,7 @@
 	private void DropOnBoard(int col, int row)
 	{
 		if (dragId is not null) {
-			_ = qLessDice.PlaceOnBoard(dragId, col, row);
+			_ = qLessDice.PlaceOnBoard(new DieId(dragId), col, row);
 			dragId     = null;
 			isClickToMoveInProgress = false;
 			gameStatus = qLessDice.GameStatus();
@@ -108,7 +103,7 @@
 	private void DropOnRack(int col)
 	{
 		if (dragId is not null) {
-			_ = qLessDice.PlaceOnRack(dragId, col);
+			_ = qLessDice.PlaceOnRack(new DieId(dragId), col);
 			dragId = null;
 			isClickToMoveInProgress = false;
 			gameStatus = qLessDice.GameStatus();

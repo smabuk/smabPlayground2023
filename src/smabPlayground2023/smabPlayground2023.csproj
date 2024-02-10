@@ -15,4 +15,13 @@
 		<ProjectReference Include="..\smabPlayground2023.Client\smabPlayground2023.Client.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="Components\Pages\Games\Boggle\BoggleDie.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="Components\Pages\Games\Boggle\BoggleWordList.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	</ItemGroup>
+
 </Project>
