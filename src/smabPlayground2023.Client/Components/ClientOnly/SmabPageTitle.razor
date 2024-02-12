@@ -1,0 +1,7 @@
+﻿@using Microsoft.AspNetCore.Components.Sections
+<PageTitle>@ChildContent - @ClientProgram.SiteName</PageTitle>
+<SectionContent SectionName="page-title">@ChildContent</SectionContent>
+@code {
+	[Parameter]
+	public RenderFragment? ChildContent {get; set;}
+}
