@@ -14,6 +14,6 @@
     <PackageVersion Include="AngleSharp" Version="1.1.0" />
     <PackageVersion Include="EPPlus" Version="7.0.8" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
-    <PackageVersion Include="Smab.DiceAndTiles" Version="0.9.1" />
+    <PackageVersion Include="Smab.DiceAndTiles" Version="0.9.4" />
   </ItemGroup>
 </Project>
