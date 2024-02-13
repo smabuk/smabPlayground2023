@@ -22,34 +22,36 @@ _ = builder.Services.AddSingleton(dictionaryOfWords);
 
 await builder.Build().RunAsync();
 
-
-public partial class ClientProgram
+namespace smabPlayground2023.Client
 {
-	private static readonly string[] cultures = CultureInfo
-		.GetCultures(CultureTypes.AllCultures)
-		.Select(c => c.Name)
-		.ToArray();
-
-	public static string SiteName { get; set; } = "smabPlayground2023";
-
-	public static string Name { get; } = typeof(Program)
-		.Assembly
-		.GetName()
-		.Name ?? "No assembly name";
-	public static Version Version { get; } = typeof(Program)
-		.Assembly
-		.GetName()
-		.Version ?? new();
-	public static string ProductVersion { get; } =
-		VersionWithoutGuid(typeof(Program)
-		.Assembly
-		.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-		.InformationalVersion ?? "");
-	public static string FrameworkVersion { get; } = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
-
-	private static string VersionWithoutGuid(string version)
+	public partial class ClientProgram
 	{
-		int indexOfPlus = version.IndexOf('+');
-		return (indexOfPlus > 0) ? version[..indexOfPlus] : version;
-	}
-} // also required so you can reference it from tests
+		private static readonly string[] cultures = CultureInfo
+			.GetCultures(CultureTypes.AllCultures)
+			.Select(c => c.Name)
+			.ToArray();
+
+		public static string SiteName { get; set; } = "smabPlayground2023";
+
+		public static string Name { get; } = typeof(Program)
+			.Assembly
+			.GetName()
+			.Name ?? "No assembly name";
+		public static Version Version { get; } = typeof(Program)
+			.Assembly
+			.GetName()
+			.Version ?? new();
+		public static string ProductVersion { get; } =
+			VersionWithoutGuid(typeof(Program)
+			.Assembly
+			.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+			.InformationalVersion ?? "");
+		public static string FrameworkVersion { get; } = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+
+		private static string VersionWithoutGuid(string version)
+		{
+			int indexOfPlus = version.IndexOf('+');
+			return (indexOfPlus > 0) ? version[..indexOfPlus] : version;
+		}
+	} // also required so you can reference it from tests
+}
