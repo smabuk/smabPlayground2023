@@ -1,5 +1,7 @@
 ﻿using static smabPlayground2023.Client.Components.Pages.Games.Boggle.Boggle;
 
+using Position = (int Col, int Row);
+
 namespace smabPlayground2023.Client.Components.Pages.Games.Boggle;
 
 internal static class BoggleExtensions
@@ -9,11 +11,10 @@ internal static class BoggleExtensions
 	internal static BoggleSlot SetNoArrowDirection(this BoggleSlot boggleSlot)
 		=> boggleSlot with { ArrowDirection = NoArrowDirection };
 
-	internal static BoggleSlot SetArrowDirection(this BoggleSlot boggleSlot, int? prevCol, int? prevRow, int newCol, int newRow)
+	internal static BoggleSlot SetArrowDirection(this BoggleSlot boggleSlot, Position? prevPosition, int newCol, int newRow)
 	{
-		string arrowDirection = prevCol is null || prevRow is null
-			? "START"
-			: (newCol - prevCol, newRow - prevRow) switch
+		string arrowDirection = prevPosition.HasValue
+			? (newCol - prevPosition.Value.Col, newRow - prevPosition.Value.Row) switch
 				{
 					( 0,  0) => "END",
 					( 0, -1) => "N",
@@ -25,8 +26,8 @@ internal static class BoggleExtensions
 					(-1,  1) => "SW",
 					(-1, -1) => "NW",
 					_ => ""
-				};
+				}
+			: "START";
 		return boggleSlot with { ArrowDirection = arrowDirection };
 	}
-
 }

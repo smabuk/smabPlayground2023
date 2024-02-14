@@ -8,16 +8,17 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 
-using HttpClient httpClient = new() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-string[] words = [];
-try {
-	words = (await httpClient.GetStringAsync("data/words.txt")).ReplaceLineEndings().Split(Environment.NewLine);
-}
-catch (Exception) {
-	Console.WriteLine("words.txt not found.");
-}
+//using HttpClient httpClient = new() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+//string[] words = [];
+//try {
+//	words = (await httpClient.GetStringAsync("data/words.txt")).ReplaceLineEndings().Split(Environment.NewLine);
+//}
+//catch (Exception) {
+//	Console.WriteLine("words.txt not found.");
+//}
+//IDictionaryOfWords dictionaryOfWords = words is [] ? new DictionaryOfWords() : new DictionaryOfWords(words);
 
-Smab.DiceAndTiles.DictionaryOfWords dictionaryOfWords = words is [] ? new() : new(words);
+Smab.DiceAndTiles.IDictionaryOfWords dictionaryOfWords = new DictionaryService.EmbeddedDictionaryOfWords();
 _ = builder.Services.AddSingleton(dictionaryOfWords);
 
 await builder.Build().RunAsync();

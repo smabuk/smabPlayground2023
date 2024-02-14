@@ -17,8 +17,9 @@ builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
-string? dictionaryFileName = builder.Configuration.GetValue<string>("DictionaryOfWords");
-Smab.DiceAndTiles.DictionaryOfWords dictionaryOfWords = File.Exists(dictionaryFileName) ? new(dictionaryFileName) : new();
+//string? dictionaryFileName = builder.Configuration.GetValue<string>("DictionaryOfWords");
+//Smab.DiceAndTiles.DictionaryOfWords dictionaryOfWords = File.Exists(dictionaryFileName) ? new(dictionaryFileName) : new();
+Smab.DiceAndTiles.IDictionaryOfWords dictionaryOfWords = new DictionaryService.EmbeddedDictionaryOfWords();
 _ = builder.Services.AddSingleton(dictionaryOfWords);
 
 var app = builder.Build();

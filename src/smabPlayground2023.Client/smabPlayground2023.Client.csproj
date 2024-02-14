@@ -8,4 +8,8 @@
 		<PackageReference Include="Smab.DiceAndTiles" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\DictionaryService\DictionaryService.csproj" />
+	</ItemGroup>
+
 </Project>

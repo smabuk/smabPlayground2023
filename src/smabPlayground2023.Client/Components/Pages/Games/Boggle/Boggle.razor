@@ -2,7 +2,7 @@
 @page "/games/boggle/{boggleType}"
 @layout BlankLayout
 @rendermode InteractiveAuto
-@inject DictionaryOfWords _dictionary;
+@inject IDictionaryOfWords _dictionary;
 @implements IDisposable
 
 <SmabPageTitle>@boggleFriendlyName</SmabPageTitle>
@@ -24,12 +24,14 @@
 								IsSelected            = "@boggleSlots[(col, row)].IsSelected"
 								ArrowDirection        = "@boggleSlots[(col, row)].ArrowDirection"
 								OnClickCallback       = "() => OnBoardClick(positionedDie)"
-								OnContextMenuCallback = "() => OnBoardClick(positionedDie, isEnd: true)" />
+								OnContextMenuCallback = "() => OnBoardClick(positionedDie, playTheWord: true)" />
 						}}
 				</div>
-				@if (boggleDice.HasDictionary) {
-					<div id="dictionary"><span>with a dictionary</span></div>
-				}
+
+				<div id="dictionary">
+					@if (boggleDice.HasDictionary) { <span>with a dictionary</span> }
+					<WhereAmIRunning />
+				</div>
 			</div>
 		</div>
 		<BoggleWordList Score="boggleDice.Score" WordScores="boggleDice.WordScores" TimeRemaining="new TimeSpan(0, 3, 0)" />
@@ -37,85 +39,90 @@
 	<style>
 		#boggle {
 			--board-width:  @boggleDice.BoardWidth;
-			--board-height: @boggleDice.BoardHeight;
 		}
 	</style>
 }
 
-
+@using Position = (int Col, int Row)
 @code {
-	[Parameter] public string boggleType { get; set; } = "deluxe";
+    [Parameter] public string boggleType { get; set; } = BoggleTypes.BigBoggleDeluxe;
 
-	public BoggleDice.BoggleType BoggleSetType { get; set; } = BoggleDice.BoggleType.Classic4x4;
-	private string boggleFriendlyName => BoggleSetType switch
-	{
-		BoggleDice.BoggleType.Classic4x4         => "Boggle Classic",
-		BoggleDice.BoggleType.BigBoggleDeluxe    => "Big Boggle Deluxe",
-		BoggleDice.BoggleType.SuperBigBoggle2012 => "Super Big Boggle",
-		BoggleDice.BoggleType.New4x4             => "New Boggle 4x4",
-		BoggleDice.BoggleType.BigBoggleOriginal  => "Big Boggle",
-		BoggleDice.BoggleType.BigBoggleChallenge => "Big Boggle Challenge",
-		_ => "Boggle"
-	};
+    public BoggleDice.BoggleType BoggleSetType { get; set; } = BoggleDice.BoggleType.Classic4x4;
 
-	public bool CancelTimer { get; set; } = false;
+    private string boggleFriendlyName => BoggleSetType switch
+    {
+        BoggleDice.BoggleType.Classic4x4         => "Boggle Classic",
+        BoggleDice.BoggleType.BigBoggleDeluxe    => "Big Boggle Deluxe",
+        BoggleDice.BoggleType.SuperBigBoggle2012 => "Super Big Boggle",
+        BoggleDice.BoggleType.New4x4             => "New Boggle 4x4",
+        BoggleDice.BoggleType.BigBoggleOriginal  => "Big Boggle",
+        BoggleDice.BoggleType.BigBoggleChallenge => "Big Boggle Challenge",
+        _ => "Boggle"
+    };
 
-	private BoggleDice boggleDice = null!;
-	private Dictionary<(int, int), BoggleSlot> boggleSlots = new();
+    public bool CancelTimer { get; set; } = false;
 
-	private Stack<BoggleSlot> previousSlots = [];
-	private string? currentWord = "";
+    private BoggleDice boggleDice = null!;
+    private Dictionary<Position, BoggleSlot> boggleSlots = new();
+    private Stack<BoggleSlot> previousSlots = [];
+    private string? currentWord = "";
 
-	protected override void OnParametersSet()
-	{
-		BoggleSetType = boggleType?.ToBoggleType() ?? BoggleDice.BoggleType.Classic4x4; 
-	}
+    protected override void OnParametersSet()
+    {
+        BoggleSetType = boggleType?.ToBoggleType() ?? BoggleDice.BoggleType.BigBoggleDeluxe;
+    }
 
-	void StartNewGame()
-	{
-		boggleDice = new(BoggleSetType, _dictionary);
-		boggleSlots = boggleDice.Board.ToDictionary(
-			p => (p.Col, p.Row),
-			p => new BoggleSlot(p)
-		);
-	}
+    void StartNewGame()
+    {
+        boggleDice = new(BoggleSetType, _dictionary);
+        boggleSlots = boggleDice.Board.ToDictionary(
+            p => (p.Col, p.Row),
+            p => new BoggleSlot(p)
+        );
+    }
 
-	private void OnBoardClick(PositionedDie positionedDie, bool isEnd = false)
-	{
-		LetterDie die = ((LetterDie)(positionedDie.Die));
-		string letter = die.UpperFace.StringValue ?? "";
-		(int Col, int Row) position = (positionedDie.Col, positionedDie.Row);
-		BoggleSlot slot = boggleSlots[position];
-		BoggleSlot? prevSlot = previousSlots.Count > 0 ? previousSlots.Peek() : null;
-		if (isEnd) {
-			if (currentWord is not null && prevSlot is not null) {
-				BoggleDice.WordScore wordScore = boggleDice.PlayWord(currentWord);
-				// Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
+    private void OnBoardClick(PositionedDie positionedDie, bool playTheWord = false)
+    {
+        string letter = positionedDie.Die.Display;
+        Position position = (positionedDie.Col, positionedDie.Row);
+        BoggleSlot slot = boggleSlots[position];
+        BoggleSlot? prevSlot = previousSlots.Count > 0 ? previousSlots.Peek() : null;
+        if (playTheWord) {
+            if (currentWord is not null && prevSlot is not null) {
+                BoggleDice.WordScore wordScore = boggleDice.PlayWord(currentWord);
+#if	DEBUG
+	Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
+#endif
 			}
 			currentWord = "";
 			previousSlots = [];
-			foreach (((int c, int r) pos, BoggleSlot boggleSlot) in boggleSlots.Where(kvp => kvp.Value.IsSelected)) {
+			foreach ((Position pos, BoggleSlot boggleSlot) in boggleSlots.Where(kvp => kvp.Value.IsSelected)) {
 				boggleSlots[pos] = boggleSlots[pos].SetNoArrowDirection() with { IsSelected = false};
 			}
 		} else if (slot.IsSelectable && (prevSlot is null || prevSlot.IsSameOrAdjacent(slot.Col, slot.Row))) {
-			// Console.WriteLine($"Selected: {letter} at ({slot.Col}, {slot.Row})");
+// #if DEBUG
+// 	Console.WriteLine($"Selected: {letter} at ({slot.Col}, {slot.Row})");
+// #endif
 			if (prevSlot is null) {
-				boggleSlots[position] = boggleSlots[position].SetArrowDirection(prevSlot?.Col, prevSlot?.Row, slot.Col, slot.Row);
+				boggleSlots[position] = boggleSlots[position].SetArrowDirection(prevSlot?.Position, slot.Col, slot.Row);
 			} else {
-				boggleSlots[(prevSlot.Col, prevSlot.Row)] = boggleSlots[(prevSlot.Col, prevSlot.Row)].SetArrowDirection(prevSlot?.Col, prevSlot?.Row, slot.Col, slot.Row);
+				boggleSlots[prevSlot.Position] = boggleSlots[prevSlot.Position].SetArrowDirection(prevSlot?.Position, slot.Col, slot.Row);
 			}
 			boggleSlots[position] = boggleSlots[position] with { IsSelected = true };
 			currentWord += letter;
 			previousSlots.Push(boggleSlots[position]);
 		} else if (prevSlot?.Col == slot.Col && prevSlot?.Row == slot.Row) {
+// #if DEBUG
+// 	Console.WriteLine($"Unselecting: {letter} at ({slot.Col}, {slot.Row})");
+// #endif
 			boggleSlots[position] = slot with { IsSelected = false };
 			currentWord = currentWord?[..^(letter.Length)];
 			_ = previousSlots.Pop();
 			prevSlot = previousSlots.Count > 0 ? previousSlots.Peek() : null;
 			if (prevSlot is null) {
-				boggleSlots[position] = boggleSlots[position].SetArrowDirection(prevSlot?.Col, prevSlot?.Row, slot.Col, slot.Row);
+				boggleSlots[position] = boggleSlots[position].SetArrowDirection(prevSlot?.Position, slot.Col, slot.Row);
 			} else {
-				boggleSlots[(prevSlot.Col, prevSlot.Row)] = boggleSlots[(prevSlot.Col, prevSlot.Row)].SetNoArrowDirection();
+				boggleSlots[prevSlot.Position] = boggleSlots[prevSlot.Position].SetNoArrowDirection();
 			}
 		}
 	}
@@ -123,17 +130,5 @@
 	public void Dispose()
 	{
 		CancelTimer = true;
-	}
-
-	internal record BoggleSlot(PositionedDie PositionedDie, bool IsSelected = false, string ArrowDirection = "NONE")
-	{
-		public int Col => PositionedDie.Col;
-		public int Row => PositionedDie.Row;
-
-		public bool IsSelectable => !(PositionedDie.Die.IsBlank || IsSelected);
-
-		public bool IsSameOrAdjacent(int col, int row)
-			=> (int.Abs(PositionedDie.Col - col) is 0 or 1) && (int.Abs(PositionedDie.Row - row) is 0 or 1);
-
 	}
 }
