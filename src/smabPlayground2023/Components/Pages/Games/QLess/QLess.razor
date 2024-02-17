@@ -65,7 +65,7 @@
 	private QLessDice.Status gameStatus = default!;
 	private QLessDice qLessDice = null!;
 
-	private string? dragId = null;
+	private DieId? dragId = null;
 	private bool isClickToMoveInProgress = false;
 
 
@@ -78,10 +78,10 @@
 
 
 
-	private void DragStart(string? name)
+	private void DragStart(DieId? dieId)
 	{
-		if (name is not null) {
-			dragId = name;
+		if (dieId is not null) {
+			dragId = dieId;
 		}
 	}
 
@@ -110,7 +110,7 @@
 		}
 	}
 
-	private void OnBoardClick(string? name, int col, int row)
+	private void OnBoardClick(DieId? dieId, int col, int row)
 	{
 		if (isClickToMoveInProgress) {
 			isClickToMoveInProgress = false;
@@ -118,13 +118,13 @@
 			return;
 		}
 
-		if (name is not null) {
+		if (dieId is not null) {
 			isClickToMoveInProgress = true;
-			dragId = name;
+			dragId = dieId;
 		}
 	}
 
-	private void OnRackClick(string? name, int col)
+	private void OnRackClick(DieId? dieId, int col)
 	{
 		if (isClickToMoveInProgress) {
 			isClickToMoveInProgress = false;
@@ -132,9 +132,9 @@
 			return;
 		}
 
-		if (name is not null) {
+		if (dieId is not null) {
 			isClickToMoveInProgress = true;
-			dragId = name;
+			dragId = dieId;
 		}
 	}
 }
