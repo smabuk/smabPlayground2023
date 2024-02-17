@@ -9,10 +9,11 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
 		<PackageReference Include="EPPlus" />
 		<PackageReference Include="Smab.DiceAndTiles" />
+		<PackageReference Include="Smab.DictionaryOfWords" />
+		<PackageReference Include="Smab.DictionaryOfWords.CSW12" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\DictionaryService\DictionaryService.csproj" />
 		<ProjectReference Include="..\smabPlayground2023.Client\smabPlayground2023.Client.csproj" />
 	</ItemGroup>
 

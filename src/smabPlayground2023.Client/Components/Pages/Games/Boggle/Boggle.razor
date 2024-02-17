@@ -2,7 +2,7 @@
 @page "/games/boggle/{boggleType}"
 @layout BlankLayout
 @rendermode InteractiveAuto
-@inject IDictionaryOfWords _dictionary;
+@inject IDictionaryService _dictionary;
 @implements IDisposable
 
 <SmabPageTitle>@boggleFriendlyName</SmabPageTitle>

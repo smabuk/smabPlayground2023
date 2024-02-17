@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Reflection;
 
+using Smab.DictionaryOfWords.CSW21;
+
 using smabPlayground2023.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +21,7 @@ builder.Services.AddHttpClient();
 
 //string? dictionaryFileName = builder.Configuration.GetValue<string>("DictionaryOfWords");
 //Smab.DiceAndTiles.DictionaryOfWords dictionaryOfWords = File.Exists(dictionaryFileName) ? new(dictionaryFileName) : new();
-Smab.DiceAndTiles.IDictionaryOfWords dictionaryOfWords = new DictionaryService.EmbeddedDictionaryOfWords();
+Smab.DictionaryOfWords.IDictionaryService dictionaryOfWords = new CSW21Dictionary();
 _ = builder.Services.AddSingleton(dictionaryOfWords);
 
 var app = builder.Build();

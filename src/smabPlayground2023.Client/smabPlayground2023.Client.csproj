@@ -6,10 +6,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Smab.DiceAndTiles" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\DictionaryService\DictionaryService.csproj" />
+		<PackageReference Include="Smab.DictionaryOfWords" />
+		<PackageReference Include="Smab.DictionaryOfWords.CSW12" />
 	</ItemGroup>
 
 </Project>
