@@ -9,7 +9,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-Smab.DictionaryOfWords.IDictionaryService dictionaryOfWords = new CSW21Dictionary();
+Smab.DictionaryOfWords.IDictionaryService dictionaryOfWords = CSW21Dictionary.Create();
 _ = builder.Services.AddSingleton(dictionaryOfWords);
 
 await builder.Build().RunAsync();
