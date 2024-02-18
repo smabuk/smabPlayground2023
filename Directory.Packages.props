@@ -1,25 +1,22 @@
 <Project>
-	<PropertyGroup>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.2" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.2" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
-		<PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.2" />
-		<PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.2" />
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-		<PackageVersion Include="xunit" Version="2.7.0" />
-		<PackageVersion Include="xunit.runner.visualstudio" Version="2.5.7" />
-		<PackageVersion Include="coverlet.collector" Version="6.0.0" />
-
-		<PackageVersion Include="Shouldly" Version="4.2.1" />
-
-		<PackageVersion Include="AngleSharp" Version="1.1.0" />
-		<PackageVersion Include="EPPlus" Version="7.0.9" />
-
-		<PackageVersion Include="Smab.DiceAndTiles" Version="0.9.15" />
-		<PackageVersion Include="Smab.DictionaryOfWords" Version="1.0.4" />
-		<PackageVersion Include="Smab.DictionaryOfWords.CSW12" Version="1.0.4" />
-	</ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageVersion Include="xunit" Version="2.7.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.7" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="Shouldly" Version="4.2.1" />
+    <PackageVersion Include="AngleSharp" Version="1.1.0" />
+    <PackageVersion Include="EPPlus" Version="7.0.9" />
+    <PackageVersion Include="Smab.DiceAndTiles" Version="0.9.17" />
+    <PackageVersion Include="Smab.DictionaryOfWords" Version="1.0.6" />
+    <PackageVersion Include="Smab.DictionaryOfWords.CSW12" Version="1.0.6" />
+  </ItemGroup>
 </Project>

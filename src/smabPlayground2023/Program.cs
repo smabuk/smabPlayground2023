@@ -21,7 +21,7 @@ builder.Services.AddHttpClient();
 
 //string? dictionaryFileName = builder.Configuration.GetValue<string>("DictionaryOfWords");
 //Smab.DiceAndTiles.DictionaryOfWords dictionaryOfWords = File.Exists(dictionaryFileName) ? new(dictionaryFileName) : new();
-Smab.DictionaryOfWords.IDictionaryService dictionaryOfWords = CSW21Dictionary.Create();
+Smab.DictionaryOfWords.IDictionaryService dictionaryOfWords = new CSW21Dictionary();
 _ = builder.Services.AddSingleton(dictionaryOfWords);
 
 var app = builder.Build();
