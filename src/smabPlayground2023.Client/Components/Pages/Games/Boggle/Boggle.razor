@@ -32,6 +32,9 @@
 					@if (boggleDice.HasDictionary) { <span>with a dictionary</span> }
 					<WhereAmIRunning />
 				</div>
+				<EditForm Model="this" FormName="word-input" OnSubmit="PlayWord">
+					<InputText @bind-Value="currentWord"></InputText>
+				</EditForm>
 			</div>
 		</div>
 		<BoggleWordList Score="boggleDice.Score" WordScores="boggleDice.WordScores" TimeRemaining="new TimeSpan(0, 3, 0)" />
@@ -81,6 +84,21 @@
 		);
 	}
 
+	private void PlayWord()
+	{
+		if (currentWord is not null) {
+			BoggleDice.WordScore wordScore = boggleDice.PlayWord(currentWord);
+		}
+		#if DEBUG
+			Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
+		#endif
+		currentWord = "";
+		previousSlots = [];
+		foreach ((Position pos, BoggleSlot boggleSlot) in boggleSlots.Where(kvp => kvp.Value.IsSelected)) {
+			boggleSlots[pos] = boggleSlots[pos].SetNoArrowDirection() with { IsSelected = false};
+		}
+	}
+
 	private void OnBoardClick(PositionedDie positionedDie, bool playTheWord = false)
 	{
 		string letter = positionedDie.Die.Display;
@@ -88,17 +106,7 @@
 		BoggleSlot slot = boggleSlots[position];
 		BoggleSlot? prevSlot = previousSlots.Count > 0 ? previousSlots.Peek() : null;
 		if (playTheWord) {
-			if (currentWord is not null && prevSlot is not null) {
-				BoggleDice.WordScore wordScore = boggleDice.PlayWord(currentWord);
-#if	DEBUG
-	Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
-#endif
-			}
-			currentWord = "";
-			previousSlots = [];
-			foreach ((Position pos, BoggleSlot boggleSlot) in boggleSlots.Where(kvp => kvp.Value.IsSelected)) {
-				boggleSlots[pos] = boggleSlots[pos].SetNoArrowDirection() with { IsSelected = false};
-			}
+			PlayWord();
 		} else if (slot.IsSelectable && (prevSlot is null || prevSlot.IsSameOrAdjacent(slot.Col, slot.Row))) {
 // #if DEBUG
 // 	Console.WriteLine($"Selected: {letter} at ({slot.Col}, {slot.Row})");

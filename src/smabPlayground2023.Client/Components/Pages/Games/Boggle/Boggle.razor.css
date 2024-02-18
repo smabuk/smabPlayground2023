@@ -19,11 +19,16 @@
 	display: flex;
 }
 
-div {
+div,
+form {
 	user-select: none;
 	border-radius: 0.375rem;
 	margin: auto;
 	text-align: center;
+}
+
+::deep input {
+	text-transform: uppercase;
 }
 
 button {
