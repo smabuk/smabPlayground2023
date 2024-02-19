@@ -15,8 +15,8 @@
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="AngleSharp" Version="1.1.0" />
     <PackageVersion Include="EPPlus" Version="7.0.9" />
-    <PackageVersion Include="Smab.DiceAndTiles" Version="0.9.17" />
-    <PackageVersion Include="Smab.DictionaryOfWords" Version="1.0.6" />
-    <PackageVersion Include="Smab.DictionaryOfWords.CSW12" Version="1.0.6" />
+    <PackageVersion Include="Smab.DiceAndTiles" Version="0.9.18" />
+    <PackageVersion Include="Smab.DictionaryOfWords" Version="1.0.7" />
+    <PackageVersion Include="Smab.DictionaryOfWords.CSW12" Version="1.0.7" />
   </ItemGroup>
 </Project>
