@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "smabPlayground2023.Client", "src\smabPlayground2023.Client\smabPlayground2023.Client.csproj", "{A6B196FB-7BC0-4B91-8107-D16AA9E37E99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smabPlayground2023.SharedUi", "src\smabPlayground2023.SharedUi\smabPlayground2023.SharedUi.csproj", "{7597DEEA-3596-4017-A328-C55BA95AC32F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{A6B196FB-7BC0-4B91-8107-D16AA9E37E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6B196FB-7BC0-4B91-8107-D16AA9E37E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6B196FB-7BC0-4B91-8107-D16AA9E37E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7597DEEA-3596-4017-A328-C55BA95AC32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7597DEEA-3596-4017-A328-C55BA95AC32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7597DEEA-3596-4017-A328-C55BA95AC32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7597DEEA-3596-4017-A328-C55BA95AC32F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{D4A9D99B-9BFF-426E-8D86-C467A0FE37F6} = {B833260A-57A3-4DBA-A129-76A60D4C9648}
 		{52D49289-19EB-4210-B7C5-6929F4897509} = {1A997177-B7B2-4C9E-9A39-B512605DC310}
 		{A6B196FB-7BC0-4B91-8107-D16AA9E37E99} = {B833260A-57A3-4DBA-A129-76A60D4C9648}
+		{7597DEEA-3596-4017-A328-C55BA95AC32F} = {B833260A-57A3-4DBA-A129-76A60D4C9648}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95BFA95B-3CB6-4403-9B87-4878D18DEF96}

@@ -10,4 +10,8 @@
 		<PackageReference Include="Smab.DictionaryOfWords.CSW12" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\smabPlayground2023.SharedUi\smabPlayground2023.SharedUi.csproj" />
+	</ItemGroup>
+
 </Project>
