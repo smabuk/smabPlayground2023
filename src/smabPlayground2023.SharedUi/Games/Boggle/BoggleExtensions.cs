@@ -1,8 +1,8 @@
-﻿using static smabPlayground2023.Client.Components.Pages.Games.Boggle.Boggle;
+﻿using static smabPlayground2023.SharedUi.Games.Boggle.Boggle;
 
 using Position = (int Col, int Row);
 
-namespace smabPlayground2023.Client.Components.Pages.Games.Boggle;
+namespace smabPlayground2023.SharedUi.Games.Boggle;
 
 internal static class BoggleExtensions
 {

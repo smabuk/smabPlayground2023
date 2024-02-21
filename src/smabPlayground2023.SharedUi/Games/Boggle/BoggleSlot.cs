@@ -1,6 +1,6 @@
 ﻿using Smab.DiceAndTiles;
 
-namespace smabPlayground2023.Client.Components.Pages.Games.Boggle;
+namespace smabPlayground2023.SharedUi.Games.Boggle;
 
 public partial class Boggle
 {

@@ -1,11 +1,6 @@
-﻿@page "/games/boggle"
-@page "/games/boggle/{boggleType}"
-@layout BlankLayout
-@rendermode InteractiveAuto
-@inject IDictionaryService _dictionary;
+﻿@inject IDictionaryService _dictionary;
 @implements IDisposable
 
-<SmabPageTitle>@boggleFriendlyName</SmabPageTitle>
 <div class="row">
 	<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">New Game</button>
 </div>
@@ -46,11 +41,10 @@
 	</style>
 }
 
+@using Microsoft.AspNetCore.Components.Forms
 @using Position = (int Col, int Row)
 @code {
-	[Parameter] public string boggleType { get; set; } = BoggleTypes.BigBoggleDeluxe;
-
-	public BoggleDice.BoggleType BoggleSetType { get; set; } = BoggleDice.BoggleType.Classic4x4;
+	[Parameter] public BoggleDice.BoggleType BoggleSetType { get; set; } = BoggleDice.BoggleType.Classic4x4;
 
 	private string boggleFriendlyName => BoggleSetType switch
 	{
@@ -69,11 +63,6 @@
 	private Dictionary<Position, BoggleSlot> boggleSlots = new();
 	private Stack<BoggleSlot> previousSlots = [];
 	private string? currentWord = "";
-
-	protected override void OnParametersSet()
-	{
-		BoggleSetType = boggleType?.ToBoggleType() ?? BoggleDice.BoggleType.BigBoggleDeluxe;
-	}
 
 	void StartNewGame()
 	{
@@ -110,9 +99,9 @@
 		if (playTheWord) {
 			PlayWord();
 		} else if (slot.IsSelectable && (prevSlot is null || prevSlot.IsSameOrAdjacent(slot.Col, slot.Row))) {
-// #if DEBUG
-// 	Console.WriteLine($"Selected: {letter} at ({slot.Col}, {slot.Row})");
-// #endif
+			// #if DEBUG
+			// 	Console.WriteLine($"Selected: {letter} at ({slot.Col}, {slot.Row})");
+			// #endif
 			if (prevSlot is null) {
 				boggleSlots[position] = boggleSlots[position].SetArrowDirection(prevSlot?.Position, slot.Col, slot.Row);
 			} else {
@@ -122,9 +111,9 @@
 			currentWord += letter;
 			previousSlots.Push(boggleSlots[position]);
 		} else if (prevSlot?.Col == slot.Col && prevSlot?.Row == slot.Row) {
-// #if DEBUG
-// 	Console.WriteLine($"Unselecting: {letter} at ({slot.Col}, {slot.Row})");
-// #endif
+			// #if DEBUG
+			// 	Console.WriteLine($"Unselecting: {letter} at ({slot.Col}, {slot.Row})");
+			// #endif
 			boggleSlots[position] = slot with { IsSelected = false };
 			currentWord = currentWord?[..^(letter.Length)];
 			_ = previousSlots.Pop();
