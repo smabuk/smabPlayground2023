@@ -1,9 +1,5 @@
-﻿@page "/games/qless"
-@layout BlankLayout
-@rendermode InteractiveServer
-@inject IDictionaryService _dictionary;
+﻿@inject IDictionaryService _dictionary;
 
-<SmabPageTitle>Q-Less</SmabPageTitle>
 <div class="row">
 	<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(gameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 </div>
@@ -39,9 +35,10 @@
 						OnClickCallback     = "() => OnRackClick(die?.Id, col)"/>
 				}
 				</div>
-				@if (qLessDice.HasDictionary) {
-					<div id="dictionary"><span>with dictionary</span></div>
-				}
+				<div id="dictionary">
+					@if (qLessDice.HasDictionary) { <span>with a dictionary</span> }
+					<WhereAmIRunning />
+				</div>
 			</div>
 		</div>
 }

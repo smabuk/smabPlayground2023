@@ -15,4 +15,8 @@
     <PackageReference Include="Smab.DiceAndTiles" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
