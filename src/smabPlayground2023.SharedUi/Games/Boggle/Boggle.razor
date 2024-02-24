@@ -32,7 +32,7 @@
 				</EditForm>
 			</div>
 		</div>
-		<BoggleWordList Score="boggleDice.Score" WordScores="boggleDice.WordScores" TimeRemaining="new TimeSpan(0, 3, 0)" />
+		<BoggleWordList Score="boggleDice.Score" WordScores="boggleDice.WordScores" TimeRemaining="timeRemaining" />
 	</div>
 	<style>
 		#boggle {
@@ -41,7 +41,6 @@
 	</style>
 }
 
-@using Microsoft.AspNetCore.Components.Forms
 @using Position = (int Col, int Row)
 @code {
 	[Parameter] public BoggleDice.BoggleType BoggleSetType { get; set; } = BoggleDice.BoggleType.Classic4x4;
@@ -57,7 +56,11 @@
 		_ => "Boggle"
 	};
 
-	public bool CancelTimer { get; set; } = false;
+	public CancellationTokenSource CancelTimer { get; set; } = new();
+	private PeriodicTimer periodicTimer = new(TimeSpan.FromSeconds(1));
+	private DateTime startTime;
+	private TimeSpan timeSpan = new(0, 3, 0);
+	private TimeSpan timeRemaining = new(0, 3, 0);
 
 	private BoggleDice boggleDice = null!;
 	private Dictionary<Position, BoggleSlot> boggleSlots = new();
@@ -71,6 +74,23 @@
 			p => (p.Col, p.Row),
 			p => new BoggleSlot(p)
 		);
+
+		startTime = DateTime.UtcNow;
+		timeRemaining = new(0, 3, 0);
+		CancelTimer = new();
+		Tick();
+	}
+
+	async void Tick()
+	{
+		try {
+			while (await periodicTimer.WaitForNextTickAsync(CancelTimer.Token)) {
+				timeRemaining = timeSpan - DateTime.UtcNow.Subtract(startTime);
+				StateHasChanged();
+			}
+		} catch (OperationCanceledException) {
+			
+		}
 	}
 
 	private void PlayWord()
@@ -81,7 +101,7 @@
 
 		BoggleDice.WordScore wordScore = boggleDice.PlayWord(currentWord);
 		#if DEBUG
-			Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
+		Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
 		#endif
 		currentWord = "";
 		previousSlots = [];
@@ -128,6 +148,7 @@
 
 	public void Dispose()
 	{
-		CancelTimer = true;
+		CancelTimer.Cancel();
+		periodicTimer.Dispose();
 	}
 }
