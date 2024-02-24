@@ -1,6 +1,6 @@
 ﻿<table>
 	<caption>
-		<span>Score: @($"{Score}")</span><span>Time remaining: @($"{TimeRemaining:m\\:ss}")</span>
+		<span>Score: @($"{Score}")</span><span danger="@isDangerZone">Time remaining: @($"{TimeRemaining:m\\:ss}")</span>
 	</caption>
 	<thead>
 		<tr>
@@ -29,6 +29,8 @@
 
 	[Parameter]
 	public TimeSpan TimeRemaining { get; set; } = new(0, 0, 0);
+
+	private bool isDangerZone => TimeRemaining < TimeSpan.FromSeconds(10); 
 
 	private string GetReason(BoggleDice.ScoreReason reason)
 	{

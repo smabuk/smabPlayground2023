@@ -28,7 +28,7 @@
 					<WhereAmIRunning />
 				</div>
 				<EditForm Model="this" FormName="word-input" OnSubmit="PlayWord">
-					<InputText @bind-Value="currentWord" autocomplete="off"></InputText>
+					<InputText disabled="@gameOver" @bind-Value="currentWord" autocomplete="off"></InputText>
 				</EditForm>
 			</div>
 		</div>
@@ -60,7 +60,8 @@
 	private PeriodicTimer periodicTimer = new(TimeSpan.FromSeconds(1));
 	private DateTime startTime;
 	private TimeSpan timeSpan = new(0, 3, 0);
-	private TimeSpan timeRemaining = new(0, 3, 0);
+	private TimeSpan timeRemaining = TimeSpan.Zero;
+	private bool gameOver = true;
 
 	private BoggleDice boggleDice = null!;
 	private Dictionary<Position, BoggleSlot> boggleSlots = new();
@@ -76,9 +77,18 @@
 		);
 
 		startTime = DateTime.UtcNow;
-		timeRemaining = new(0, 3, 0);
+		timeRemaining = timeSpan;
 		CancelTimer = new();
+		periodicTimer = new(TimeSpan.FromSeconds(0.5));
+		gameOver = false;
 		Tick();
+	}
+
+	void EndGame()
+	{
+		gameOver = true;
+		CancelTimer.Cancel();
+		periodicTimer.Dispose();
 	}
 
 	async void Tick()
@@ -87,6 +97,9 @@
 			while (await periodicTimer.WaitForNextTickAsync(CancelTimer.Token)) {
 				timeRemaining = timeSpan - DateTime.UtcNow.Subtract(startTime);
 				StateHasChanged();
+				if (timeRemaining < TimeSpan.Zero) {
+					EndGame();
+				}
 			}
 		} catch (OperationCanceledException) {
 			

@@ -15,6 +15,10 @@ caption {
 	span {
 		margin: 1em;
 	}
+
+	[danger] {
+		color: var(--error-colour);
+	}
 }
 
 th,
