@@ -2,7 +2,11 @@
 @implements IDisposable
 
 <div class="row">
-	<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">New Game</button>
+	@if (gameOver) {
+		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">New Game</button>
+	} else {
+		<button class="btn btn-primary" type="button" @onclick="() => EndGame()">End Game</button>
+	}
 </div>
 @if (boggleDice is not null) {
 	<div id="boggle">
@@ -32,7 +36,11 @@
 				</EditForm>
 			</div>
 		</div>
-		<BoggleWordList Score="boggleDice.Score" WordScores="boggleDice.WordScores" TimeRemaining="timeRemaining" />
+		<BoggleWordList
+			GameOver="gameOver"
+			Score="boggleDice.Score"
+			WordScores="boggleDice.WordScores"
+			TimeRemaining="timeRemaining" />
 	</div>
 	<style>
 		#boggle {
@@ -58,8 +66,8 @@
 
 	public CancellationTokenSource CancelTimer { get; set; } = new();
 	private PeriodicTimer periodicTimer = new(TimeSpan.FromSeconds(1));
-	private DateTime startTime;
-	private TimeSpan timeSpan = new(0, 3, 0);
+	private long startTime;
+	private TimeSpan timeSpan = TimeSpan.FromMinutes(3);
 	private TimeSpan timeRemaining = TimeSpan.Zero;
 	private bool gameOver = true;
 
@@ -76,7 +84,13 @@
 			p => new BoggleSlot(p)
 		);
 
-		startTime = DateTime.UtcNow;
+		timeSpan = BoggleSetType switch
+		{
+			BoggleDice.BoggleType.SuperBigBoggle2012 => TimeSpan.FromMinutes(4),
+			_ => TimeSpan.FromMinutes(3),
+		};
+
+		startTime = Stopwatch.GetTimestamp();
 		timeRemaining = timeSpan;
 		CancelTimer = new();
 		periodicTimer = new(TimeSpan.FromSeconds(0.5));
@@ -94,15 +108,15 @@
 	async void Tick()
 	{
 		try {
-			while (await periodicTimer.WaitForNextTickAsync(CancelTimer.Token)) {
-				timeRemaining = timeSpan - DateTime.UtcNow.Subtract(startTime);
+			while (!CancelTimer.IsCancellationRequested && await periodicTimer.WaitForNextTickAsync(CancelTimer.Token)) {
+				timeRemaining = timeSpan.Subtract(Stopwatch.GetElapsedTime(startTime));
 				StateHasChanged();
 				if (timeRemaining < TimeSpan.Zero) {
 					EndGame();
 				}
 			}
 		} catch (OperationCanceledException) {
-			
+
 		}
 	}
 
@@ -114,7 +128,7 @@
 
 		BoggleDice.WordScore wordScore = boggleDice.PlayWord(currentWord);
 		#if DEBUG
-		Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
+	Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
 		#endif
 		currentWord = "";
 		previousSlots = [];
@@ -125,6 +139,9 @@
 
 	private void OnBoardClick(PositionedDie positionedDie, bool playTheWord = false)
 	{
+		if (gameOver) {
+			return;
+		}
 		string letter = positionedDie.Die.Display;
 		Position position = (positionedDie.Col, positionedDie.Row);
 		BoggleSlot slot = boggleSlots[position];

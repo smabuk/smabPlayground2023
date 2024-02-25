@@ -38,9 +38,13 @@ button {
 #board {
 	background-color: var(--board-colour);
 	color: var(--bs-primary);
+	/*font-family: "Titillium Web", sans-serif;*/
+	/*font-weight: 200;*/
+	/*font-optical-sizing: auto;*/
+	/*font-style: normal;*/
 	display: grid;
 	grid-gap: 0.1rem;
-	grid-template-columns: repeat(var(--board-width,  4), 1fr);
+	grid-template-columns: repeat(var(--board-width, 4), 1fr);
 	padding: 0.4rem;
 }
 
