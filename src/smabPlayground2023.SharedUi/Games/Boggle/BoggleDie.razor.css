@@ -59,6 +59,12 @@
 		text-decoration: underline;
 		text-decoration: underline dashed var(--underline-colour);
 	}
+
+	/* Normal Unicode centre block doesn't work for Android and replacement block is off-centre, so adjust */
+	&[data-letter="#"]
+	{
+		padding-bottom: 15%;
+	}
 }
 
 .arrow {

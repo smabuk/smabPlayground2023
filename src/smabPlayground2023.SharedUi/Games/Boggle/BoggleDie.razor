@@ -8,7 +8,7 @@
 		<div class="arrow" data-direction="@ArrowDirection"><i class="bi bi-arrow-up-circle-fill"></i></div>
 	}
 	<div class="inner-circle" selected="@IsSelected" blank="@Die?.IsBlank" data-rotation="@Die?.Orientation" @oncontextmenu:preventDefault>
-		<div class="die" data-letter="@Die?.Display">@Die?.Display</div>
+		<div class="die" data-letter="@Die?.UpperFace.StringValue">@DieDisplay(Die)</div>
 	</div>
 </div>
 
@@ -21,4 +21,12 @@
 
 	[Parameter] public EventCallback OnClickCallback       { get; set; }
 	[Parameter] public EventCallback OnContextMenuCallback { get; set; }
+
+	/// <summary>
+	/// 	Normal Unicode centre block doesn't work for Android
+	/// 	so replace with "Black Square" 
+	/// </summary>
+	/// <param name="die"></param>
+	/// <returns></returns>
+	private string? DieDisplay(LetterDie? die) => die is null ? null : die.IsBlank ? "\u25a0" : die?.Display;
 }
