@@ -1,0 +1,32 @@
+div {
+	display: contents;
+}
+
+span {
+	margin: 5px;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	background-color: white;
+}
+
+[data-suit='back']
+{
+	color: orange;
+}
+
+[data-suit='none']
+{
+	color: darkgreen;
+}
+
+[data-suit='clubs'],
+[data-suit='spades']
+{
+	color: black;
+}
+
+[data-suit='hearts'],
+[data-suit='diamonds']
+{
+	color: red;
+}

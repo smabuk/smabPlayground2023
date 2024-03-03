@@ -1,0 +1,17 @@
+#deck {
+	font-size: 18dvmin;
+	padding: 0;
+	margin: 0;
+/*
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+*/
+
+}
+
+div {
+	display: contents;
+	padding: 100px;
+	margin: 100px;
+	background-color: green;
+}
