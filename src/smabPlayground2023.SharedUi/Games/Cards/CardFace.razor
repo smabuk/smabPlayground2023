@@ -1,11 +1,15 @@
-<div>
-	<span data-suit="@suit">@display</span>
+<div @onclick="() => OnClick.InvokeAsync()">
+	<span title="@title" data-value="@value" data-suit="@suit">@display</span>
 </div>
 
 @code {
 	[Parameter] public required PlayingCard PlayingCard { get; set; }
 	[Parameter] public bool FaceDown { get; set; } = false;
 
-	string suit    => FaceDown ? "back"           : @PlayingCard.Suit.ToString().ToLower();
-	string display => FaceDown ? PlayingCard.Back : PlayingCard.ToUnicode(); 
+	[Parameter] public EventCallback OnClick { get; set; }
+
+	string? display => FaceDown ? PlayingCard.Back : PlayingCard.ToUnicode();
+	string? suit    => FaceDown ? "back" : @PlayingCard.Suit.ToString().ToLower();
+	string? title   => FaceDown ? "Card back" : @PlayingCard.ToString();
+	string? value   => FaceDown ? null   : @PlayingCard.Value.ToString();
 }

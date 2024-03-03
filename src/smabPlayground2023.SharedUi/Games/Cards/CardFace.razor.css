@@ -3,10 +3,11 @@ div {
 }
 
 span {
-	margin: 5px;
+	margin: 0.5dvmin;
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 	background-color: white;
+	user-select: none;
 }
 
 [data-suit='back']

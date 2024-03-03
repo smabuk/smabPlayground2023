@@ -1,23 +1,14 @@
 ﻿@page "/games/cards/deckofcards"
 @rendermode InteractiveServer
-@using smabPlayground2023.SharedUi.Games.Cards
 
 <SmabPageTitle>Deck Of Cards</SmabPageTitle>
 
-<div id="deck">
-	@foreach (CardPosition cardPosition in deck) {
-		<div @onclick="() => FlipCard(cardPosition)">
-			<CardFace PlayingCard="cardPosition.Card" FaceDown="cardPosition.FaceDown"/>
-		</div>
+<div>
+	@foreach (PlayingCard card in deck.Keys) {
+		<CardFace PlayingCard="card" FaceDown="deck[card]" OnClick="() => deck[card] = !deck[card]" />
 	}
 </div>
 
 @code {
-	List<CardPosition> deck = [.. PlayingCard.CreateDeckWithJokers.Select(card => new CardPosition(card, false))];
-
-
-	private void FlipCard(CardPosition cardPosition)
-		=> deck[deck.IndexOf(cardPosition)] = cardPosition with { FaceDown = !cardPosition.FaceDown };
-
-	private record CardPosition(PlayingCard Card, bool FaceDown);
+	Dictionary<PlayingCard, bool> deck = PlayingCard.CreateDeckWithJokers.ToDictionary(c => c, c => false);
 }
