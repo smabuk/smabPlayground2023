@@ -1,4 +1,5 @@
 ﻿@page "/games/cards/deckofcards"
+@page "/games/cards/deckofcards/{DeckType}"
 @rendermode InteractiveServer
 
 <SmabPageTitle>Deck Of Cards</SmabPageTitle>
@@ -10,5 +11,16 @@
 </div>
 
 @code {
-	Dictionary<PlayingCard, bool> deck = PlayingCard.CreateDeckWithJokers.ToDictionary(c => c, c => false);
+	[Parameter] public string DeckType { get; set; } = "standard";
+
+	Dictionary<PlayingCard, bool> deck = [];
+
+	protected override void OnParametersSet()
+	{
+		deck = DeckType switch
+		{
+			"tarot" => FrenchTarotPlayingCard.CreateDeck.ToDictionary(c => c, c => false),
+			_       => PlayingCard.CreateDeckWithAllJokers.ToDictionary(c => c, c => false),
+		};
+    }
 }

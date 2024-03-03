@@ -1,5 +1,11 @@
 <div @onclick="() => OnClick.InvokeAsync()">
-	<span title="@title" data-value="@value" data-suit="@suit">@display</span>
+	@if (FaceDown) {
+		<span title="Card back" data-back>@PlayingCard.Back</span>
+	} else if (PlayingCard is JokerPlayingCard joker) {
+		<span title="@PlayingCard" data-joker-colour="@joker.Type">@PlayingCard.ToUnicode()</span>
+	} else {
+		<span title="@PlayingCard" data-value="@PlayingCard.Value" data-suit="@PlayingCard.Suit">@PlayingCard.ToUnicode()</span>
+	}
 </div>
 
 @code {
@@ -7,9 +13,4 @@
 	[Parameter] public bool FaceDown { get; set; } = false;
 
 	[Parameter] public EventCallback OnClick { get; set; }
-
-	string? display => FaceDown ? PlayingCard.Back : PlayingCard.ToUnicode();
-	string? suit    => FaceDown ? "back" : @PlayingCard.Suit.ToString().ToLower();
-	string? title   => FaceDown ? "Card back" : @PlayingCard.ToString();
-	string? value   => FaceDown ? null   : @PlayingCard.Value.ToString();
 }

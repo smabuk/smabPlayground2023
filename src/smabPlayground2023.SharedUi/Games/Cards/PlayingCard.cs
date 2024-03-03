@@ -36,10 +36,18 @@ public record PlayingCard(int Value, Suit Suit)
 		return char.ConvertFromUtf32(suitOffset + valueOffset);
 	}
 
-	public static IEnumerable<PlayingCard> CreateDeck => Enum.GetValues<Suit>()
-		.Where(s => s > 0)
-		.ToList()
+	public static IEnumerable<PlayingCard> CreateDeck
+		=> Enum.GetValues<Suit>()
 		.SelectMany(s => Enumerable.Range(1, 13).Select(v => new PlayingCard(v, s)));
 
-	public static IEnumerable<PlayingCard> CreateDeckWithJokers => [.. CreateDeck, new PlayingCardBlackJoker(), new PlayingCardWhiteJoker()];
+	public static IEnumerable<PlayingCard> CreateDeckWithJokers => [
+		.. CreateDeck,
+		new JokerPlayingCard(JokerType.Red),
+		new JokerPlayingCard(JokerType.Black),
+		];
+
+	public static IEnumerable<PlayingCard> CreateDeckWithAllJokers => [
+		.. CreateDeckWithJokers,
+		new JokerPlayingCard(JokerType.White),
+		];
 }

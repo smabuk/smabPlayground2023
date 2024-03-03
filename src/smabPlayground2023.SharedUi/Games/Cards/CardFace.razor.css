@@ -7,27 +7,28 @@ span {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 	background-color: white;
+	color: green;
 	user-select: none;
 }
 
-[data-suit='back']
-{
+[data-back] {
 	color: orange;
 }
 
-[data-suit='none']
-{
-	color: darkgreen;
-}
-
-[data-suit='clubs'],
-[data-suit='spades']
-{
+[data-joker-colour='black' i] {
 	color: black;
 }
 
-[data-suit='hearts'],
-[data-suit='diamonds']
-{
+[data-joker-colour='red' i] {
+	color: red;
+}
+
+[data-suit='clubs' i],
+[data-suit='spades' i] {
+	color: black;
+}
+
+[data-suit='hearts' i],
+[data-suit='diamonds' i] {
 	color: red;
 }
