@@ -1,18 +1,19 @@
-div {
-	display: contents;
-}
-
 span {
-	margin: 0.5dvmin;
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
+	text-align: center;
+	aspect-ratio: 10/14;
+	font-size: calc(100dvw / var(--card-columns));
+	margin: 0;
+	color: darkgreen;
 	background-color: white;
-	color: green;
+	border-color: black;
+	border-style: solid;
+	border-width: 1.5px;
+	border-radius: 1.5dvmin;
 	user-select: none;
 }
 
 [data-back] {
-	color: orange;
+	color: #b35400;
 }
 
 [data-joker-colour='black' i] {
@@ -20,7 +21,7 @@ span {
 }
 
 [data-joker-colour='red' i] {
-	color: red;
+	color: #ec0000;
 }
 
 [data-suit='clubs' i],
@@ -30,5 +31,5 @@ span {
 
 [data-suit='hearts' i],
 [data-suit='diamonds' i] {
-	color: red;
+	color: #ec0000;
 }

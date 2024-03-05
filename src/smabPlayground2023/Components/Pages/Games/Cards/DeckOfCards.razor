@@ -1,26 +1,37 @@
 ﻿@page "/games/cards/deckofcards"
 @page "/games/cards/deckofcards/{DeckType}"
-@rendermode InteractiveServer
+@inject PersistentComponentState appState
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 <SmabPageTitle>Deck Of Cards</SmabPageTitle>
 
 <div>
-	@foreach (PlayingCard card in deck.Keys) {
+	@foreach (PlayingCard card in cards) {
 		<CardFace PlayingCard="card" FaceDown="deck[card]" OnClick="() => deck[card] = !deck[card]" />
 	}
 </div>
 
 @code {
-	[Parameter] public string DeckType { get; set; } = "standard";
+    [Parameter] public string DeckType { get; set; } = "standard";
 
-	Dictionary<PlayingCard, bool> deck = [];
+    PlayingCard[] cards = [];
+    Dictionary<PlayingCard, bool> deck = [];
 
-	protected override void OnParametersSet()
-	{
-		deck = DeckType switch
-		{
-			"tarot" => FrenchTarotPlayingCard.CreateDeck.ToDictionary(c => c, c => false),
-			_       => PlayingCard.CreateDeckWithAllJokers.ToDictionary(c => c, c => false),
-		};
+    protected override void OnInitialized()
+    {
+		if (cards is []) {
+			cards = DeckType switch
+			{
+				"tarot" => [.. FrenchTarotPlayingCard.CreateDeck],
+				_       => [.. PlayingCard.CreateDeck],
+			};
+
+			deck = cards.ToDictionary(c => c, c => false);
+			Random.Shared.Shuffle(cards);
+		}
+    }
+
+    protected override void OnParametersSet()
+    {
     }
 }

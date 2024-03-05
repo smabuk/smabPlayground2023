@@ -19,7 +19,7 @@
 			@ondragenter="() => DragEnter()"
 			@ondragleave="() => DragLeave()"
 			@ondragover= "() => DragOver()"
-			@ondrop=     "() => Drop()"> Drop Zone</span>
+			@ondrop=     "(e) => Drop(e)"> Drop Zone</span>
 	</div>
 
 </div>
@@ -52,7 +52,7 @@
 		isOverDropZone = false;
 	}
 
-	private void Drop()
+	private void Drop(DragEventArgs e)
 	{
 		Movies.Remove(dragId);
 		dragId = "";

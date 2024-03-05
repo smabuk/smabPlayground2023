@@ -1,6 +1,9 @@
 div {
-	font-size: 18dvmin;
+	--card-columns: 6;
+	width: 100%;
 	padding: 0;
 	margin: 0;
-	line-height: 21dvmin;
+	display: grid;
+	grid-template-columns: repeat(var(--card-columns), 1fr);
+	grid-gap: 5px;
 }
