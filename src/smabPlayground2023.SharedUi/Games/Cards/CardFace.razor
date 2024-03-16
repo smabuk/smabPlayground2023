@@ -1,27 +1,23 @@
+<div @onclick="() => OnClick.InvokeAsync()" style="@(WidthInPixels is null ? null : $"--card-width: {WidthInPixels}px")">
 	@if (FaceDown) {
-		<span title="Card back"
-			  data-back @onclick="() => OnClick.InvokeAsync()">
+		<span title="Card back" data-back>
 			@PlayingCard.Back
 		</span>
 	} else if (PlayingCard is JokerPlayingCard joker) {
-		<span title="@PlayingCard"
-			  data-joker-colour="@joker.Type"
-			  @onclick="() => OnClick.InvokeAsync()">
+		<span title="@PlayingCard" data-joker-colour="@joker.Type">
 			@PlayingCard.ToUnicode()
 		</span>
 	} else {
-		<span title="@PlayingCard"
-			  data-value="@PlayingCard.Value"
-			  data-suit="@PlayingCard.Suit"
-			  @onclick="() => OnClick.InvokeAsync()">
+		<span title="@PlayingCard" data-value="@PlayingCard.Value" data-suit="@PlayingCard.Suit">
 			@PlayingCard.ToUnicode()
 		</span>
 	}
-
+</div>
 
 @code {
 	[Parameter] public required PlayingCard PlayingCard { get; set; }
 	[Parameter] public bool FaceDown { get; set; } = false;
+	[Parameter] public int? WidthInPixels { get; set; }
 
 	[Parameter] public EventCallback OnClick { get; set; }
 }

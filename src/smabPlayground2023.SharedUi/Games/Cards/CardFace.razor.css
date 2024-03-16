@@ -1,35 +1,36 @@
-span {
-	text-align: center;
+div {
+	font-size: calc(var(--card-width) * 1.2);
+	width: var(--card-width);
+	display: grid;
+	place-content: center;
 	aspect-ratio: 10/14;
-	font-size: calc(100dvw / var(--card-columns));
 	margin: 0;
-	color: darkgreen;
-	background-color: white;
-	border-color: black;
-	border-style: solid;
-	border-width: 1.5px;
-	border-radius: 1.5dvmin;
+	overflow: clip;
+	color: var(--card-colour-front, darkgreen);
+	background-color: var(--card-colour-background, white);
+	border: 1px solid black;
+	border-radius: 5%;
 	user-select: none;
 }
 
 [data-back] {
-	color: #b35400;
+	color: var(--card-colour-back, #b35400);
 }
 
 [data-joker-colour='black' i] {
-	color: black;
+	color: var(--card-colour-black, black);
 }
 
 [data-joker-colour='red' i] {
-	color: #ec0000;
+	color: var(--card-colour-red, #ec0000);
 }
 
 [data-suit='clubs' i],
 [data-suit='spades' i] {
-	color: black;
+	color: var(--card-colour-black, black);
 }
 
 [data-suit='hearts' i],
 [data-suit='diamonds' i] {
-	color: #ec0000;
+	color: var(--card-colour-red, #ec0000);
 }

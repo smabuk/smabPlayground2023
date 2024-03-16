@@ -1,9 +1,14 @@
 div {
-	--card-columns: 6;
+	--card-width: 200px;
 	width: 100%;
-	padding: 0;
-	margin: 0;
 	display: grid;
-	grid-template-columns: repeat(var(--card-columns), 1fr);
+	grid-template-columns: repeat(auto-fill, var(--card-width));
 	grid-gap: 5px;
+	place-content: center;
+}
+
+@media (max-width: 800px), (max-height: 800px) {
+	div {
+		--card-width: 67px;
+	}
 }

@@ -1,5 +1,4 @@
-﻿@page "/games/cards/deckofcards"
-@page "/games/cards/deckofcards/{DeckType}"
+﻿@page "/games/cards/deckofcards/{DeckType?}"
 @inject PersistentComponentState appState
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
@@ -12,26 +11,23 @@
 </div>
 
 @code {
-    [Parameter] public string DeckType { get; set; } = "standard";
+	[Parameter] public string? DeckType { get; set; }
 
-    PlayingCard[] cards = [];
-    Dictionary<PlayingCard, bool> deck = [];
+	PlayingCard[] cards = [];
+	Dictionary<PlayingCard, bool> deck = [];
 
-    protected override void OnInitialized()
-    {
+	protected override void OnParametersSet()
+	{
 		if (cards is []) {
 			cards = DeckType switch
 			{
-				"tarot" => [.. FrenchTarotPlayingCard.CreateDeck],
-				_       => [.. PlayingCard.CreateDeck],
+				"tarot"      => [.. FrenchTarotPlayingCard.CreateDeck],
+				"withjokers" => [.. PlayingCard.CreateDeckWithAllJokers],
+				_            => [.. PlayingCard.CreateDeck],
 			};
 
 			deck = cards.ToDictionary(c => c, c => false);
 			Random.Shared.Shuffle(cards);
 		}
-    }
-
-    protected override void OnParametersSet()
-    {
-    }
+	}
 }
