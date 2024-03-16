@@ -1,8 +1,7 @@
 ﻿@page "/games/cards/deckofcards/{DeckType?}"
 @inject PersistentComponentState appState
-@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
-<SmabPageTitle>Deck Of Cards</SmabPageTitle>
+<SmabPageTitle>Deck of Cards</SmabPageTitle>
 
 <div>
 	@foreach (PlayingCard card in cards) {
