@@ -1,5 +1,7 @@
 ﻿@page "/games/cards/deckofcards/{DeckType?}"
 @inject PersistentComponentState appState
+@implements IDisposable
+@rendermode InteractiveServer
 
 <SmabPageTitle>Deck of Cards</SmabPageTitle>
 
@@ -12,12 +14,19 @@
 @code {
 	[Parameter] public string? DeckType { get; set; }
 
+	private PersistingComponentStateSubscription _subscription;
+
 	PlayingCard[] cards = [];
 	Dictionary<PlayingCard, bool> deck = [];
 
 	protected override void OnParametersSet()
 	{
-		if (cards is []) {
+		_subscription = appState.RegisterOnPersisting(PersistState);
+
+		if (appState.TryTakeFromJson<IEnumerable<StateDto>>("deckofcards", out var stateDto)) {
+			cards = [.. stateDto!.Select(s => s.Card)];
+			deck = stateDto!.ToDictionary(s => s.Card, s => s.FaceDown);
+		} else {
 			cards = DeckType switch
 			{
 				"tarot"      => [.. FrenchTarotPlayingCard.CreateDeck],
@@ -25,8 +34,21 @@
 				_            => [.. PlayingCard.CreateDeck],
 			};
 
-			deck = cards.ToDictionary(c => c, c => false);
+			deck = cards.ToDictionary(c => c, c => Random.Shared.Next(2) == 0 ? false : true);
 			Random.Shared.Shuffle(cards);
 		}
 	}
+
+	private Task PersistState()
+	{
+		appState.PersistAsJson("deckofcards", cards.Select(c => new StateDto(c, deck[c])));
+		return Task.CompletedTask;
+	}
+
+	public void Dispose()
+	{
+		_subscription.Dispose();
+	}
+
+	private record StateDto(PlayingCard Card, bool FaceDown);
 }

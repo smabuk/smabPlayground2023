@@ -1,4 +1,9 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Cards;
+﻿using System.Text.Json.Serialization;
+
+namespace smabPlayground2023.SharedUi.Games.Cards;
+
+[JsonDerivedType(typeof(JokerPlayingCard)      , typeDiscriminator: "JokerPlayingCard")]
+[JsonDerivedType(typeof(FrenchTarotPlayingCard), typeDiscriminator: "FrenchTarotPlayingCard")]
 public record PlayingCard(int Value, Suit Suit)
 {
 	public static readonly string Back = char.ConvertFromUtf32(0x1F0A0);

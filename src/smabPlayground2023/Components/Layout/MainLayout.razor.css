@@ -23,6 +23,11 @@ main {
 	align-items: center;
 }
 
+	img {
+		height: 2.5rem;
+		padding-right: 1em;
+	}
+
 	.top-row ::deep a, .top-row ::deep .btn-link {
 		color: #fff;
 		white-space: nowrap;
