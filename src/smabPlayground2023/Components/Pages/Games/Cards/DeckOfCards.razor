@@ -20,10 +20,11 @@
 
 	protected override void OnParametersSet()
 	{
-		_stateSubscription = appState.RegisterOnPersisting(SaveState);
 		if (appState.TryTakeFromJson<IEnumerable<StateDto>>("deckofcards", out var state)) {
 			LoadState(state!);
 			return;
+		} else {
+			_stateSubscription = appState.RegisterOnPersisting(SaveState);		
 		}
 
 		cards = DeckType switch
@@ -33,7 +34,7 @@
 			_            => [.. PlayingCard.CreateDeck],
 		};
 
-		deck = cards.ToDictionary(c => c, c => Random.Shared.Next(2) == 0 ? false : true);
+		deck = cards.ToDictionary(c => c, c => Random.Shared.Next(13) == 0 ? true : false);
 		Random.Shared.Shuffle(cards);
 	}
 
@@ -58,4 +59,39 @@
 
 	private record StateDto(PlayingCard Card, bool FaceDown);
 	#endregion StateManagement
+
+	private readonly string[] descConcepts = [
+		"Single execution in Blazor Server using state persistence",
+		"Playing cards using Unicode characters",
+		"Using grid to centre position",
+		"JSON Serialization/Deserialization of derived types",
+	];
+
+	private readonly string[] descTechnologies = [
+		"PersistentComponentState",
+		"Unicode",
+		"css grid",
+	];
+
 }
+
+<Description Technologies="@descTechnologies" Concepts="@descConcepts">
+	<TextContent>
+		<p>
+			This page displays a random deck of playing cards in a grid.
+			Cards can be toggled between face up and face down by clicking on them.
+			If a card displays as a rectangle with a cross in it, then this character cannot be displayed
+			in the platforms font.
+		</p>
+		<p>
+			Valid sub-pages are <a href="/games/cards/deckofcards/tarot">deckofcards/tarot</a> and <a href="/games/cards/deckofcards/withjokers">deckofcards/withjokers</a>
+		</p>
+		<p>
+			<code>PersistentComponentState</code> is used to make sure the cards are only generated and randomised once.
+		</p>
+		<p>
+			JSON deserialization of the <code>PlayingCard</code> derived types is achieved by adding the <code>JsonDerivedType</code> attribute 
+			to the <code>PlayingCard</code> record type.
+		</p>
+	</TextContent>
+</Description>

@@ -15,3 +15,12 @@ p {
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
+
+::deep a {
+	color: var(--bs-code-color, #d63384);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

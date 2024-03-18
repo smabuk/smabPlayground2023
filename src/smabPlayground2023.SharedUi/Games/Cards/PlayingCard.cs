@@ -2,8 +2,8 @@
 
 namespace smabPlayground2023.SharedUi.Games.Cards;
 
-[JsonDerivedType(typeof(JokerPlayingCard)      , typeDiscriminator: "JokerPlayingCard")]
-[JsonDerivedType(typeof(FrenchTarotPlayingCard), typeDiscriminator: "FrenchTarotPlayingCard")]
+[JsonDerivedType(typeof(JokerPlayingCard)      , typeDiscriminator: "J")]
+[JsonDerivedType(typeof(FrenchTarotPlayingCard), typeDiscriminator: "FT")]
 public record PlayingCard(int Value, Suit Suit)
 {
 	public static readonly string Back = char.ConvertFromUtf32(0x1F0A0);
