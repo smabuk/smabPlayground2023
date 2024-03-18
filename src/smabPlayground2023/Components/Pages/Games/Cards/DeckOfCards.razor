@@ -14,41 +14,48 @@
 @code {
 	[Parameter] public string? DeckType { get; set; }
 
-	private PersistingComponentStateSubscription _subscription;
 
 	PlayingCard[] cards = [];
 	Dictionary<PlayingCard, bool> deck = [];
 
 	protected override void OnParametersSet()
 	{
-		_subscription = appState.RegisterOnPersisting(PersistState);
-
-		if (appState.TryTakeFromJson<IEnumerable<StateDto>>("deckofcards", out var stateDto)) {
-			cards = [.. stateDto!.Select(s => s.Card)];
-			deck = stateDto!.ToDictionary(s => s.Card, s => s.FaceDown);
-		} else {
-			cards = DeckType switch
-			{
-				"tarot"      => [.. FrenchTarotPlayingCard.CreateDeck],
-				"withjokers" => [.. PlayingCard.CreateDeckWithAllJokers],
-				_            => [.. PlayingCard.CreateDeck],
-			};
-
-			deck = cards.ToDictionary(c => c, c => Random.Shared.Next(2) == 0 ? false : true);
-			Random.Shared.Shuffle(cards);
+		_stateSubscription = appState.RegisterOnPersisting(SaveState);
+		if (appState.TryTakeFromJson<IEnumerable<StateDto>>("deckofcards", out var state)) {
+			LoadState(state!);
+			return;
 		}
+
+		cards = DeckType switch
+		{
+			"tarot"      => [.. FrenchTarotPlayingCard.CreateDeck],
+			"withjokers" => [.. PlayingCard.CreateDeckWithAllJokers],
+			_            => [.. PlayingCard.CreateDeck],
+		};
+
+		deck = cards.ToDictionary(c => c, c => Random.Shared.Next(2) == 0 ? false : true);
+		Random.Shared.Shuffle(cards);
 	}
 
-	private Task PersistState()
+	#region StateManagement
+	private PersistingComponentStateSubscription _stateSubscription;
+	private Task SaveState()
 	{
 		appState.PersistAsJson("deckofcards", cards.Select(c => new StateDto(c, deck[c])));
 		return Task.CompletedTask;
 	}
 
+	private void LoadState(IEnumerable<StateDto> state)
+	{
+		cards = [.. state.Select(s => s.Card)];
+		deck = state.ToDictionary(s => s.Card, s => s.FaceDown);
+	}
+
 	public void Dispose()
 	{
-		_subscription.Dispose();
+		_stateSubscription.Dispose();
 	}
 
 	private record StateDto(PlayingCard Card, bool FaceDown);
+	#endregion StateManagement
 }

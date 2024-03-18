@@ -1,0 +1,11 @@
+div {
+	display: grid;
+	place-content: center;
+	margin-bottom: 2rem;
+
+	& img {
+		aspect-ratio: 1 / 1;
+		height: 50dvmin;
+	}
+}
+
