@@ -1,12 +1,13 @@
-﻿@page "/games/boggle"
-@page "/games/boggle/{boggleType}"
-@layout BlankLayout
+﻿@page "/games/boggle/{BoggleType?}"
+@* @layout BlankLayout *@
 @rendermode InteractiveAuto
 
 <SmabPageTitle>@boggleFriendlyName</SmabPageTitle>
+
 <Boggle BoggleSetType="BoggleSetType" />
+
 @code {
-	[Parameter] public string boggleType { get; set; } = BoggleTypes.BigBoggleDeluxe;
+	[Parameter] public string BoggleType { get; set; } = BoggleTypes.BigBoggleDeluxe;
 
 	public BoggleDice.BoggleType BoggleSetType { get; set; } = BoggleDice.BoggleType.Classic4x4;
 
@@ -23,6 +24,6 @@
 
 	protected override void OnParametersSet()
 	{
-		BoggleSetType = boggleType?.ToBoggleType() ?? BoggleDice.BoggleType.BigBoggleDeluxe;
+		BoggleSetType = BoggleType?.ToBoggleType() ?? BoggleDice.BoggleType.BigBoggleDeluxe;
 	}
 }

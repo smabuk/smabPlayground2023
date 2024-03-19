@@ -4,7 +4,7 @@
 
 <div>
 	<div>
-		<SmabButton CssClass="move-button" Title="Move" Text="Random"  OnClick="async () => await RandomMove()" />
+		<SmabButton CssClass="move-button" Title="Move" Text="Random"          OnClick="async () => await RandomMove()" />
 		<SmabButton CssClass="move-button" Title="Move" Text="Move 6 above 3"  OnClick="async () => await Move(5,  2)" />
 		<SmabButton CssClass="move-button" Title="Move" Text="Move 7 above 1"  OnClick="async () => await Move(6,  0)" />
 		<SmabButton CssClass="move-button" Title="Move" Text="Move 3 above 6"  OnClick="async () => await Move(2,  5)" />
@@ -13,7 +13,7 @@
 	</div>
 	<ol>
 		@{ int i = 0; }
-		@foreach (var item in Movies) {
+		@foreach (string item in Movies) {
 			<li class="@GenerateLiClass(item, i)" style="@GenerateLiStyle(i)">
 				<span>@item</span>
 			</li>

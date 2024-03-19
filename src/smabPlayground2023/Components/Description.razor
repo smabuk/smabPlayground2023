@@ -9,18 +9,10 @@
 		}
 	</article>
 </SectionContent>
+
 @code {
-
-	[Parameter]
-	public RenderFragment? TextContent { get; set; }
-
-	[Parameter]
-	public IReadOnlyList<string>? Technologies { get; set; }
-
-	[Parameter]
-	public IReadOnlyList<string>? Concepts { get; set; }
-
-	[Parameter]
-	public string? SourceLink { get; set; }
-
+	[Parameter] public RenderFragment? TextContent { get; set; }
+	[Parameter] public IReadOnlyList<string>? Technologies { get; set; }
+	[Parameter] public IReadOnlyList<string>? Concepts { get; set; }
+	[Parameter] public string? SourceLink { get; set; }
 }

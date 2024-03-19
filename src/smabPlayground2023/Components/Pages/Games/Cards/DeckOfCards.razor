@@ -14,18 +14,16 @@
 @code {
 	[Parameter] public string? DeckType { get; set; }
 
-
 	PlayingCard[] cards = [];
 	Dictionary<PlayingCard, bool> deck = [];
 
 	protected override void OnParametersSet()
 	{
-		if (appState.TryTakeFromJson<IEnumerable<StateDto>>("deckofcards", out var state)) {
-			LoadState(state!);
-			return;
-		} else {
-			_stateSubscription = appState.RegisterOnPersisting(SaveState);		
+		if (LoadState()) {
+			return;	
 		}
+
+		_stateSubscription = appState.RegisterOnPersisting(SaveState);
 
 		cards = DeckType switch
 		{
@@ -40,22 +38,26 @@
 
 	#region StateManagement
 	private PersistingComponentStateSubscription _stateSubscription;
+
 	private Task SaveState()
 	{
-		appState.PersistAsJson("deckofcards", cards.Select(c => new StateDto(c, deck[c])));
+		appState.PersistAsJson(nameof(DeckOfCards), cards.Select(c => new StateDto(c, deck[c])));
 		return Task.CompletedTask;
 	}
 
-	private void LoadState(IEnumerable<StateDto> state)
+	private bool LoadState()
 	{
-		cards = [.. state.Select(s => s.Card)];
-		deck = state.ToDictionary(s => s.Card, s => s.FaceDown);
+		if (appState.TryTakeFromJson<IEnumerable<StateDto>>(nameof(DeckOfCards), out var state)) {
+			ArgumentNullException.ThrowIfNull(state);
+			cards = [.. state.Select(s => s.Card)];
+			deck = state.ToDictionary(s => s.Card, s => s.FaceDown);
+			return true;
+		}
+
+		return false;
 	}
 
-	public void Dispose()
-	{
-		_stateSubscription.Dispose();
-	}
+	public void Dispose() => _stateSubscription.Dispose();
 
 	private record StateDto(PlayingCard Card, bool FaceDown);
 	#endregion StateManagement

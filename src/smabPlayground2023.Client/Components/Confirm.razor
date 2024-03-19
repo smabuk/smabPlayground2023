@@ -35,35 +35,16 @@
 
 	public bool Show { get; set; }
 
-	[Parameter]
-	public string Title { get; set; } = "Delete";
-
-	[Parameter]
-	public string ButtonCssClass { get; set; } = "btn btn-danger";
-
-	[Parameter]
-	public string YesCssClass { get; set; } = "btn btn-yes";
-
-	[Parameter]
-	public string NoCssClass { get; set; } = "btn btn-no";
-
-	[Parameter]
-	public string Message { get; set; } = "Are you sure?";
-
-	[Parameter]
-	public EventCallback<bool> ConfirmChanged { get; set; }
-
-	[Parameter]
-	public EventCallback ConfirmYes { get; set; }
-
-	[Parameter]
-	public EventCallback ConfirmNo { get; set; }
-
-	[Parameter]
-	public RenderFragment? ButtonContent { get; set; }
-
-	[Parameter]
-	public RenderFragment? MessageTemplate { get; set; }
+	[Parameter] public string Title          { get; set; } = "Delete";
+	[Parameter] public string Message        { get; set; } = "Are you sure?";
+	[Parameter] public string ButtonCssClass { get; set; } = "btn btn-danger";
+	[Parameter] public string YesCssClass    { get; set; } = "btn btn-yes";
+	[Parameter] public string NoCssClass     { get; set; } = "btn btn-no";
+	[Parameter] public EventCallback<bool> ConfirmChanged { get; set; }
+	[Parameter] public EventCallback       ConfirmYes { get; set; }
+	[Parameter] public EventCallback       ConfirmNo { get; set; }
+	[Parameter] public RenderFragment? ButtonContent { get; set; }
+	[Parameter] public RenderFragment? MessageTemplate { get; set; }
 
 	public async Task Confirmation(bool value)
 	{

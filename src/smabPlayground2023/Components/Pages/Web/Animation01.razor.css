@@ -20,6 +20,7 @@ div {
 
 ::deep .move-button {
 	background-color: var(--bs-warning);
+	color: black;
 }
 
 /* animation css*/

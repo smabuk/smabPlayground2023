@@ -1,8 +1,10 @@
 ﻿@page "/dev/quickgrid01"
 @using Microsoft.AspNetCore.Components.QuickGrid
+@inject PersistentComponentState appState
+@implements IDisposable
 @rendermode InteractiveServer
-<SmabPageTitle>QuickGrid 01</SmabPageTitle>
 
+<SmabPageTitle>QuickGrid 01</SmabPageTitle>
 
 @if (Journals is not null) {
 	<div>
@@ -36,7 +38,13 @@
 
 	protected override void OnInitialized()
 	{
-		var startDate = DateOnly.FromDateTime(DateTime.Now);
+		if (LoadState()) {
+			return;
+		}
+
+		_stateSubscription = appState.RegisterOnPersisting(SaveState);
+
+		DateOnly startDate = DateOnly.FromDateTime(DateTime.Now);
 		Journals = Enumerable.Range(1, 45).Select(index => 
 			new MovieJournal(
 				index,
@@ -47,6 +55,28 @@
 		)).AsQueryable();
 	}
 
+
+	#region StateManagement
+	private PersistingComponentStateSubscription _stateSubscription;
+	private Task SaveState()
+	{
+		appState.PersistAsJson(nameof(QuickGrid01), Journals);
+		return Task.CompletedTask;
+	}
+
+	private bool LoadState()
+	{
+		if (appState.TryTakeFromJson<IEnumerable<MovieJournal>?>(nameof(QuickGrid01), out var state)) {
+			ArgumentNullException.ThrowIfNull(state);
+			Journals = state.AsQueryable();
+			return true;
+		}
+
+		return false;
+	}
+
+    public void Dispose() => _stateSubscription.Dispose();
+    #endregion StateManagement
 
 	private readonly string[] descConcepts = [
 		"Grids",

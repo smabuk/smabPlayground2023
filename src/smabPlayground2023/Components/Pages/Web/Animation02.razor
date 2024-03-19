@@ -1,10 +1,11 @@
 ﻿@page "/web/animation02"
 @rendermode InteractiveServer
+
 <SmabPageTitle>CSS Animation 02</SmabPageTitle>
 
 <div>
 	<ol>
-		@foreach (var item in Movies) {
+		@foreach (string item in Movies) {
 			<li draggable="true"
 				class="@GenerateLiClass(item)">
 				<div class="remove-button">
