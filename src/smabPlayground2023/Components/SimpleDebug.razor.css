@@ -1,3 +1,7 @@
 li {
 	word-break: break-word;
 }
+
+[data-warning] {
+	color: var(--bs-danger, #dc3545);
+}
