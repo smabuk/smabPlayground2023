@@ -4,11 +4,13 @@ div {
 
 table {
 	margin-bottom: 40px;
+	width: 100%;
 }
 
 td {
 	padding-right: 15px;
 	max-width: 50vw;
+	vertical-align: top;
 }
 
 tr td:nth-child(1) {
