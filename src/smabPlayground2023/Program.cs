@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
 using System.Reflection;
 
-using Smab.DictionaryOfWords.CSW21;
-
 using smabPlayground2023.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,9 +17,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
-//string? dictionaryFileName = builder.Configuration.GetValue<string>("DictionaryOfWords");
-//Smab.DiceAndTiles.DictionaryOfWords dictionaryOfWords = File.Exists(dictionaryFileName) ? new(dictionaryFileName) : new();
-Smab.DictionaryOfWords.IDictionaryService dictionaryOfWords = new CSW21Dictionary();
+Smab.DictionaryOfWords.IDictionaryService dictionaryOfWords = new Smab.DictionaryOfWords.CSW21.CSW21Dictionary();
 _ = builder.Services.AddSingleton(dictionaryOfWords);
 
 var app = builder.Build();
@@ -30,7 +26,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment()) {
 	app.UseWebAssemblyDebugging();
 } else {
-	_ = app.UseExceptionHandler("/Error");
+	_ = app.UseExceptionHandler("/Error", createScopeForErrors: true);
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	_ = app.UseHsts();
 }
@@ -44,7 +40,7 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
 	.AddInteractiveServerRenderMode()
 	.AddInteractiveWebAssemblyRenderMode()
-	.AddAdditionalAssemblies(typeof(smabPlayground2023.Client.Components.Pages.Counter).Assembly);
+	.AddAdditionalAssemblies(typeof(smabPlayground2023.Client._Imports).Assembly);
 
 app.UseRequestLocalization(
 	new RequestLocalizationOptions()
