@@ -1,11 +1,19 @@
 div {
-	display: grid;
+/* 	display: grid;
 	place-content: center;
 	margin-bottom: 2rem;
-
-	& img {
-		aspect-ratio: 1 / 1;
-		height: 50dvmin;
+ */
+	&::before {
+		content: "";
+		background-image: url('logo.png');
+		background-repeat: no-repeat;
+		background-position-x: center;
+		background-size: 90dvmin;
+		height: 90dvmin;
+		width: 90dvmin;
+		z-index: -100;
+		position: absolute;
+		opacity: 0.15;
 	}
 }
 
