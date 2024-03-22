@@ -11,6 +11,11 @@ builder.Services
 	.AddInteractiveServerComponents()
 	.AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddResponseCompression(options =>
+{
+	options.EnableForHttps = true;
+});
+
 builder.Services.AddLocalization();
 builder.Services.AddHealthChecks();
 
@@ -29,6 +34,7 @@ if (app.Environment.IsDevelopment()) {
 	_ = app.UseExceptionHandler("/Error", createScopeForErrors: true);
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	_ = app.UseHsts();
+	_ = app.UseResponseCompression();
 }
 
 app.UseHttpsRedirection();
