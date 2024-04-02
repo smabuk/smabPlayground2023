@@ -1,4 +1,7 @@
 div {
+	font-family: "Titillium Web";
+	font-weight: 200;
+	font-style: normal;
 	--card-width: 200px;
 	width: 100%;
 	display: grid;
