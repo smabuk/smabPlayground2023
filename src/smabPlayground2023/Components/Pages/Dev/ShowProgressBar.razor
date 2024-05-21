@@ -1,0 +1,88 @@
+﻿@page "/dev/showprogressbar"
+@implements IDisposable
+@rendermode InteractiveServer
+
+<SmabPageTitle>Show Progress Bar</SmabPageTitle>
+
+<div>
+	<div class="cancelled">@(wasCancelled ? "Cancelled" : "")</div>
+	<SmabButton CssClass="btn btn-success" OnClick="Start" Text="Start" Disabled="startIsDisabled" />
+	<SmabButton CssClass="btn btn-danger"  OnClick="Stop"  Text="Stop"  Disabled="stopIsDisabled" />
+	<label for="progress"> @($"{percentageComplete}%")</label>
+	<progress id="progress" max="100" value="@percentageComplete" />
+</div>
+
+@code {
+	CancellationTokenSource tokenSource = new();
+	bool startIsDisabled = false;
+	bool stopIsDisabled = true;
+	bool wasCancelled = false;
+	int percentageComplete = 0;
+
+	async void Start()
+	{
+		tokenSource.Dispose();
+		tokenSource = new();
+		wasCancelled = false;
+		startIsDisabled = true;
+		stopIsDisabled = false;
+		try {
+			await LongRunningMethod(tokenSource.Token, new Progress<int>(UpdateProgressBar));
+		}
+		catch (OperationCanceledException) {
+		}
+		finally {
+			startIsDisabled = false;
+			stopIsDisabled = true;
+		}
+	}
+
+	void Stop()
+	{
+		tokenSource.Cancel();
+		startIsDisabled = false;
+		stopIsDisabled = true;
+	}
+
+	async Task LongRunningMethod(CancellationToken token, IProgress<int> progress)
+	{
+		try {
+			for (int i = 0; i <= 100; i++) {
+				token.ThrowIfCancellationRequested();
+				await Task.Delay(100);
+				progress.Report(i);
+			}
+		}
+		catch (OperationCanceledException) {
+			wasCancelled = true;
+		}
+	}
+
+	void UpdateProgressBar(int percent)
+	{
+		percentageComplete = percent;
+		StateHasChanged();
+	}
+
+	public void Dispose()
+	{
+		tokenSource.Cancel();
+	}
+
+	private readonly string[] descConcepts = [
+		"ProgressBar",
+		"CancellationTokenSource",
+		"IProgress<T>()",
+		"Progress<T>()",
+	];
+
+	private readonly string[] descTechnologies = [];
+}
+
+<Description Concepts="@descConcepts">
+	<TextContent>
+		<p>
+			Using IProgress&lt;T&gt;() and cancellation tokens.
+		</p>
+	</TextContent>
+</Description>

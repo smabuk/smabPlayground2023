@@ -1,0 +1,25 @@
+div {
+	margin-top: 30px;
+}
+
+.cancelled {
+	text-align: center;
+	color: red;
+	font-weight: bold;
+	height: 1rem;
+}
+
+label {
+	margin-right: 10px;
+	width: 3rem;
+	text-align: right;
+}
+
+progress {
+	accent-color: orangered;
+	width: calc(100dvw - 240px);
+
+	&[value="100"] {
+		accent-color: green;
+	}
+}
