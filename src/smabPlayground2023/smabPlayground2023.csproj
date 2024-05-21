@@ -11,6 +11,7 @@
 		<PackageReference Include="Smab.DiceAndTiles" />
 		<PackageReference Include="Smab.DictionaryOfWords" />
 		<PackageReference Include="Smab.DictionaryOfWords.CSW12" />
+		<PackageReference Include="Smab.Helpers" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace smabPlayground2023.Tests.Dotnet90Tests;
+﻿namespace smabPlayground2023.Tests.Dotnet90Tests;
 
 public class LinqTests
 {
