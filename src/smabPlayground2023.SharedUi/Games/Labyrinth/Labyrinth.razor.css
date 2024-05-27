@@ -1,0 +1,28 @@
+#labyrinth {
+	--board-colour: orange;
+	--hover-colour: red;
+}
+
+.row {
+	margin-bottom: 20px;
+}
+
+#board {
+	width: min(95dvw, 77dvh);
+	background-color: var(--board-colour);
+	color: var(--bs-primary);
+	display: grid;
+	grid-gap: 0.1rem;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: repeat(7, 1fr);
+	padding: 0.4rem;
+	
+	& div {
+		align-content: center;
+		text-align: center;
+		aspect-ratio: 1/1;
+		background-color: darkblue;
+		color: white;
+		border: solid 1px;
+	}
+}

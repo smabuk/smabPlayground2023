@@ -1,0 +1,40 @@
+﻿<div id="labyrinth">
+	<div class="row">
+		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(gameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
+	</div>
+	@if(board is not null) {
+		<div id="board">
+			@foreach (MazeCard mazeCard in board.MazeCards) {
+				<div>
+					@if (mazeCard.NorthExit) {
+						<span class="bi bi-arrow-up" aria-hidden="true"></span>
+						<br />
+					}
+					@if (mazeCard.WestExit) {
+						<span class="bi bi-arrow-left" aria-hidden="true"></span>
+					}
+					@mazeCard.Name
+					@if (mazeCard.EastExit) {
+						<span class="bi bi-arrow-right" aria-hidden="true"></span>
+					}
+					<br />
+					@($" ({@mazeCard.Orientation}%)")
+					@if (mazeCard.SouthExit) {
+						<br />
+						<span class="bi bi-arrow-down" aria-hidden="true"></span>
+					}
+				</div>
+			}
+		</div>
+	}
+</div>
+
+@code {
+	LabyrinthBoard board = null!;
+	bool gameOver = false;
+
+	void StartNewGame()
+	{
+		board = new();
+	}
+}
