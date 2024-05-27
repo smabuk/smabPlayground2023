@@ -34,7 +34,7 @@
 	public int Score { get; set; } = 0;
 
 	[Parameter]
-	public TimeSpan TimeRemaining { get; set; } = new(0, 0, 0);
+	public TimeSpan TimeRemaining { get; set; } = TimeSpan.Zero;
 
 	private bool isDangerZone => TimeRemaining < TimeSpan.FromSeconds(10); 
 	private IEnumerable<BoggleDice.WordScore> OrderedWordList
