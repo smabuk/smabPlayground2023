@@ -30,10 +30,26 @@ public enum Treasure
 	TreasureChest,
 
 	BluePlayer,
+	GreenPlayer,
 	RedPlayer,
 	YellowPlayer,
-	GreenPlayer,
 
 	Diamond = Crown,
 	Horse = Spider,
+}
+
+public static class TreasureExtensions
+{
+	public static string ToName(this Treasure treasure)
+	{
+		return treasure switch
+		{
+			Treasure.TreasureChest => "Treasure Chest",
+			Treasure.BluePlayer    => "Blue Player",
+			Treasure.GreenPlayer   => "Green Player",
+			Treasure.RedPlayer     => "Red Player",
+			Treasure.YellowPlayer  => "Yellow Player",
+			_ => $"{treasure}",
+		};
+	}
 }

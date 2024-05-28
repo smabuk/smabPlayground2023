@@ -24,6 +24,7 @@ public class LabyrinthBoard
 	}
 
 	public List<MazeCard> MazeCards => [.. _maze.GetAllByRow()];
+	public IEnumerable<MazeCard> GetRow(int row) => [.. _maze.GetRow(row)];
 
 	public static readonly List<MazeCard> FixedMazeCards = [
 		new(GreenPlayer, false, true, true, false),

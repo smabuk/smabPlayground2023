@@ -4,27 +4,37 @@
 	</div>
 	@if(board is not null) {
 		<div id="board">
-			@foreach (MazeCard mazeCard in board.MazeCards) {
-				<div>
-					@if (mazeCard.NorthExit) {
-						<span class="bi bi-arrow-up" aria-hidden="true"></span>
-						<br />
-					}
-					@if (mazeCard.WestExit) {
-						<span class="bi bi-arrow-left" aria-hidden="true"></span>
-					}
-					@mazeCard.Name
-					@if (mazeCard.EastExit) {
-						<span class="bi bi-arrow-right" aria-hidden="true"></span>
-					}
-					<br />
-					@($" ({@mazeCard.Orientation}%)")
-					@if (mazeCard.SouthExit) {
-						<br />
-						<span class="bi bi-arrow-down" aria-hidden="true"></span>
-					}
-				</div>
+			@for (int col = 0; col < 9; col++) {
+				<div></div>
 			}
+			@for (int row = 0; row < 7; row++) {
+				<div></div>
+				@foreach (MazeCard mazeCard in board.GetRow(row)) {
+					@* <div class="arrow" data-direction="@ArrowDirection"><i class="bi bi-arrow-up-circle-fill"></i></div> *@
+					<div data-directions="@PathDirections(mazeCard)">
+						@if (mazeCard.HasExit("N")) {
+							<span class="bi bi-arrow-up" aria-hidden="true"></span>
+							<br />
+						}
+						@if (mazeCard.HasExit("W")) {
+							<span class="bi bi-arrow-left" aria-hidden="true"></span>
+						}
+						@mazeCard.Name
+						@if (mazeCard.HasExit("E")) {
+							<span class="bi bi-arrow-right" aria-hidden="true"></span>
+						}
+						<br />
+						@if (mazeCard.HasExit("S")) {
+							<span class="bi bi-arrow-down" aria-hidden="true"></span>
+						}
+					</div>
+				}
+				<div></div>
+			}
+			@for (int col = 0; col < 9; col++) {
+				<div></div>
+			}
+
 		</div>
 	}
 </div>
@@ -36,5 +46,10 @@
 	void StartNewGame()
 	{
 		board = new();
+	}
+
+	string PathDirections(MazeCard mazeCard)
+	{
+		return $"{(mazeCard.HasNorthExit() ? "N" : "")}{(mazeCard.HasEastExit() ? "E" : "")}{(mazeCard.HasSouthExit() ? "S" : "")}{(mazeCard.HasWestExit() ? "W" : "")}";
 	}
 }

@@ -2,5 +2,5 @@
 
 public record TreasureCard(Treasure Treasure)
 {
-	public string Name => Treasure.ToString();
+	public string Name => Treasure.ToName();
 }
