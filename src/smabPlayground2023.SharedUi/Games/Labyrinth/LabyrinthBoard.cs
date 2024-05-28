@@ -6,6 +6,7 @@ public class LabyrinthBoard
 
 	private readonly MazeCard[,] _maze = new MazeCard[7, 7];
 	private readonly MazeCard _spareMazeCard;
+	private readonly (int col, int row) _spareMazeCardPosition = (-1, 7);
 
 	public LabyrinthBoard()
 	{
@@ -23,6 +24,8 @@ public class LabyrinthBoard
 		static bool IsFixed(int col, int row) => col % 2 == 0 && row % 2 == 0;
 	}
 
+	public (int col, int row) ExtraMazeCardPosition => _spareMazeCardPosition;
+	public MazeCard ExtraMazeCard => _spareMazeCard;
 	public List<MazeCard> MazeCards => [.. _maze.GetAllByRow()];
 	public IEnumerable<MazeCard> GetRow(int row) => [.. _maze.GetRow(row)];
 

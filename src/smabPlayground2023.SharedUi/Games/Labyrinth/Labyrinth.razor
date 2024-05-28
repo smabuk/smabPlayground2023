@@ -3,34 +3,41 @@
 		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(gameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 	</div>
 	@if(board is not null) {
+		(int extraCardCol, int extraCardRow) = board.ExtraMazeCardPosition;
 		<div id="board">
-			@for (int col = 0; col < 9; col++) {
-				<div></div>
+			@for (int col = -1; col < 8; col++) {
+				@if (extraCardCol == col && extraCardRow == -1) {
+					MazeCard mazeCard = board.ExtraMazeCard;
+					<MazeCardPiece MazeCard="mazeCard" Extra/>
+				} else {
+					<div></div>
+				}
 			}
 			@for (int row = 0; row < 7; row++) {
-				<div></div>
+				@if (extraCardCol == -1 && extraCardRow == row) {
+					MazeCard mazeCard = board.ExtraMazeCard;
+					<MazeCardPiece MazeCard="mazeCard" Extra />
+				} else {
+					<div></div>
+				}
 				@foreach (MazeCard mazeCard in board.GetRow(row)) {
 					@* <div class="arrow" data-direction="@ArrowDirection"><i class="bi bi-arrow-up-circle-fill"></i></div> *@
-					<div data-directions="@PathDirections(mazeCard)" data-treasure="@(mazeCard.Treasure is not Treasure.None ? mazeCard.Treasure : null)">
-						@if (mazeCard.HasExit("N")) {
-							<i class="bi bi-arrow-up" aria-hidden="true" data-direction="N"></i>
-						}
-						@if (mazeCard.HasExit("W")) {
-							<i class="bi bi-arrow-left" aria-hidden="true" data-direction="W"></i>
-						}
-						@if (mazeCard.HasExit("E")) {
-							<i class="bi bi-arrow-right" aria-hidden="true" data-direction="E"></i>
-						}
-						@if (mazeCard.HasExit("S")) {
-							<i class="bi bi-arrow-down" aria-hidden="true" data-direction="S"></i>
-						}
-						<span class="emoji">@((MarkupString)(mazeCard.Treasure.ToEmoji()))</span>
-					</div>
+					<MazeCardPiece MazeCard="mazeCard" />
 				}
-				<div></div>
+				@if (extraCardCol == 7 && extraCardRow == row) {
+					MazeCard mazeCard = board.ExtraMazeCard;
+					<MazeCardPiece MazeCard="mazeCard" Extra />
+				} else {
+					<div></div>
+				}
 			}
-			@for (int col = 0; col < 9; col++) {
-				<div></div>
+			@for (int col = -1; col < 8; col++) {
+				@if (extraCardCol == col && extraCardRow == 7) {
+					MazeCard mazeCard = board.ExtraMazeCard;
+					<MazeCardPiece MazeCard="mazeCard" Extra />
+				} else {
+					<div></div>
+				}
 			}
 
 		</div>
@@ -44,10 +51,5 @@
 	void StartNewGame()
 	{
 		board = new();
-	}
-
-	string PathDirections(MazeCard mazeCard)
-	{
-		return $"{(mazeCard.HasNorthExit() ? "N" : "")}{(mazeCard.HasEastExit() ? "E" : "")}{(mazeCard.HasSouthExit() ? "S" : "")}{(mazeCard.HasWestExit() ? "W" : "")}";
 	}
 }

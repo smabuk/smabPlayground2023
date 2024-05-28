@@ -1,0 +1,58 @@
+div {
+	position: relative;
+	align-content: center;
+	text-align: center;
+	aspect-ratio: 1/1;
+	background-color: transparent;
+	color: white;
+}
+
+[data-directions] {
+	border: solid 1px;
+	border-radius: 15%;
+	background-color: #bc8f8f;
+}
+
+.emoji {
+	padding: 0;
+	margin: 0;
+	font-size: 3rem;
+	position: relative;
+	z-index: 20;
+}
+
+[data-direction] {
+	position: absolute;
+	color: yellow;
+	font-weight: bold;
+	font-size: 3dvmin;
+	margin: 0px;
+	padding: 0px;
+	z-index: 10;
+}
+
+[data-direction="N"] {
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+[data-direction="E"] {
+	top: 50%;
+	right: 0;
+	margin-right: 0.5rem;
+	transform: translate(0, -50%);
+}
+
+[data-direction="S"] {
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+[data-direction="W"] {
+	top: 50%;
+	left: 0;
+	margin-left: 0.5rem;
+	transform: translate(0, -50%);
+}
