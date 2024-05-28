@@ -55,7 +55,6 @@ public static class MazeCardExtensions
 		};
 	}
 
-
 	public static string PathDirections(this MazeCard card)
 		=> $"{(card.HasNorthExit() ? "N" : "")}{(card.HasEastExit() ? "E" : "")}{(card.HasSouthExit() ? "S" : "")}{(card.HasWestExit() ? "W" : "")}";
 }

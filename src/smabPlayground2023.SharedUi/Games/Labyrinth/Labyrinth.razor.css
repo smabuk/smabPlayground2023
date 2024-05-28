@@ -1,5 +1,5 @@
 #labyrinth {
-	--board-colour: orange;
+	--board-colour: darkblue;
 	--hover-colour: red;
 }
 
@@ -9,76 +9,77 @@
 
 #board {
 	width: min(90dvw, 77dvh);
-	/* background-color: var(--board-colour); */
+	background-color: var(--board-colour);
 	color: var(--bs-primary);
 	display: grid;
-	grid-gap: 0.1rem;
+	grid-gap: 0.2rem;
 	grid-template-columns: repeat(9, 1fr);
 	grid-template-rows: repeat(9, 1fr);
-	padding: 0.4rem;
-	& div
+	padding: 0.1rem;
+	border: solid 1px orange;
+	border-radius: 5%;
+	
+	& div {
+		position: relative;
+		align-content: center;
+		text-align: center;
+		aspect-ratio: 1/1;
+		background-color: transparent;
+		color: white;
+	}
 
-{
-	align-content: center;
-	text-align: center;
-	aspect-ratio: 1/1;
-	background-color: darkblue;
-	color: white;
-	border: solid 1px;
+	& [data-directions] {
+		border: solid 1px;
+		border-radius: 15%;
+		background-color: #bc8f8f;
+	}
+
 }
 
+.emoji {
+	padding: 0;
+	margin: 0;
+	font-size: 3rem;
+	position: relative;
+	z-index: 20;
+
+	&:hover {
+		font-size: 4.2rem;
+	}
 }
 
-.arrow {
-	color: hotpink;
+[data-direction] {
+	position: absolute;
+	color: yellow;
 	font-weight: bold;
 	font-size: 3dvmin;
-	position: absolute;
 	margin: 0px;
 	padding: 0px;
 	z-index: 10;
-
-	&[data-direction="N"] {
-		top: 0;
-		left: 50%;
-		transform: translate(-50%, 0) rotate(0deg);
-	}
-
-	&[data-direction="E"] {
-		top: 50%;
-		right: 0;
-		margin-right: 0.5rem;
-		transform: translate(0, -50%) rotate(90deg);
-	}
-
-	&[data-direction="S"] {
-		bottom: 0;
-		left: 50%;
-		transform: translate(-50%, 0) rotate(180deg);
-	}
-
-	&[data-direction="W"] {
-		top: 50%;
-		left: 0;
-		margin-left: 0.5rem;
-		transform: translate(0, -50%) rotate(270deg);
-	}
-
 }
 
-
-[data-rotation="0"] {
-	transform: rotate(0deg);
+[data-direction="N"] {
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
 }
 
-[data-rotation="90"] {
-	transform: rotate(90deg);
+[data-direction="E"] {
+	top: 50%;
+	right: 0;
+	margin-right: 0.5rem;
+	transform: translate(0, -50%);
 }
 
-[data-rotation="180"] {
-	transform: rotate(180deg);
+[data-direction="S"] {
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
 }
 
-[data-rotation="270"] {
-	transform: rotate(270deg);
+[data-direction="W"] {
+	top: 50%;
+	left: 0;
+	margin-left: 0.5rem;
+	transform: translate(0, -50%);
 }

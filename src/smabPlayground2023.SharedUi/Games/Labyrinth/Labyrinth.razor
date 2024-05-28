@@ -11,22 +11,20 @@
 				<div></div>
 				@foreach (MazeCard mazeCard in board.GetRow(row)) {
 					@* <div class="arrow" data-direction="@ArrowDirection"><i class="bi bi-arrow-up-circle-fill"></i></div> *@
-					<div data-directions="@PathDirections(mazeCard)">
+					<div data-directions="@PathDirections(mazeCard)" data-treasure="@(mazeCard.Treasure is not Treasure.None ? mazeCard.Treasure : null)">
 						@if (mazeCard.HasExit("N")) {
-							<span class="bi bi-arrow-up" aria-hidden="true"></span>
-							<br />
+							<i class="bi bi-arrow-up" aria-hidden="true" data-direction="N"></i>
 						}
 						@if (mazeCard.HasExit("W")) {
-							<span class="bi bi-arrow-left" aria-hidden="true"></span>
+							<i class="bi bi-arrow-left" aria-hidden="true" data-direction="W"></i>
 						}
-						@mazeCard.Name
 						@if (mazeCard.HasExit("E")) {
-							<span class="bi bi-arrow-right" aria-hidden="true"></span>
+							<i class="bi bi-arrow-right" aria-hidden="true" data-direction="E"></i>
 						}
-						<br />
 						@if (mazeCard.HasExit("S")) {
-							<span class="bi bi-arrow-down" aria-hidden="true"></span>
+							<i class="bi bi-arrow-down" aria-hidden="true" data-direction="S"></i>
 						}
+						<span class="emoji">@((MarkupString)(mazeCard.Treasure.ToEmoji()))</span>
 					</div>
 				}
 				<div></div>
