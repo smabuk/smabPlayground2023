@@ -1,0 +1,20 @@
+<div
+	data-directions="@MazeTile.PathDirections()"
+	data-extra="@Extra"
+	data-playerhome="@MazeTile.Treasure.IsPlayer()"
+	data-treasure="@(MazeTile.Treasure is not Treasure.None ? MazeTile.Treasure : null)"
+	data-rotation="@MazeTile.Orientation">
+	@if (MazeTile.NorthExit) { <i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" /> }
+	@if (MazeTile.WestExit) { <i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" /> }
+	@if (MazeTile.EastExit) { <i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" /> }
+	@if (MazeTile.SouthExit) { <i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" /> }
+	<span class="emoji">@((MarkupString)(MazeTile.Treasure.ToEmoji()))</span>
+</div>
+
+@code {
+	[Parameter, EditorRequired]
+	public required MazeTile MazeTile { get; set; }
+
+	[Parameter]
+	public bool Extra { get; set; } = false;
+}

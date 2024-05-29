@@ -4,36 +4,57 @@ namespace smabPlayground2023.SharedUi.Games.Labyrinth;
 public class LabyrinthBoard
 {
 	private readonly int _boardSize = 7;
-	private readonly MazeCard[,] _maze;
-	private readonly MazeCard _spareMazeCard;
-	private readonly (int col, int row) _spareMazeCardPosition;
+	private readonly MazeTile[,] _maze;
+	private readonly MazeTile _spareMazeTile;
+	private readonly (int Col, int Row) _spareMazeTilePosition;
+	private readonly int _lowerBound = -1;
+	private readonly int _upperBound = 7;
 
 	public LabyrinthBoard(int boardSize = 7)
 	{
 		_boardSize = boardSize;
-		_maze = new MazeCard[boardSize, boardSize];
+		_upperBound = boardSize;
+		_maze = new MazeTile[boardSize, boardSize];
 
-		int cardIndex = 0;
+		int tileIndex = 0;
 		for (int row = 0; row < _boardSize; row++) {
 			for (int col = 0; col < _boardSize; col++) {
 				_maze[col, row] = IsFixed(col, row)
-					? FixedMazeCards[(row * (_boardSize + 1) / 4) + (col / 2)]
-					: ShiftingMazeCards[cardIndex++];
+					? FixedMazeTiles[(row * (_boardSize + 1) / 4) + (col / 2)]
+					: ShiftingMazeTiles[tileIndex++];
 			}
 		}
 
-		_spareMazeCard = ShiftingMazeCards[cardIndex];
-		_spareMazeCardPosition = (-1, _boardSize);
+		_spareMazeTile = ShiftingMazeTiles[tileIndex];
+		_spareMazeTilePosition = (_lowerBound, _upperBound);
 
 		static bool IsFixed(int col, int row) => col % 2 == 0 && row % 2 == 0;
 	}
 
-	public (int col, int row) ExtraMazeCardPosition => _spareMazeCardPosition;
-	public MazeCard ExtraMazeCard => _spareMazeCard;
-	public List<MazeCard> MazeCards => [.. _maze.GetAllByRow()];
-	public IEnumerable<MazeCard> GetRow(int row) => [.. _maze.GetRow(row)];
+	public (int col, int row) ExtraMazeTilePosition => _spareMazeTilePosition;
+	public MazeTile ExtraMazeTile => _spareMazeTile;
+	public List<MazeTile> MazeTiles => [.. _maze.GetAllByRow()];
+	public IEnumerable<MazeTile> GetRow(int row) => [.. _maze.GetRow(row)];
 
-	public static List<MazeCard> FixedMazeCards => [
+	public bool Push(MazeTile tile, int col, int row)
+	{
+		if (_spareMazeTilePosition.Col == col && _spareMazeTilePosition.Row == row) {
+
+			return false;
+		}
+
+
+
+
+		return true;
+	}
+
+
+
+
+
+
+	public static List<MazeTile> FixedMazeTiles => [
 		new(GreenPlayer, false, true, true, false, 0),
 		new(Ring, true, true, false, true, 180),
 		new(Map, true, true, false, true, 180),
@@ -55,11 +76,11 @@ public class LabyrinthBoard
 		new(YellowPlayer, false, true, true, false, 180),
 	];
 
-	public List<MazeCard> ShiftingMazeCards = [.. CreateShuffledMazeCards()];
+	public List<MazeTile> ShiftingMazeTiles = [.. CreateShuffledMazeTiles()];
 
-	public static IEnumerable<MazeCard> CreateShuffledMazeCards()
+	public static IEnumerable<MazeTile> CreateShuffledMazeTiles()
 	{
-		MazeCard[] cards = [
+		MazeTile[] tiles = [
 			new(Spider, false, true, true, false, Random.Shared.Next(0, 4) * 90),
 			new(Ghost, true, true, false, true, Random.Shared.Next(0, 4) * 90),
 			new(Sorceress, true, true, false, true, Random.Shared.Next(0, 4) * 90),
@@ -75,12 +96,12 @@ public class LabyrinthBoard
 			new(Dragon, true, true, false, true, Random.Shared.Next(0, 4) * 90),
 			new(Beetle, false, true, true, false, Random.Shared.Next(0, 4) * 90),
 
-			.. Enumerable.Range(0, 12).Select(_ => new MazeCard(None, true, false, true, false, Random.Shared.Next(0, 4) * 90)),
-			.. Enumerable.Range(0, 10).Select(_ => new MazeCard(None, false, true, true, false, Random.Shared.Next(0, 4) * 90)),
+			.. Enumerable.Range(0, 12).Select(_ => new MazeTile(None, true, false, true, false, Random.Shared.Next(0, 4) * 90)),
+			.. Enumerable.Range(0, 10).Select(_ => new MazeTile(None, false, true, true, false, Random.Shared.Next(0, 4) * 90)),
 		];
 
-		Random.Shared.Shuffle(cards);
-		return [.. cards];
+		Random.Shared.Shuffle(tiles);
+		return [.. tiles];
 	}
 	public static IEnumerable<TreasureCard> CreateTreasureCardDeck()
 	{

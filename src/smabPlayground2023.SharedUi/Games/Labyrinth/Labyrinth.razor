@@ -4,37 +4,37 @@
 	</div>
 	@if(game is not null) {
 		LabyrinthBoard board = game.Board;
-		(int extraCardCol, int extraCardRow) = board.ExtraMazeCardPosition;
+		(int extraTileCol, int extraTileRow) = board.ExtraMazeTilePosition;
 		<div id="board">
 			@for (int col = -1; col <= game.BoardSize; col++) {
-				@if (extraCardCol == col && extraCardRow < 0) {
-					MazeCard mazeCard = board.ExtraMazeCard;
-					<MazeCardPiece MazeCard="mazeCard" Extra/>
+				@if (extraTileCol == col && extraTileRow < 0) {
+					MazeTile MazeTile = board.ExtraMazeTile;
+					<MazeTilePiece MazeTile="MazeTile" Extra/>
 				} else {
 					<div></div>
 				}
 			}
 			@for (int row = 0; row < game.BoardSize; row++) {
-				@if (extraCardCol < 0 && extraCardRow == row) {
-					MazeCard mazeCard = board.ExtraMazeCard;
-					<MazeCardPiece MazeCard="mazeCard" Extra />
+				@if (extraTileCol < 0 && extraTileRow == row) {
+					MazeTile MazeTile = board.ExtraMazeTile;
+					<MazeTilePiece MazeTile="MazeTile" Extra />
 				} else {
 					<div></div>
 				}
-				@foreach (MazeCard mazeCard in board.GetRow(row)) {
-					<MazeCardPiece MazeCard="mazeCard" />
+				@foreach (MazeTile MazeTile in board.GetRow(row)) {
+					<MazeTilePiece MazeTile="MazeTile" />
 				}
-				@if (extraCardCol == game.BoardSize && extraCardRow == row) {
-					MazeCard mazeCard = board.ExtraMazeCard;
-					<MazeCardPiece MazeCard="mazeCard" Extra />
+				@if (extraTileCol == game.BoardSize && extraTileRow == row) {
+					MazeTile MazeTile = board.ExtraMazeTile;
+					<MazeTilePiece MazeTile="MazeTile" Extra />
 				} else {
 					<div></div>
 				}
 			}
 			@for (int col = -1; col <= game.BoardSize; col++) {
-				@if (extraCardCol == col && extraCardRow == game.BoardSize) {
-					MazeCard mazeCard = board.ExtraMazeCard;
-					<MazeCardPiece MazeCard="mazeCard" Extra />
+				@if (extraTileCol == col && extraTileRow == game.BoardSize) {
+					MazeTile MazeTile = board.ExtraMazeTile;
+					<MazeTilePiece MazeTile="MazeTile" Extra />
 				} else {
 					<div></div>
 				}
@@ -46,15 +46,11 @@
 
 @code {
 	LabyrinthGame game = null!;
-	// LabyrinthBoard board = null!;
-	// List<TreasureCard> deck = null!;
 
 	bool gameOver = false;
 
 	void StartNewGame()
 	{
 		game = new();
-		// board = game.Board;
-		// deck = game.Deck;
 	}
 }

@@ -1,13 +1,8 @@
 ﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth;
 
-public record MazeCard(Treasure Treasure, bool NorthExit, bool EastExit, bool SouthExit, bool WestExit, int Orientation = 0)
+public static class MazeTileExtensions
 {
-	public string Name => Treasure.ToName();
-}
-
-public static class MazeCardExtensions
-{
-	public static bool HasNorthExit(this MazeCard card) => card.Orientation switch
+	public static bool HasNorthExit(this MazeTile card) => card.Orientation switch
 	{
 		0 => card.NorthExit,
 		90 => card.WestExit,
@@ -16,7 +11,7 @@ public static class MazeCardExtensions
 		_ => false,
 	};
 
-	public static bool HasEastExit(this MazeCard card) => card.Orientation switch
+	public static bool HasEastExit(this MazeTile card) => card.Orientation switch
 	{
 		0 => card.EastExit,
 		90 => card.NorthExit,
@@ -25,7 +20,7 @@ public static class MazeCardExtensions
 		_ => false,
 	};
 
-	public static bool HasSouthExit(this MazeCard card) => card.Orientation switch
+	public static bool HasSouthExit(this MazeTile card) => card.Orientation switch
 	{
 		0 => card.SouthExit,
 		90 => card.EastExit,
@@ -34,7 +29,7 @@ public static class MazeCardExtensions
 		_ => false,
 	};
 
-	public static bool HasWestExit(this MazeCard card) => card.Orientation switch
+	public static bool HasWestExit(this MazeTile card) => card.Orientation switch
 	{
 		0 => card.WestExit,
 		90 => card.SouthExit,
@@ -43,7 +38,7 @@ public static class MazeCardExtensions
 		_ => false,
 	};
 
-	public static bool HasExit(this MazeCard card, ReadOnlySpan<char> exit)
+	public static bool HasExit(this MazeTile card, ReadOnlySpan<char> exit)
 	{
 		return exit[0] switch
 		{
@@ -55,6 +50,6 @@ public static class MazeCardExtensions
 		};
 	}
 
-	public static string PathDirections(this MazeCard card)
+	public static string PathDirections(this MazeTile card)
 		=> $"{(card.HasNorthExit() ? "N" : "")}{(card.HasEastExit() ? "E" : "")}{(card.HasSouthExit() ? "S" : "")}{(card.HasWestExit() ? "W" : "")}";
 }
