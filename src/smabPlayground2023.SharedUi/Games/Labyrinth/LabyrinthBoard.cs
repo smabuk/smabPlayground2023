@@ -33,26 +33,26 @@ public class LabyrinthBoard
 	public List<MazeCard> MazeCards => [.. _maze.GetAllByRow()];
 	public IEnumerable<MazeCard> GetRow(int row) => [.. _maze.GetRow(row)];
 
-	public static readonly List<MazeCard> FixedMazeCards = [
-		new(GreenPlayer, false, true, true, false),
-		new(Ring, false, true, true, true),
-		new(Map, false, true, true, true),
-		new(RedPlayer, false, false, true, true),
+	public static List<MazeCard> FixedMazeCards => [
+		new(GreenPlayer, false, true, true, false, 0),
+		new(Ring, true, true, false, true, 180),
+		new(Map, true, true, false, true, 180),
+		new(RedPlayer, false, true, true, false, 90),
 
-		new(Candle, true, true, true, false),
-		new(TreasureChest, true, true, true, false),
-		new(Crown, false, true, true, true),
-		new(Book, true, false, true, true),
+		new(Candle, true, true, false, true, 90),
+		new(TreasureChest, true, true, false, true, 90),
+		new(Crown, true, true, false, true, 180),
+		new(Book, true, true, false, true, 270),
 
-		new(Knight, true, true, true, false),
-		new(Emerald, true, true, false, true),
-		new(Keys, true, false, true, true),
-		new(Money, true, false, true, true),
+		new(Knight, true, true, false, true, 90),
+		new(Emerald, true, true, false, true, 0),
+		new(Keys, true, true, false, true, 270),
+		new(Money, true, true, false, true, 270),
 
-		new(BluePlayer, true, true, false, false),
-		new(Sword, true, true, false, true),
-		new(Skeleton, true, true, false, true),
-		new(YellowPlayer, true, false, false, true),
+		new(BluePlayer, false, true, true, false, 270),
+		new(Sword, true, true, false, true, 0),
+		new(Skeleton, true, true, false, true, 0),
+		new(YellowPlayer, false, true, true, false, 180),
 	];
 
 	public List<MazeCard> ShiftingMazeCards = [.. CreateShuffledMazeCards()];

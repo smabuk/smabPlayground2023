@@ -44,6 +44,8 @@ public static class TreasureExtensions
 		=> Enum.GetValues<Treasure>()
 			.Where(t => t is > Treasure.None and < Treasure.NoPlayer);
 
+	public static bool IsPlayer(this Treasure t) => t is > Treasure.NoPlayer;
+
 	public static string ToName(this Treasure treasure)
 	{
 		return treasure switch
@@ -75,7 +77,7 @@ public static class TreasureExtensions
 			Treasure.Keys          => "\uD83D\uDDDD\uFE0F",
 			Treasure.Knight        => "\uD83E\uDD77",                               // Ninja
 			Treasure.Lizard        => "\uD83E\uDD8E",
-			Treasure.Map           => "\uD83D\uDDFA",
+			Treasure.Map           => "\uD83D\uDDFA\uFE0F",
 			Treasure.Money         => "\uD83D\uDCB0",
 			Treasure.Moth          => "\uD83E\uDD8B",                               // Butterfly
 			Treasure.Mouse         => "\uD83D\uDC01",

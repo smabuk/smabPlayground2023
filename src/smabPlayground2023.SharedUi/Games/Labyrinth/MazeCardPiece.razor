@@ -1,14 +1,19 @@
-<div data-directions="@MazeCard.PathDirections()" data-extra="@Extra" data-treasure="@(MazeCard.Treasure is not Treasure.None ? MazeCard.Treasure : null)">
-	@if (MazeCard.HasNorthExit()) {
+<div
+	data-directions="@MazeCard.PathDirections()"
+	data-extra="@Extra"
+	data-playerhome="@MazeCard.Treasure.IsPlayer()"
+	data-treasure="@(MazeCard.Treasure is not Treasure.None ? MazeCard.Treasure : null)"
+	data-rotation="@MazeCard.Orientation">
+	@if (MazeCard.NorthExit) {
 		<i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" />
 	}
-	@if (MazeCard.HasWestExit()) {
+	@if (MazeCard.WestExit) {
 		<i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" />
 	}
-	@if (MazeCard.HasEastExit()) {
+	@if (MazeCard.EastExit) {
 		<i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" />
 	}
-	@if (MazeCard.HasSouthExit()) {
+	@if (MazeCard.SouthExit) {
 		<i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" />
 	}
 	<span class="emoji">@((MarkupString)(MazeCard.Treasure.ToEmoji()))</span>
