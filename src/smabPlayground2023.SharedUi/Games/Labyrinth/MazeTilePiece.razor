@@ -1,20 +1,46 @@
 <div
+	@oncontextmenu:preventDefault="@Extra"
+	@onclick=      "async () => { await AnimateRotation( 90); await OnClick.InvokeAsync(); }"
+	@oncontextmenu="async () => { await AnimateRotation(-90); await OnContextMenu.InvokeAsync(); }"
+	rotate="@rotate"
 	data-directions="@MazeTile.PathDirections()"
 	data-extra="@Extra"
 	data-playerhome="@MazeTile.Treasure.IsPlayer()"
 	data-treasure="@(MazeTile.Treasure is not Treasure.None ? MazeTile.Treasure : null)"
-	data-rotation="@MazeTile.Orientation">
+	data-rotation="@(newOrientation ?? @MazeTile.Orientation)">
 	@if (MazeTile.NorthExit) { <i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" /> }
-	@if (MazeTile.WestExit) { <i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" /> }
-	@if (MazeTile.EastExit) { <i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" /> }
+	@if (MazeTile.WestExit)  { <i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" /> }
+	@if (MazeTile.EastExit)  { <i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" /> }
 	@if (MazeTile.SouthExit) { <i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" /> }
 	<span class="emoji">@((MarkupString)(MazeTile.Treasure.ToEmoji()))</span>
 </div>
 
 @code {
+	bool rotate = false;
+	int? newOrientation = null;
 	[Parameter, EditorRequired]
 	public required MazeTile MazeTile { get; set; }
 
 	[Parameter]
 	public bool Extra { get; set; } = false;
+
+	[CascadingParameter(Name = "LabyrinthGame")]
+	public required LabyrinthGame Game { get; set; }
+
+	[Parameter] public EventCallback OnClick { get; set; }
+	[Parameter] public EventCallback OnContextMenu { get; set; }
+
+	async Task AnimateRotation(int amount)
+	{
+		if (Extra is false) {
+			return;
+		}
+
+		rotate = true;
+		newOrientation = MazeTile.Orientation + amount;
+		await Task.Delay(500);
+		rotate = false;
+		newOrientation = null;
+	}
+
 }

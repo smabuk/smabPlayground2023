@@ -1,56 +1,75 @@
 ﻿<div id="labyrinth">
 	<div class="row">
-		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(gameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
+		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(GameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 	</div>
-	@if(game is not null) {
-		LabyrinthBoard board = game.Board;
+	@if(Game is not null) {
+		LabyrinthBoard board = Game.Board;
 		(int extraTileCol, int extraTileRow) = board.ExtraMazeTilePosition;
 		<div id="board">
-			@for (int col = -1; col <= game.BoardSize; col++) {
+			@for (int col = -1; col <= Game.BoardSize; col++) {
 				@if (extraTileCol == col && extraTileRow < 0) {
 					MazeTile MazeTile = board.ExtraMazeTile;
-					<MazeTilePiece MazeTile="MazeTile" Extra/>
+					<MazeTilePiece MazeTile="MazeTile" Extra
+						OnContextMenu="() => Game.Board.RotateExtraMazeTile(270)"
+						OnClick="() => Game.Board.RotateExtraMazeTile(90)"/>
+				} else if (col > 0 && col < Game.BoardSize && col % 2 == 1) {
+					int i = col;
+					<div><button class="btn btn-warning" type="button" @onclick="() => Game.Board.Push(Game.Board.ExtraMazeTile, i, -1)">Push</button></div>
 				} else {
 					<div></div>
 				}
 			}
-			@for (int row = 0; row < game.BoardSize; row++) {
+			@for (int row = 0; row < Game.BoardSize; row++) {
 				@if (extraTileCol < 0 && extraTileRow == row) {
 					MazeTile MazeTile = board.ExtraMazeTile;
-					<MazeTilePiece MazeTile="MazeTile" Extra />
+					<MazeTilePiece MazeTile="MazeTile" Extra
+						OnContextMenu="() => Game.Board.RotateExtraMazeTile(270)"
+						OnClick="() => Game.Board.RotateExtraMazeTile(90)" />
+					} else if (row > 0 && row < Game.BoardSize && row % 2 == 1) {
+					int i = row;
+						<div><button class="btn btn-warning" type="button" @onclick="() => Game.Board.Push(Game.Board.ExtraMazeTile, -1, i)">Push</button></div>
 				} else {
 					<div></div>
 				}
 				@foreach (MazeTile MazeTile in board.GetRow(row)) {
 					<MazeTilePiece MazeTile="MazeTile" />
 				}
-				@if (extraTileCol == game.BoardSize && extraTileRow == row) {
+				@if (extraTileCol == Game.BoardSize && extraTileRow == row) {
 					MazeTile MazeTile = board.ExtraMazeTile;
-					<MazeTilePiece MazeTile="MazeTile" Extra />
+					<MazeTilePiece MazeTile="MazeTile" Extra
+						OnContextMenu="() => Game.Board.RotateExtraMazeTile(270)"
+						OnClick="() => Game.Board.RotateExtraMazeTile(90)" />
+					} else if (row > 0 && row < Game.BoardSize && row % 2 == 1) {
+					int i = row;
+						<div><button class="btn btn-warning" type="button" @onclick="() => Game.Board.Push(Game.Board.ExtraMazeTile, Game.BoardSize, i)">Push</button></div>
 				} else {
 					<div></div>
 				}
 			}
-			@for (int col = -1; col <= game.BoardSize; col++) {
-				@if (extraTileCol == col && extraTileRow == game.BoardSize) {
+			@for (int col = -1; col <= Game.BoardSize; col++) {
+				@if (extraTileCol == col && extraTileRow == Game.BoardSize) {
 					MazeTile MazeTile = board.ExtraMazeTile;
-					<MazeTilePiece MazeTile="MazeTile" Extra />
+					<MazeTilePiece MazeTile="MazeTile" Extra
+						OnContextMenu="() => Game.Board.RotateExtraMazeTile(270)"
+						OnClick="() => Game.Board.RotateExtraMazeTile(90)" />
+				} else if (col > 0 && col < Game.BoardSize && col % 2 == 1) {
+					int i = col;
+						<div><button class="btn btn-warning" type="button" @onclick="() => Game.Board.Push(Game.Board.ExtraMazeTile, i, Game.BoardSize)">Push</button></div>
 				} else {
 					<div></div>
 				}
 			}
-
 		</div>
 	}
 </div>
 
 @code {
-	LabyrinthGame game = null!;
+	public LabyrinthGame Game { get; set; } = null!;
 
-	bool gameOver = false;
+	bool GameOver = false;
 
 	void StartNewGame()
 	{
-		game = new();
+		Game = new();
 	}
 }

@@ -2,6 +2,9 @@
 
 public static class MazeTileExtensions
 {
+
+	public static MazeTile Rotate(this MazeTile tile, int amount) => tile with { Orientation = (tile.Orientation + amount) % 360 };
+
 	public static bool HasNorthExit(this MazeTile card) => card.Orientation switch
 	{
 		0 => card.NorthExit,

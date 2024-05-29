@@ -67,6 +67,10 @@ div {
 	left: 3%;
 }
 
+[data-rotation="-90"] {
+	transform: rotate(-90deg);
+}
+
 [data-rotation="0"] {
 	transform: rotate(0deg);
 }
@@ -81,4 +85,13 @@ div {
 
 [data-rotation="270"] {
 	transform: rotate(270deg);
+}
+
+[data-rotation="360"] {
+	transform: rotate(360deg);
+}
+
+[rotate] {
+	transform: rotate();
+	transition: 0.5s ease;
 }
