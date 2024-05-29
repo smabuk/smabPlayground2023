@@ -46,10 +46,12 @@
 
 @code {
 	LabyrinthBoard board = null!;
+	List<TreasureCard> deck = null!;
 	bool gameOver = false;
 
 	void StartNewGame()
 	{
 		board = new();
+		deck = [.. TreasureCardExtensions.GetShuffledDeck()];
 	}
 }

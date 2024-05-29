@@ -29,19 +29,21 @@ public enum Treasure
 	Sword,
 	TreasureChest,
 
+	NoPlayer = 10000,
 	BluePlayer,
 	GreenPlayer,
 	RedPlayer,
 	YellowPlayer,
-
-	Diamond = Crown,
-	Horse = Spider,
 }
 
 public static class TreasureExtensions
 {
-	private static readonly string EmojiModifier = char.ConvertFromUtf32(0xFE0F);
-	
+	private static readonly string EmojiModifier = "\uFE0F";
+
+	public static IEnumerable<Treasure> GetAllTreasures()
+		=> Enum.GetValues<Treasure>()
+			.Where(t => t is > Treasure.None and < Treasure.NoPlayer);
+
 	public static string ToName(this Treasure treasure)
 	{
 		return treasure switch
@@ -61,34 +63,36 @@ public static class TreasureExtensions
 		return treasure switch
 		{
 			Treasure.None => "",
-			Treasure.Bat           => EmojiFromCode(0x1f987),
-			Treasure.Beetle        => EmojiFromCode(0x1fab2),
-			Treasure.Book          => EmojiFromCode(0x1f4d3),
-			Treasure.Candle        => EmojiFromCode(0x1f56f),
-			Treasure.Crown         => EmojiFromCode(0x1f451),
-			Treasure.Dragon        => EmojiFromCode(0x1f432),
-			Treasure.Emerald       => EmojiFromCode(0x1f48e),
-			Treasure.Genie         => EmojiFromCode(0x1f9de),
-			Treasure.Ghost         => EmojiFromCode(0x1f47b),
-			Treasure.Keys          => EmojiFromCode(0x1f511),
-			Treasure.Knight        => EmojiFromCode(0x265e),
-			Treasure.Lizard        => EmojiFromCode(0x1f98e),
-			Treasure.Map           => EmojiFromCode(0x1f5fa),
-			Treasure.Money         => EmojiFromCode(0x1f4b0),
-			Treasure.Moth          => EmojiFromCode(0x1f98b), // Butterfly
-			Treasure.Mouse         => EmojiFromCode(0x1f401),
-			Treasure.Owl           => EmojiFromCode(0x1f989),
-			Treasure.Pig           => EmojiFromCode(0x1f437),
-			Treasure.Ring          => EmojiFromCode(0x1f48d),
-			Treasure.Skeleton      => EmojiFromCode(0x1f480),
-			Treasure.Sorceress     => EmojiFromCode(0x1fa84), // Wand
-			Treasure.Spider        => EmojiFromCode(0x1f577),
-			Treasure.Sword         => EmojiFromCode(0x2694),
-			Treasure.TreasureChest => EmojiFromCode(0x1f911), // Money mouth face
-			Treasure.BluePlayer    => EmojiFromCode(0x1f535),
-			Treasure.GreenPlayer   => EmojiFromCode(0x1f7e2),
-			Treasure.RedPlayer     => EmojiFromCode(0x1f534),
-			Treasure.YellowPlayer  => EmojiFromCode(0x1f7e1),
+			Treasure.Bat           => "\uD83E\uDD87",
+			Treasure.Beetle        => "\uD83E\uDEB2",
+			Treasure.Book          => "\uD83D\uDCD3",
+			Treasure.Candle        => "\uD83D\uDD6F\uFE0F",
+			Treasure.Crown         => "\uD83D\uDC51",
+			Treasure.Dragon        => "\uD83D\uDC09",
+			Treasure.Emerald       => "\uD83D\uDC8E",                               // Gem Stone
+			Treasure.Genie         => "\uD83E\uDDDE\u200D\u2642\uFE0F",             // Man Genie
+			Treasure.Ghost         => "\uD83D\uDC7B",
+			Treasure.Keys          => "\uD83D\uDDDD\uFE0F",
+			Treasure.Knight        => "\uD83E\uDD77",                               // Ninja
+			Treasure.Lizard        => "\uD83E\uDD8E",
+			Treasure.Map           => "\uD83D\uDDFA",
+			Treasure.Money         => "\uD83D\uDCB0",
+			Treasure.Moth          => "\uD83E\uDD8B",                               // Butterfly
+			Treasure.Mouse         => "\uD83D\uDC01",
+			Treasure.Owl           => "\uD83E\uDD89",
+			Treasure.Pig           => "\uD83D\uDC16",
+			Treasure.Ring          => "\uD83D\uDC8D",
+			Treasure.Skeleton      => "\uD83D\uDC80",                               // Skull
+			Treasure.Sorceress     => "\uD83E\uDDD9\uD83C\uDFFB\u200D\u2640\uFE0F", // Woman Light-skinned Mage
+			Treasure.Spider        => "\uD83D\uDD77\uFE0F",
+			Treasure.Sword         => "\uD83D\uDDE1\uFE0F",                         // Dagger
+			Treasure.TreasureChest => "\uD83D\uDCB7",                               // Pound Banknotes
+
+
+			Treasure.BluePlayer    => "\uD83D\uDD35",                               // Blue Circle
+			Treasure.GreenPlayer   => "\uD83D\uDFE2",
+			Treasure.RedPlayer     => "\uD83D\uDD34",
+			Treasure.YellowPlayer  => "\uD83D\uDFE1",
 			_ => $"{treasure}",
 		};
 	}

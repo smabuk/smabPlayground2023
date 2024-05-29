@@ -5,6 +5,7 @@ div {
 	aspect-ratio: 1/1;
 	background-color: transparent;
 	color: white;
+	user-select: none;
 }
 
 [data-directions] {
