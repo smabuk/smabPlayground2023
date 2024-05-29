@@ -2,37 +2,37 @@
 	<div class="row">
 		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(gameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 	</div>
-	@if(board is not null) {
+	@if(game is not null) {
+		LabyrinthBoard board = game.Board;
 		(int extraCardCol, int extraCardRow) = board.ExtraMazeCardPosition;
 		<div id="board">
-			@for (int col = -1; col < 8; col++) {
-				@if (extraCardCol == col && extraCardRow == -1) {
+			@for (int col = -1; col <= game.BoardSize; col++) {
+				@if (extraCardCol == col && extraCardRow < 0) {
 					MazeCard mazeCard = board.ExtraMazeCard;
 					<MazeCardPiece MazeCard="mazeCard" Extra/>
 				} else {
 					<div></div>
 				}
 			}
-			@for (int row = 0; row < 7; row++) {
-				@if (extraCardCol == -1 && extraCardRow == row) {
+			@for (int row = 0; row < game.BoardSize; row++) {
+				@if (extraCardCol < 0 && extraCardRow == row) {
 					MazeCard mazeCard = board.ExtraMazeCard;
 					<MazeCardPiece MazeCard="mazeCard" Extra />
 				} else {
 					<div></div>
 				}
 				@foreach (MazeCard mazeCard in board.GetRow(row)) {
-					@* <div class="arrow" data-direction="@ArrowDirection"><i class="bi bi-arrow-up-circle-fill"></i></div> *@
 					<MazeCardPiece MazeCard="mazeCard" />
 				}
-				@if (extraCardCol == 7 && extraCardRow == row) {
+				@if (extraCardCol == game.BoardSize && extraCardRow == row) {
 					MazeCard mazeCard = board.ExtraMazeCard;
 					<MazeCardPiece MazeCard="mazeCard" Extra />
 				} else {
 					<div></div>
 				}
 			}
-			@for (int col = -1; col < 8; col++) {
-				@if (extraCardCol == col && extraCardRow == 7) {
+			@for (int col = -1; col <= game.BoardSize; col++) {
+				@if (extraCardCol == col && extraCardRow == game.BoardSize) {
 					MazeCard mazeCard = board.ExtraMazeCard;
 					<MazeCardPiece MazeCard="mazeCard" Extra />
 				} else {
@@ -45,13 +45,16 @@
 </div>
 
 @code {
-	LabyrinthBoard board = null!;
-	List<TreasureCard> deck = null!;
+	LabyrinthGame game = null!;
+	// LabyrinthBoard board = null!;
+	// List<TreasureCard> deck = null!;
+
 	bool gameOver = false;
 
 	void StartNewGame()
 	{
-		board = new();
-		deck = [.. TreasureCardExtensions.GetShuffledDeck()];
+		game = new();
+		// board = game.Board;
+		// deck = game.Deck;
 	}
 }

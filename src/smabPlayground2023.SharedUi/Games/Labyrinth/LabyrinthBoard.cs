@@ -3,23 +3,27 @@ namespace smabPlayground2023.SharedUi.Games.Labyrinth;
 
 public class LabyrinthBoard
 {
-
-	private readonly MazeCard[,] _maze = new MazeCard[7, 7];
+	private readonly int _boardSize = 7;
+	private readonly MazeCard[,] _maze;
 	private readonly MazeCard _spareMazeCard;
-	private readonly (int col, int row) _spareMazeCardPosition = (-1, 7);
+	private readonly (int col, int row) _spareMazeCardPosition;
 
-	public LabyrinthBoard()
+	public LabyrinthBoard(int boardSize = 7)
 	{
+		_boardSize = boardSize;
+		_maze = new MazeCard[boardSize, boardSize];
+
 		int cardIndex = 0;
-		for (int row = 0; row < 7; row++) {
-			for (int col = 0; col < 7; col++) {
+		for (int row = 0; row < _boardSize; row++) {
+			for (int col = 0; col < _boardSize; col++) {
 				_maze[col, row] = IsFixed(col, row)
-					? FixedMazeCards[(row * 4 / 2) + (col / 2)]
+					? FixedMazeCards[(row * (_boardSize + 1) / 4) + (col / 2)]
 					: ShiftingMazeCards[cardIndex++];
 			}
 		}
 
 		_spareMazeCard = ShiftingMazeCards[cardIndex];
+		_spareMazeCardPosition = (-1, _boardSize);
 
 		static bool IsFixed(int col, int row) => col % 2 == 0 && row % 2 == 0;
 	}
@@ -57,7 +61,7 @@ public class LabyrinthBoard
 	{
 		MazeCard[] cards = [
 			new(Spider, false, true, true, false, Random.Shared.Next(0, 4) * 90),
-			new (Ghost, true, true, false, true, Random.Shared.Next(0, 4) * 90),
+			new(Ghost, true, true, false, true, Random.Shared.Next(0, 4) * 90),
 			new(Sorceress, true, true, false, true, Random.Shared.Next(0, 4) * 90),
 			new(Pig, true, true, false, true, Random.Shared.Next(0, 4) * 90),
 
@@ -80,34 +84,8 @@ public class LabyrinthBoard
 	}
 	public static IEnumerable<TreasureCard> CreateTreasureCardDeck()
 	{
-		TreasureCard[] deck = [
-			new(Bat),
-			new(Beetle),
-			new(Book),
-			new(Candle),
-			new(Crown),
-			new(Dragon),
-			new(Emerald),
-			new(Genie),
-			new(Ghost),
-			new(Keys),
-			new(Knight),
-			new(Lizard),
-			new(Map),
-			new(Money),
-			new(Moth),
-			new(Mouse),
-			new(Owl),
-			new(Pig),
-			new(Ring),
-			new(Skeleton),
-			new(Sorceress),
-			new(Spider),
-			new(Sword),
-			new(TreasureChest),
-			];
-
+		TreasureCard[] deck = [.. TreasureExtensions.GetAllTreasures().Select(t => new TreasureCard(t))];
 		Random.Shared.Shuffle(deck);
-		return [.. deck];
+		return [.. deck[..24]];
 	}
 }
