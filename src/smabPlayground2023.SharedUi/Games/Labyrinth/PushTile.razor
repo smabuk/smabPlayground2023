@@ -1,0 +1,10 @@
+<div @ondblclick="() => Push.InvokeAsync()">
+	<MazeTilePiece MazeTile="MazeTile" />
+</div>
+
+@code {
+	[Parameter, EditorRequired]
+	public required MazeTile MazeTile { get; set; }
+
+	[Parameter] public EventCallback Push { get; set; }
+}

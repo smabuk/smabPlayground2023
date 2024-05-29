@@ -93,5 +93,5 @@ div {
 
 [rotate] {
 	transform: rotate();
-	transition: 0.5s ease;
+	transition: 0.2s ease;
 }

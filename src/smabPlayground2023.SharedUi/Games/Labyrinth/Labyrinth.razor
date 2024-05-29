@@ -9,54 +9,43 @@
 			@for (int col = -1; col <= Game.BoardSize; col++) {
 				@if (extraTileCol == col && extraTileRow < 0) {
 					MazeTile MazeTile = board.ExtraMazeTile;
-					<MazeTilePiece MazeTile="MazeTile" Extra
-						OnContextMenu="() => Game.Board.RotateExtraMazeTile(270)"
-						OnClick="() => Game.Board.RotateExtraMazeTile(90)"/>
+					<ExtraMazeTilePiece MazeTile="MazeTile" OnContextMenu="RotateAntiClockwise" OnClick="RotateClockwise"/>
 				} else if (col > 0 && col < Game.BoardSize && col % 2 == 1) {
 					int i = col;
-					<div><button class="btn btn-warning" type="button" @onclick="() => Game.Board.Push(Game.Board.ExtraMazeTile, i, -1)">Push</button></div>
+					<PushTile MazeTile="Game.Board.ExtraMazeTile" Push="() =>  PushTheTile(i, -1)" />
 				} else {
-					<div></div>
+					<div />
 				}
 			}
 			@for (int row = 0; row < Game.BoardSize; row++) {
 				@if (extraTileCol < 0 && extraTileRow == row) {
-					MazeTile MazeTile = board.ExtraMazeTile;
-					<MazeTilePiece MazeTile="MazeTile" Extra
-						OnContextMenu="() => Game.Board.RotateExtraMazeTile(270)"
-						OnClick="() => Game.Board.RotateExtraMazeTile(90)" />
-					} else if (row > 0 && row < Game.BoardSize && row % 2 == 1) {
+					<ExtraMazeTilePiece MazeTile="board.ExtraMazeTile" OnContextMenu="RotateAntiClockwise" OnClick="RotateClockwise" />
+				} else if (row > 0 && row < Game.BoardSize && row % 2 == 1) {
 					int i = row;
-						<div><button class="btn btn-warning" type="button" @onclick="() => Game.Board.Push(Game.Board.ExtraMazeTile, -1, i)">Push</button></div>
+					<PushTile MazeTile="Game.Board.ExtraMazeTile" Push="() =>  PushTheTile(-1, i)" />
 				} else {
-					<div></div>
+					<div />
 				}
 				@foreach (MazeTile MazeTile in board.GetRow(row)) {
 					<MazeTilePiece MazeTile="MazeTile" />
 				}
 				@if (extraTileCol == Game.BoardSize && extraTileRow == row) {
-					MazeTile MazeTile = board.ExtraMazeTile;
-					<MazeTilePiece MazeTile="MazeTile" Extra
-						OnContextMenu="() => Game.Board.RotateExtraMazeTile(270)"
-						OnClick="() => Game.Board.RotateExtraMazeTile(90)" />
-					} else if (row > 0 && row < Game.BoardSize && row % 2 == 1) {
+					<ExtraMazeTilePiece MazeTile="board.ExtraMazeTile" OnContextMenu="RotateAntiClockwise" OnClick="RotateClockwise" />
+				} else if (row > 0 && row < Game.BoardSize && row % 2 == 1) {
 					int i = row;
-						<div><button class="btn btn-warning" type="button" @onclick="() => Game.Board.Push(Game.Board.ExtraMazeTile, Game.BoardSize, i)">Push</button></div>
+					<PushTile MazeTile="Game.Board.ExtraMazeTile" Push="() =>  PushTheTile(Game.BoardSize, i)" />
 				} else {
-					<div></div>
+					<div />
 				}
 			}
 			@for (int col = -1; col <= Game.BoardSize; col++) {
 				@if (extraTileCol == col && extraTileRow == Game.BoardSize) {
-					MazeTile MazeTile = board.ExtraMazeTile;
-					<MazeTilePiece MazeTile="MazeTile" Extra
-						OnContextMenu="() => Game.Board.RotateExtraMazeTile(270)"
-						OnClick="() => Game.Board.RotateExtraMazeTile(90)" />
+					<ExtraMazeTilePiece MazeTile="board.ExtraMazeTile" OnContextMenu="RotateAntiClockwise" OnClick="RotateClockwise" />
 				} else if (col > 0 && col < Game.BoardSize && col % 2 == 1) {
 					int i = col;
-						<div><button class="btn btn-warning" type="button" @onclick="() => Game.Board.Push(Game.Board.ExtraMazeTile, i, Game.BoardSize)">Push</button></div>
+					<PushTile MazeTile="Game.Board.ExtraMazeTile" Push="() => PushTheTile(i, Game.BoardSize)" />
 				} else {
-					<div></div>
+					<div />
 				}
 			}
 		</div>
@@ -68,8 +57,8 @@
 
 	bool GameOver = false;
 
-	void StartNewGame()
-	{
-		Game = new();
-	}
+	void StartNewGame() => Game = new();
+	void PushTheTile(int col, int row) => Game.Board.Push(Game.Board.ExtraMazeTile, col, row);
+	void RotateClockwise() => Game.Board.RotateExtraMazeTile(90);
+	void RotateAntiClockwise() => Game.Board.RotateExtraMazeTile(-90);
 }
