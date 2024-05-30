@@ -5,17 +5,19 @@
 }
 
 #board {
+	container-name: board;
+	display: grid;
 	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	width: min(90dvw, 77dvh);
+	padding: 0.3rem;
+	width: min(100%, 95dvw, 80dvh);
+	aspect-ratio: 1/1;
 	background-color: var(--board-colour);
 	color: var(--bs-primary);
-	display: grid;
-	grid-gap: 0.2rem;
+	grid-gap: 0.3rem;
 	grid-template-columns: repeat(9, 1fr);
 	grid-template-rows: repeat(9, 1fr);
-	padding: 0.1rem;
 	border: solid 1px orange;
-	border-radius: 5%;
+	border-radius: 2%;
 }

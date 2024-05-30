@@ -17,7 +17,7 @@ div {
 .emoji {
 	padding: 0;
 	margin: 0;
-	font-size: 3rem;
+	font-size: 4dvmin;
 	position: relative;
 	z-index: 20;
 }
@@ -27,8 +27,8 @@ div {
 	color: yellow;
 	font-weight: bold;
 	font-size: 3dvmin;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	z-index: 10;
 }
 
@@ -41,7 +41,6 @@ div {
 [data-direction="E"] {
 	top: 50%;
 	right: 0;
-	margin-right: 0.5rem;
 	transform: translate(0, -50%);
 }
 
@@ -54,13 +53,12 @@ div {
 [data-direction="W"] {
 	top: 50%;
 	left: 0;
-	margin-left: 0.5rem;
 	transform: translate(0, -50%);
 }
 
 [data-playerhome] span {
 	position: absolute;
-	font-size: 2.5rem;
+	font-size: 3dvmin;
 	margin: 0;
 	padding: 0;
 	top: 3%;
