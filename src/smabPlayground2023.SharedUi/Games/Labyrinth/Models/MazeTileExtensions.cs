@@ -1,9 +1,9 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth;
+﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
 
 public static class MazeTileExtensions
 {
 
-	public static MazeTile Rotate(this MazeTile tile, int amount) => tile with { Orientation = (tile.Orientation + amount) % 360 };
+	public static MazeTile Rotate(this MazeTile tile, int amount) => tile with { Orientation = (tile.Orientation + amount + 360) % 360 };
 
 	public static bool HasNorthExit(this MazeTile tile) => tile.Orientation switch
 	{

@@ -5,7 +5,7 @@ public static class ArrayExtensions
 	public const int ROW_DIMENSION = 1;
 
 	public static IEnumerable<T> GetAllByRow<T>(this T[,] array)
-		=> Enumerable.Range(0, array.GetUpperBound(ROW_DIMENSION)).SelectMany(row => array.GetRow(row));
+		=> Enumerable.Range(0, array.GetUpperBound(ROW_DIMENSION) + 1).SelectMany(row => array.GetRow(row));
 
 	public static IEnumerable<T> GetCol<T>(this T[,] array, int col)
 		=> Enumerable.Range(0, array.GetUpperBound(ROW_DIMENSION) + 1).Select(row => array[col, row]);

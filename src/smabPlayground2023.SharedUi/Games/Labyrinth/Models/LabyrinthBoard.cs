@@ -1,5 +1,5 @@
-﻿using static smabPlayground2023.SharedUi.Games.Labyrinth.Treasure;
-namespace smabPlayground2023.SharedUi.Games.Labyrinth;
+﻿using static smabPlayground2023.SharedUi.Games.Labyrinth.Models.Treasure;
+namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
 
 public class LabyrinthBoard
 {
@@ -32,7 +32,7 @@ public class LabyrinthBoard
 		static bool IsFixed(int col, int row) => col % 2 == 0 && row % 2 == 0;
 	}
 
-	public (int col, int row) ExtraMazeTilePosition => _spareMazeTilePosition;
+	public (int Col, int Row) ExtraMazeTilePosition => _spareMazeTilePosition;
 	public MazeTile ExtraMazeTile => _spareMazeTile;
 	public List<MazeTile> MazeTiles => [.. _maze.GetAllByRow()];
 	public IEnumerable<MazeTile> GetRow(int row) => [.. _maze.GetRow(row)];

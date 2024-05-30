@@ -1,4 +1,4 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth;
+﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
 
 public enum Treasure
 {
