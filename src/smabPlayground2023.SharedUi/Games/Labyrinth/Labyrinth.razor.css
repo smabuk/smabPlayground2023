@@ -1,17 +1,17 @@
 #labyrinth {
 	--board-colour: darkblue;
 	--hover-colour: red;
+	--board-size: min(100%, 95dvw, 80dvh);
 	position: relative;
 }
 
 #board {
-	container-name: board;
 	display: grid;
 	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 0.3rem;
-	width: min(100%, 95dvw, 80dvh);
+	width: var(--board-size);
 	aspect-ratio: 1/1;
 	background-color: var(--board-colour);
 	color: var(--bs-primary);

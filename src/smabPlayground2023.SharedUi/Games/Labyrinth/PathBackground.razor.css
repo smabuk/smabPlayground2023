@@ -1,0 +1,33 @@
+[data-direction] {
+	position: absolute;
+	color: #ded7be;
+	font-weight: bold;
+	font-size: 3dvmin;
+	margin: 0;
+	padding: 0;
+	z-index: 10;
+}
+
+[data-direction="N"] {
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+[data-direction="E"] {
+	top: 50%;
+	right: 0;
+	transform: translate(0, -50%);
+}
+
+[data-direction="S"] {
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+[data-direction="W"] {
+	top: 50%;
+	left: 0;
+	transform: translate(0, -50%);
+}
