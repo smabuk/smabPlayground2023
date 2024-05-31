@@ -1,4 +1,6 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
+﻿using static smabPlayground2023.SharedUi.Games.Labyrinth.Direction;
+
+namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
 
 public static class MazeTileExtensions
 {
@@ -7,37 +9,37 @@ public static class MazeTileExtensions
 
 	public static bool HasNorthExit(this MazeTile tile) => tile.Orientation switch
 	{
-		0 => tile.NorthExit,
-		90 => tile.WestExit,
-		180 => tile.SouthExit,
-		270 => tile.EastExit,
+		  0 => tile.Exits.HasFlag(North),
+		 90 => tile.Exits.HasFlag(West),
+		180 => tile.Exits.HasFlag(South),
+		270 => tile.Exits.HasFlag(East),
 		_ => false,
 	};
 
 	public static bool HasEastExit(this MazeTile tile) => tile.Orientation switch
 	{
-		0 => tile.EastExit,
-		90 => tile.NorthExit,
-		180 => tile.WestExit,
-		270 => tile.SouthExit,
+		  0 => tile.Exits.HasFlag(East),
+		 90 => tile.Exits.HasFlag(North),
+		180 => tile.Exits.HasFlag(West),
+		270 => tile.Exits.HasFlag(South),
 		_ => false,
 	};
 
 	public static bool HasSouthExit(this MazeTile tile) => tile.Orientation switch
 	{
-		0 => tile.SouthExit,
-		90 => tile.EastExit,
-		180 => tile.WestExit,
-		270 => tile.NorthExit,
+		  0 => tile.Exits.HasFlag(South),
+		 90 => tile.Exits.HasFlag(East),
+		180 => tile.Exits.HasFlag(West),
+		270 => tile.Exits.HasFlag(North),
 		_ => false,
 	};
 
 	public static bool HasWestExit(this MazeTile tile) => tile.Orientation switch
 	{
-		0 => tile.WestExit,
-		90 => tile.SouthExit,
-		180 => tile.EastExit,
-		270 => tile.NorthExit,
+		  0 => tile.Exits.HasFlag(West),
+		 90 => tile.Exits.HasFlag(South),
+		180 => tile.Exits.HasFlag(East),
+		270 => tile.Exits.HasFlag(North),
 		_ => false,
 	};
 

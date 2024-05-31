@@ -6,10 +6,10 @@
 	 @oncontextmenu="async () => { await OnContextMenu.InvokeAsync(); }"
 	 @oncontextmenu:preventDefault="@Extra"
 	 @attributes="AdditionalAttributes">
-	 @if (MazeTile.NorthExit) { <i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" /> }
-	 @if (MazeTile.WestExit)  { <i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" /> }
-	 @if (MazeTile.EastExit)  { <i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" /> }
-	 @if (MazeTile.SouthExit) { <i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" /> }
+	 @if (MazeTile.Exits.HasFlag(Direction.North)) { <i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" /> }
+	 @if (MazeTile.Exits.HasFlag(Direction.West))  { <i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" /> }
+	 @if (MazeTile.Exits.HasFlag(Direction.East))  { <i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" /> }
+	 @if (MazeTile.Exits.HasFlag(Direction.South)) { <i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" /> }
 	<span class="emoji">@((MarkupString)FormatTreasure(MazeTile.Treasure))</span>
 </div>
 

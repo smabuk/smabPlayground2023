@@ -15,15 +15,13 @@ public  class LabyrinthTests
 	}
 
 	[Theory]
-	[InlineData(Treasure.Bat, Direction.North | Direction.East | Direction.West)]
-	public void MazeTile_WithTreasure_ShouldHave_Pathways(Treasure treasure, Direction expectedDirections)
+	[InlineData(Treasure.Bat,   Direction.North | Direction.East | Direction.West)]
+	[InlineData(Treasure.Mouse, Direction.South | Direction.West)]
+	public void MazeTile_WithTreasure_ShouldHave_Exits(Treasure treasure, Direction expectedDirections)
 	{
 		LabyrinthGame game = new();
 		List<MazeTile> allTiles = [game.Board.ExtraMazeTile, .. game.Board.MazeTiles];
-		MazeTile tile = allTiles.Where(m => m.Treasure == treasure).Single();
-		tile.NorthExit.ShouldBe(expectedDirections.HasFlag(Direction.North));
-		tile.EastExit.ShouldBe(expectedDirections.HasFlag(Direction.East));
-		tile.SouthExit.ShouldBe(expectedDirections.HasFlag(Direction.South));
-		tile.WestExit.ShouldBe(expectedDirections.HasFlag(Direction.West));
+		MazeTile tile = LabyrinthBoard.CreateShuffledMazeTiles().Where(m => m.Treasure == treasure).Single();
+		tile.Exits.ShouldBe(expectedDirections);
 	}
 }

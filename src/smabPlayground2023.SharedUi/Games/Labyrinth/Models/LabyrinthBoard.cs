@@ -88,25 +88,25 @@ public class LabyrinthBoard
 	public void RotateExtraMazeTile(int amount = 90) => _spareMazeTile = _spareMazeTile.Rotate(amount);
 
 	public static List<MazeTile> FixedMazeTiles => [
-		new(GreenPlayer, false, true, true, false, 0),
-		new(Ring, true, true, false, true, 180),
-		new(Map, true, true, false, true, 180),
-		new(RedPlayer, false, true, true, false, 90),
+		new(GreenPlayer,   Direction.EastSouth,       0),
+		new(Ring,          Direction.NorthEastWest, 180),
+		new(Map,           Direction.NorthEastWest, 180),
+		new(RedPlayer,     Direction.EastSouth,      90),
 
-		new(Candle, true, true, false, true, 90),
-		new(TreasureChest, true, true, false, true, 90),
-		new(Crown, true, true, false, true, 180),
-		new(Book, true, true, false, true, 270),
+		new(Candle,        Direction.NorthEastWest,  90),
+		new(TreasureChest, Direction.NorthEastWest,  90),
+		new(Crown,         Direction.NorthEastWest, 180),
+		new(Book,          Direction.NorthEastWest, 270),
 
-		new(Knight, true, true, false, true, 90),
-		new(Emerald, true, true, false, true, 0),
-		new(Keys, true, true, false, true, 270),
-		new(Money, true, true, false, true, 270),
+		new(Knight,        Direction.NorthEastWest,  90),
+		new(Emerald,       Direction.NorthEastWest,   0),
+		new(Keys,          Direction.NorthEastWest, 270),
+		new(Money,         Direction.NorthEastWest, 270),
 
-		new(BluePlayer, false, true, true, false, 270),
-		new(Sword, true, true, false, true, 0),
-		new(Skeleton, true, true, false, true, 0),
-		new(YellowPlayer, false, true, true, false, 180),
+		new(BluePlayer,    Direction.EastSouth,     270),
+		new(Sword,         Direction.NorthEastWest,   0),
+		new(Skeleton,      Direction.NorthEastWest,   0),
+		new(YellowPlayer,  Direction.EastSouth,     180),
 	];
 
 	public List<MazeTile> ShiftingMazeTiles = [.. CreateShuffledMazeTiles()];
@@ -114,23 +114,23 @@ public class LabyrinthBoard
 	public static IEnumerable<MazeTile> CreateShuffledMazeTiles()
 	{
 		MazeTile[] tiles = [
-			new(Spider, false, true, true, false, Random.Shared.Next(0, 4) * 90),
-			new(Ghost, true, true, false, true, Random.Shared.Next(0, 4) * 90),
-			new(Sorceress, true, true, false, true, Random.Shared.Next(0, 4) * 90),
-			new(Pig, true, true, false, true, Random.Shared.Next(0, 4) * 90),
+			new(Spider, Direction.EastSouth, Random.Shared.Next(0, 4) * 90),
+			new(Ghost, Direction.NorthEastWest, Random.Shared.Next(0, 4) * 90),
+			new(Sorceress, Direction.NorthEastWest, Random.Shared.Next(0, 4) * 90),
+			new(Pig, Direction.NorthEastWest, Random.Shared.Next(0, 4) * 90),
 
-			new(Moth, false, true, true, false, Random.Shared.Next(0, 4) * 90),
-			new(Owl, false, true, true, false, Random.Shared.Next(0, 4) * 90),
-			new(Genie, true, true, false, true, Random.Shared.Next(0, 4) * 90),
-			new(Mouse, false, false, true, true, Random.Shared.Next(0, 4) * 90),
+			new(Moth, Direction.EastSouth, Random.Shared.Next(0, 4) * 90),
+			new(Owl, Direction.EastSouth, Random.Shared.Next(0, 4) * 90),
+			new(Genie, Direction.NorthEastWest, Random.Shared.Next(0, 4) * 90),
+			new(Mouse, Direction.South | Direction.West, Random.Shared.Next(0, 4) * 90),
 
-			new(Lizard, false, true, true, false, Random.Shared.Next(0, 4) * 90),
-			new(Bat, true, true, false, true, Random.Shared.Next(0, 4) * 90),
-			new(Dragon, true, true, false, true, Random.Shared.Next(0, 4) * 90),
-			new(Beetle, false, true, true, false, Random.Shared.Next(0, 4) * 90),
+			new(Lizard, Direction.EastSouth, Random.Shared.Next(0, 4) * 90),
+			new(Bat, Direction.NorthEastWest, Random.Shared.Next(0, 4) * 90),
+			new(Dragon, Direction.NorthEastWest, Random.Shared.Next(0, 4) * 90),
+			new(Beetle, Direction.EastSouth, Random.Shared.Next(0, 4) * 90),
 
-			.. Enumerable.Range(0, 12).Select(_ => new MazeTile(None, true, false, true, false, Random.Shared.Next(0, 4) * 90)),
-			.. Enumerable.Range(0, 10).Select(_ => new MazeTile(None, false, true, true, false, Random.Shared.Next(0, 4) * 90)),
+			.. Enumerable.Range(0, 12).Select(_ => new MazeTile(None, Direction.NorthSouth, Random.Shared.Next(0, 4) * 90)),
+			.. Enumerable.Range(0, 10).Select(_ => new MazeTile(None, Direction.EastSouth, Random.Shared.Next(0, 4) * 90)),
 		];
 
 		Random.Shared.Shuffle(tiles);

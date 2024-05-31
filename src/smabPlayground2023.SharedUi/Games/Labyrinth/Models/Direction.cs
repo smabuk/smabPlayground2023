@@ -10,6 +10,6 @@ public enum Direction
 	West  = 8,
 
 	NorthEastWest = North | East | West,
-	EastSouth     = East | South,
+	EastSouth     = East  | South,
 	NorthSouth    = North | South,
 }
