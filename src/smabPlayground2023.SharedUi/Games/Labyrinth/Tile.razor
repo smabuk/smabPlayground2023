@@ -1,0 +1,19 @@
+@if (BoardPosition is BoardPosWithExtraMazeTile extra) {
+	<ExtraMazeTilePiece MazeTile="extra.MazeTile" OnContextMenu="() => RotateAntiClockwise.InvokeAsync()" OnClick="() => RotateClockwise.InvokeAsync()" />
+} else if (BoardPosition is BoardPosWithPush) {
+	<PushTile MazeTile="BoardPosWithExtraMazeTile.MazeTile" Push="() => PushTheTile.InvokeAsync()" />
+} else if (BoardPosition is EmptyBoardPos) {
+	<div />
+} else if (BoardPosition is BoardPosWithMazeTile tile) {
+	<MazeTilePiece MazeTile="tile.MazeTile" />
+}
+
+@code {
+
+	[Parameter] public EventCallback RotateClockwise { get; set; }
+	[Parameter] public EventCallback RotateAntiClockwise { get; set; }
+	[Parameter] public EventCallback PushTheTile { get; set; }
+
+	[Parameter, EditorRequired] public required BoardPosition BoardPosition { get; set; } 
+	[Parameter, EditorRequired] public required BoardPosWithExtraMazeTile BoardPosWithExtraMazeTile { get; set; }
+}

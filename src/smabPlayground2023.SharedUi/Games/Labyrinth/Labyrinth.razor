@@ -7,16 +7,11 @@
 			@for (int r = -1; r <= Game.BoardSize; r++) {
 				@for (int c = -1; c <= Game.BoardSize; c++) {
 					(int col, int row) = (c, r);
-					BoardPosition pos = grid[col, row];
-					@if (pos is ExtraMazeTile extra) {
-						<ExtraMazeTilePiece MazeTile="extra.MazeTile" OnContextMenu="Game.RotateAntiClockwise" OnClick="Game.RotateClockwise" />
-					} else if (pos is PushableMazeTile) {
-						<PushTile MazeTile="Game.Board.ExtraMazeTile" Push="() => Game.PushTheTile(col, row)" />
-					} else if (pos is EmptyBoardTile) {
-						<div />
-					} else if (pos is BoardMazeTile tile) {
-						<MazeTilePiece MazeTile="tile.MazeTile" />
-					}
+					<Tile BoardPosition="grid[col, row]"
+						  RotateAntiClockwise="Game.RotateAntiClockwise"
+						  RotateClockwise="Game.RotateClockwise"
+						  PushTheTile="() => Game.PushTheTile(col, row)"
+						  BoardPosWithExtraMazeTile="Game.ExtraMazeTile" />
 				}
 			}
 		</div>
@@ -26,7 +21,7 @@
 @code {
 	public LabyrinthGame Game { get; set; } = null!;
 
-	BoardPosition[,] grid => Game.GetMazeTilesAsGrid();
+	BoardPosition[,] grid => Game.AsGrid();
 	bool GameOver = false;
 
 	void StartNewGame() => Game = new();

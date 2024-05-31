@@ -1,5 +1,9 @@
 <div @onclick="() => Push.InvokeAsync()">
-	<MazeTilePiece MazeTile="MazeTile" />
+	@if (MazeTile is not null) {
+		<MazeTilePiece MazeTile="MazeTile" />
+	} else {
+		<div />
+	}
 </div>
 
 @code {

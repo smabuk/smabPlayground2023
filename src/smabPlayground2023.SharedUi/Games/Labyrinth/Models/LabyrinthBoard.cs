@@ -8,9 +8,6 @@ public class LabyrinthBoard
 	private readonly int _lowerBound = -1;
 	private readonly int _upperBound = 7;
 
-	private MazeTile _spareMazeTile;
-	private (int Col, int Row) _spareMazeTilePosition;
-
 	public LabyrinthBoard(int boardSize = 7)
 	{
 		_boardSize = boardSize;
@@ -26,20 +23,19 @@ public class LabyrinthBoard
 			}
 		}
 
-		_spareMazeTile = ShiftingMazeTiles[tileIndex];
-		_spareMazeTilePosition = (_lowerBound, _upperBound);
+		ExtraMazeTile = new(_lowerBound, _upperBound, ShiftingMazeTiles[tileIndex]);
 
 		static bool IsFixed(int col, int row) => col % 2 == 0 && row % 2 == 0;
 	}
 
-	public (int Col, int Row) ExtraMazeTilePosition => _spareMazeTilePosition;
-	public MazeTile ExtraMazeTile => _spareMazeTile;
+	public BoardPosWithExtraMazeTile ExtraMazeTile { get; internal set; }
 	public List<MazeTile> MazeTiles => [.. _maze.GetAllByRow()];
 	public IEnumerable<MazeTile> GetRow(int row) => [.. _maze.GetRow(row)];
 
-	public bool Push(MazeTile tile, int col, int row)
+	public bool Push(BoardPosWithExtraMazeTile extraMazeTile, int col, int row)
 	{
-		if (_spareMazeTilePosition.Col == col && _spareMazeTilePosition.Row == row) {
+		MazeTile tile = extraMazeTile.MazeTile;
+		if (extraMazeTile.Col == col && extraMazeTile.Row == row) {
 			return false;
 		}
 
@@ -48,30 +44,32 @@ public class LabyrinthBoard
 		}
 
 		List<MazeTile> tiles;
-		MazeTile extra;
+		MazeTile newExtra;
+		int newCol = col;
+		int newRow = row;
 		if (col == _lowerBound) {
 			tiles = [.. _maze.GetRow(row)];
-			extra = tiles[^1];
+			newExtra = tiles[^1];
 			tiles = [tile, .. tiles];
-			_spareMazeTilePosition = (_upperBound, row);
+			newCol = _upperBound;
 		} else if (col == _upperBound) {
 			tiles = [.. _maze.GetRow(row)];
-			extra = tiles[0];
+			newExtra = tiles[0];
 			tiles = [.. tiles[1..], tile];
-			_spareMazeTilePosition = (_lowerBound, row);
+			newCol = _lowerBound;
 		} else if (row == _lowerBound) {
 			tiles = [.. _maze.GetCol(col)];
-			extra = tiles[^1];
+			newExtra = tiles[^1];
 			tiles = [tile, .. tiles];
-			_spareMazeTilePosition = (col, _upperBound);
+			newRow = _upperBound;
 		} else {
 			tiles = [.. _maze.GetCol(col)];
-			extra = tiles[0];
+			newExtra = tiles[0];
 			tiles = [.. tiles[1..], tile];
-			_spareMazeTilePosition = (col, _lowerBound);
+			newRow = _lowerBound;
 		}
 
-		_spareMazeTile = extra;
+		ExtraMazeTile = new(newCol, newRow, newExtra);
 		if (col == _lowerBound || col == _upperBound) {
 			for (int i = 0; i < _upperBound; i++) {
 				_maze[i, row] = tiles[i];
@@ -85,7 +83,7 @@ public class LabyrinthBoard
 		return true;
 	}
 
-	public void RotateExtraMazeTile(int amount = 90) => _spareMazeTile = _spareMazeTile.Rotate(amount);
+	public void RotateExtraMazeTile(int amount = 90) => ExtraMazeTile = ExtraMazeTile with { MazeTile = ExtraMazeTile.MazeTile.Rotate(amount)};
 
 	public static List<MazeTile> FixedMazeTiles => [
 		new(GreenPlayer,   Direction.EastSouth,       0),
