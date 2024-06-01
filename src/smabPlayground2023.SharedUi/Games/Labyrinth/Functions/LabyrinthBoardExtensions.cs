@@ -2,6 +2,26 @@
 
 public static class LabyrinthBoardExtensions
 {
+	public static LabyrinthBoard CreateBoard(int boardSize)
+	{
+		MazeTile[,] maze = new MazeTile[boardSize, boardSize];
+		List<MazeTile> mazeTiles = [.. CreateShuffledMazeTiles()];
+
+		int tileIndex = 0;
+		for (int row = 0; row < boardSize; row++) {
+			for (int col = 0; col < boardSize; col++) {
+				maze[col, row] = IsFixed(col, row)
+					? FixedTiles[FixedTilesIndex(boardSize, col, row)]
+					: mazeTiles[tileIndex++];
+			}
+		}
+
+		return new LabyrinthBoard(maze, new(-1, boardSize, mazeTiles[^1]));
+
+		static bool IsFixed(int col, int row) => col % 2 == 0 && row % 2 == 0;
+		static int FixedTilesIndex(int boardSize, int col, int row) => (row * (boardSize + 1) / 4) + (col / 2);
+	}
+
 	public static IEnumerable<MazeTile> GetRow(this LabyrinthBoard board, int row) => [.. board.Maze.GetRow(row)];
 
 	public static LabyrinthBoard Push(this LabyrinthBoard board, int col, int row)
@@ -30,7 +50,6 @@ public static class LabyrinthBoardExtensions
 		List<MazeTile> newTiles = (col == lowerBound || row == lowerBound)
 			? [board.PositionWithExtra.MazeTile, .. oldTiles]
 			: [.. oldTiles[1..], board.PositionWithExtra.MazeTile];
-
 
 		int newExtraCol = col;
 		int newExtraRow = row;

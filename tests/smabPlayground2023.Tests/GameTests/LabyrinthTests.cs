@@ -8,14 +8,16 @@ namespace smabPlayground2023.Tests.GameTests;
 
 public  class LabyrinthTests
 {
+	readonly List<MazeTile> _shuffledTiles = [.. CreateShuffledMazeTiles()];
+
 	[Fact]
 	public void Game_Should()
 	{
-		LabyrinthGame game = new();
+		LabyrinthGame game = new([new(Treasure.BluePlayer)]);
 
 		game.BoardSize.ShouldBe(7);
-		game.PositionWithExtra.Col.ShouldBe(-1);
-		game.PositionWithExtra.Row.ShouldBe(7);
+		game.Board.PositionWithExtra.Col.ShouldBe(-1);
+		game.Board.PositionWithExtra.Row.ShouldBe(7);
 
 		BoardPosition[,] grid = game.AsGrid();
 		grid.LongLength.ShouldBe(81);
@@ -28,17 +30,17 @@ public  class LabyrinthTests
 		((BoardPosWithMazeTile)grid[ 6,  0]).MazeTile.Treasure.ShouldBe(Treasure.RedPlayer);
 		((BoardPosWithMazeTile)grid[ 6,  0]).MazeTile.Orientation.ShouldBe(90);
 
-		game.PositionWithExtra.IsAt(-1, 7).ShouldBeTrue();
-		MazeTile extraMazeTile = game.PositionWithExtra.MazeTile;
+		game.Board.PositionWithExtra.IsAt(-1, 7).ShouldBeTrue();
+		MazeTile extraMazeTile = game.Board.PositionWithExtra.MazeTile;
 		int currentOrientation = extraMazeTile.Orientation;
-		game.RotateClockwise();
-		game.PositionWithExtra.MazeTile.Orientation.ShouldBe((currentOrientation + 90) % 360);
-		game.RotateAntiClockwise();
-		game.PositionWithExtra.MazeTile.Orientation.ShouldBe(currentOrientation);
+		game = game.RotateClockwise();
+		game.Board.PositionWithExtra.MazeTile.Orientation.ShouldBe((currentOrientation + 90) % 360);
+		game = game.RotateAntiClockwise();
+		game.Board.PositionWithExtra.MazeTile.Orientation.ShouldBe(currentOrientation);
 
 		MazeTile expectedNewExtra = ((BoardPosWithMazeTile)grid[6, 5]).MazeTile;
-		game.PushTheTile(-1, 5);
-		game.PositionWithExtra.MazeTile.ShouldBe(expectedNewExtra);
+		game = game.PushTheTile(-1, 5);
+		game.Board.PositionWithExtra.MazeTile.ShouldBe(expectedNewExtra);
 	}
 
 	[Theory]
@@ -46,8 +48,7 @@ public  class LabyrinthTests
 	[InlineData(Treasure.Mouse, "NW",  Direction.South | Direction.West)]
 	public void MazeTile_WithTreasure_WithOrientation90_ShouldHave_Exits(Treasure treasure, string expectedPath, Direction expectedDirections)
 	{
-		LabyrinthGame game = new();
-		MazeTile tile = CreateShuffledMazeTiles().Where(m => m.Treasure == treasure).Single() with { Orientation = 90 };
+		MazeTile tile = _shuffledTiles.Where(m => m.Treasure == treasure).Single() with { Orientation = 90 };
 		tile.Exits.ShouldBe(expectedDirections);
 		tile.PathDirections().ShouldBe(expectedPath);
 	}

@@ -1,4 +1,6 @@
-﻿global using smabPlayground2023.SharedUi.Games.Labyrinth.Models;
+﻿global using System.Collections.Immutable;
+
+global using smabPlayground2023.SharedUi.Games.Labyrinth.Models;
 global using smabPlayground2023.SharedUi.Games.Labyrinth.Functions;
 
 global using static smabPlayground2023.SharedUi.Games.Labyrinth.Functions.ArrayExtensions;

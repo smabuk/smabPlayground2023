@@ -8,10 +8,10 @@
 				@for (int c = -1; c <= Game.BoardSize; c++) {
 					(int col, int row) = (c, r);
 					<Tile BoardPosition="grid[col, row]"
-						  RotateAntiClockwise="Game.RotateAntiClockwise"
-						  RotateClockwise="Game.RotateClockwise"
-						  PushTheTile="() => Game.PushTheTile(col, row)"
-						  BoardPosWithExtraMazeTile="Game.PositionWithExtra" />
+						  RotateAntiClockwise="() => Game = Game.RotateAntiClockwise()"
+						  RotateClockwise="() => Game = Game.RotateClockwise()"
+						  PushTheTile="() => Game = Game.PushTheTile(col, row)"
+						  BoardPosWithExtraMazeTile="Game.Board.PositionWithExtra" />
 				}
 			}
 		</div>
@@ -19,10 +19,10 @@
 </div>
 
 @code {
-	public LabyrinthGame Game { get; set; } = null!;
+	public required LabyrinthGame Game { get; set; }
 
 	BoardPosition[,] grid => Game.AsGrid();
 	bool GameOver = false;
 
-	void StartNewGame() => Game = new();
+	void StartNewGame() => Game = new([new(BluePlayer)]);
 }
