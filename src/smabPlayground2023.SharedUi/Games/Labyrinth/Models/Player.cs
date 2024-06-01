@@ -1,3 +1,3 @@
 ﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
 
-public record Player(Treasure Home);
+public sealed record Player(Treasure Home);

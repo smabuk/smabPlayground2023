@@ -1,9 +1,10 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth;
+﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
 
 [Flags]
 public enum Direction
 {
-	None  = 0,
+	NoDirection = 0,
+
 	North = 1,
 	East  = 2,
 	South = 4,

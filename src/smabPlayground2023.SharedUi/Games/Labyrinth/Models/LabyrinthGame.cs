@@ -1,20 +1,39 @@
 ﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
-public class LabyrinthGame(int boardSize = 7)
+
+public sealed class LabyrinthGame(int boardSize = 7)
 {
 	public readonly int BoardSize = boardSize;
 	
-	readonly List<TreasureCard> _deck = [.. LabyrinthBoard.CreateTreasureCardDeck()];
-	readonly List<Player> _players = [new(Treasure.BluePlayer)];
-	readonly LabyrinthBoard _board = new(boardSize);
-	
-	public BoardPosWithExtraMazeTile ExtraMazeTile => _board.ExtraMazeTile;
+	readonly List<TreasureCard> _deck = [.. CreateTreasureCardDeck()];
+	readonly List<Player> _players = [new(BluePlayer)];
+	LabyrinthBoard _board = CreateBoard(boardSize);
 
+	private static LabyrinthBoard CreateBoard(int boardSize)
+	{
+		MazeTile[,] maze = new MazeTile[boardSize, boardSize];
+		List<MazeTile> mazeTiles = [.. CreateShuffledMazeTiles()];
 
-	public void PushTheTile(int col, int row) => _board.Push(ExtraMazeTile, col, row);
+		int tileIndex = 0;
+		for (int row = 0; row < boardSize; row++) {
+			for (int col = 0; col < boardSize; col++) {
+				maze[col, row] = IsFixed(col, row)
+					? FixedTiles[(row * (boardSize + 1) / 4) + (col / 2)]
+					: mazeTiles[tileIndex++];
+			}
+		}
 
-	public void RotateClockwise() => _board.RotateExtraMazeTile(90);
+		return new LabyrinthBoard(maze, new(-1, boardSize, mazeTiles[^1]));
 
-	public void RotateAntiClockwise() => _board.RotateExtraMazeTile(-90);
+		static bool IsFixed(int col, int row) => col % 2 == 0 && row % 2 == 0;
+	}
+
+	public BoardPosWithExtraMazeTile PositionWithExtra => _board.PositionWithExtra;
+
+	public void PushTheTile(int col, int row) => _board = _board.Push(col, row);
+
+	public void RotateClockwise() => _board = _board.RotateExtraMazeTile(90);
+
+	public void RotateAntiClockwise() => _board = _board.RotateExtraMazeTile(-90);
 
 	public BoardPosition[,] AsGrid()
 	{
@@ -36,7 +55,7 @@ public class LabyrinthGame(int boardSize = 7)
 			}
 		}
 
-		grid[ExtraMazeTile.Col, ExtraMazeTile.Row] = ExtraMazeTile;
+		grid[PositionWithExtra.Col, PositionWithExtra.Row] = PositionWithExtra;
 
 		for (int row = 0; row < boardSize; row++) {
 			List<MazeTile> tiles = [.. board.GetRow(row)];

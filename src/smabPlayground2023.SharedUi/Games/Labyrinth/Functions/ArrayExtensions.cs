@@ -1,4 +1,4 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth;
+﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Functions;
 public static class ArrayExtensions
 {
 	public const int COL_DIMENSION = 0;

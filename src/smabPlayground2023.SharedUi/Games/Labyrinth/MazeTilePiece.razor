@@ -1,4 +1,4 @@
-<div data-treasure="@(MazeTile.Treasure is not Treasure.None ? MazeTile.Treasure : null)"
+<div data-treasure="@(MazeTile.Treasure is not Treasure.NoTreasure ? MazeTile.Treasure : null)"
 	 data-directions="@MazeTile.PathDirections()"
 	 data-playerhome="@MazeTile.Treasure.IsPlayer()"
 	 data-rotation="@MazeTile.Orientation"

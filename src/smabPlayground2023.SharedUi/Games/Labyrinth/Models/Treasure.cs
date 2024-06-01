@@ -2,7 +2,7 @@
 
 public enum Treasure
 {
-	None,
+	NoTreasure,
 
 	Bat,
 	Beetle,

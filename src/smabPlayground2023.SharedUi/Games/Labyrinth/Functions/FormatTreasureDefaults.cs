@@ -1,14 +1,4 @@
-﻿using static smabPlayground2023.SharedUi.Games.Labyrinth.Models.Treasure;
-
-namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
-
-public static class TreasureExtensions
-{
-	public static IEnumerable<Treasure> GetAllTreasures()
-		=> Enum.GetValues<Treasure>().Where(t => t is > None and < NoPlayer);
-
-	public static bool IsPlayer(this Treasure t) => t is > NoPlayer;
-}
+﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Functions;
 
 public delegate string FormatTreasure(Treasure treasure);
 
@@ -16,7 +6,7 @@ public static class FormatTreasureDefaults
 {
 	public static FormatTreasure FormatFullName => treasure => treasure switch
 	{
-		None          => "",
+		NoTreasure          => "",
 		TreasureChest => "Treasure Chest",
 		BluePlayer    => "Blue Player",
 		GreenPlayer   => "Green Player",
@@ -27,7 +17,7 @@ public static class FormatTreasureDefaults
 
 	public static FormatTreasure DefaultEmoji => treasure => treasure switch
 	{
-		None          => "",
+		NoTreasure          => "",
 		Bat           => "\uD83E\uDD87",
 		Beetle        => "\uD83E\uDEB2",
 		Book          => "\uD83D\uDCD3",

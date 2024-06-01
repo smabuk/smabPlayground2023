@@ -1,5 +1,5 @@
 @if (BoardPosition is BoardPosWithExtraMazeTile extra) {
-	<ExtraMazeTilePiece MazeTile="extra.MazeTile" OnContextMenu="() => RotateAntiClockwise.InvokeAsync()" OnClick="() => RotateClockwise.InvokeAsync()" />
+	<ExtraMazeTilePiece MazeTile="extra.MazeTile" RotateAntiClockwise="() => RotateAntiClockwise.InvokeAsync()" RotateClockwise="() => RotateClockwise.InvokeAsync()" />
 } else if (BoardPosition is BoardPosWithPush) {
 	<PushTile MazeTile="BoardPosWithExtraMazeTile.MazeTile" Push="() => PushTheTile.InvokeAsync()" />
 } else if (BoardPosition is EmptyBoardPos) {

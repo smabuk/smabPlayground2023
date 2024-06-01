@@ -1,6 +1,4 @@
-﻿using static smabPlayground2023.SharedUi.Games.Labyrinth.Direction;
-
-namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
+﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Functions;
 
 public static class MazeTileExtensions
 {

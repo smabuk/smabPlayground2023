@@ -4,8 +4,8 @@
 			   data-extra
 			   rotate="@rotate"
 			   data-rotation="@(newOrientation ?? @MazeTile.Orientation)"
-			   OnClick=      "async () => { await AnimateRotation( 90); await OnClick.InvokeAsync(); }"
-			   OnContextMenu="async () => { await AnimateRotation(-90); await OnContextMenu.InvokeAsync(); }"
+			   OnClick="async () => { await AnimateRotation( 90); await RotateClockwise.InvokeAsync(); }"
+			   OnContextMenu="async () => { await AnimateRotation(-90); await RotateAntiClockwise.InvokeAsync(); }"
 			   @ondragstart="() => {}"
 			   @ondragend="() => {}" />
 
@@ -16,8 +16,8 @@
 	[Parameter, EditorRequired]
 	public required MazeTile MazeTile { get; set; }
 
-	[Parameter] public EventCallback OnClick { get; set; }
-	[Parameter] public EventCallback OnContextMenu { get; set; }
+	[Parameter] public EventCallback RotateClockwise { get; set; }
+	[Parameter] public EventCallback RotateAntiClockwise { get; set; }
 
 	async Task AnimateRotation(int amount)
 	{
