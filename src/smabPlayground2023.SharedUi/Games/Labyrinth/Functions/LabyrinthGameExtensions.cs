@@ -35,6 +35,7 @@ public static class LabyrinthGameExtensions
 	}
 
 	public static LabyrinthGame PushTheTile(this LabyrinthGame game, int col, int row) => game with { Board = game.Board.Push(col, row) };
+	public static LabyrinthGame Rotate(this LabyrinthGame game, int amount) => game with { Board = game.Board.RotateExtraMazeTile(amount) };
 	public static LabyrinthGame RotateClockwise(this LabyrinthGame game) => game with { Board = game.Board.RotateExtraMazeTile(90) };
 	public static LabyrinthGame RotateAntiClockwise(this LabyrinthGame game) => game with { Board = game.Board.RotateExtraMazeTile(-90) };
 }

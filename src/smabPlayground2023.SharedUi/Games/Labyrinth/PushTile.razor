@@ -1,14 +1,51 @@
-<div @onclick="() => Push.InvokeAsync()">
-	@if (MazeTile is not null) {
-		<MazeTilePiece MazeTile="MazeTile" />
+<div @ondragenter:preventDefault
+	 @ondragleave:preventDefault
+	 @ondragover:preventDefault
+	 @ondragenter="() => {}"
+	 @ondragleave="() => {}"
+	 @ondragover="() => {}"
+	 @oncontextmenu:preventDefault="BoardPosition is BoardPosWithExtraMazeTile"
+	 @ondrop="() => OnDrop.InvokeAsync()">
+	@if (BoardPosition is BoardPosWithExtraMazeTile extra) {
+		<MazeTilePiece MazeTile="extra.MazeTile"
+					   draggable="true"
+					   rotate="@rotate"
+					   data-rotation="@(newOrientation ?? extra.MazeTile.Orientation)"
+					   OnClick="async () => { await AnimateRotation(90); await RotateClockwise.InvokeAsync(); }"
+					   OnContextMenu="async () => { await AnimateRotation(-90); await RotateAntiClockwise.InvokeAsync(); }" />
+		<PushButton Direction="ArrowDirection()" Push="() => Push.InvokeAsync()" />
 	} else {
-		<div />
+		<PushButton Direction="ArrowDirection()" />
 	}
 </div>
 
 @code {
-	[Parameter, EditorRequired]
-	public required MazeTile MazeTile { get; set; }
+	[Parameter, EditorRequired] public required BoardPosition BoardPosition { get; set; }
+	[Parameter] public required int BoardSize { get; set; }
 
 	[Parameter] public EventCallback Push { get; set; }
+	[Parameter] public EventCallback OnDrop { get; set; }
+	[Parameter] public EventCallback RotateClockwise { get; set; }
+	[Parameter] public EventCallback RotateAntiClockwise { get; set; }
+
+	bool rotate = false;
+	int? newOrientation = null;
+
+	Direction ArrowDirection() => (BoardPosition.Col, BoardPosition.Row) switch
+	{
+		(-1,  _) => East,
+		( _, -1) => South,
+		_ when BoardPosition.Col == BoardSize => West,
+		_ when BoardPosition.Row == BoardSize => North,
+		_ => throw new ArgumentException()
+	};
+
+	async Task AnimateRotation(int amount)
+	{
+		rotate = true;
+		newOrientation = (BoardPosition as BoardPosWithExtraMazeTile)!.MazeTile.Orientation + amount;
+		await Task.Delay(200);
+		rotate = false;
+		newOrientation = null;
+	}
 }

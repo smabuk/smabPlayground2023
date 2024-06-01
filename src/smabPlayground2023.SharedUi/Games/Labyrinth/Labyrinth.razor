@@ -3,15 +3,17 @@
 		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(GameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 	</div>
 	@if (Game is not null) {
-		<div id="board">
+		<div id="board" data-player="@FormatFullName(Game.Players[currentPlayer].Home)[0]">
 			@for (int r = -1; r <= Game.BoardSize; r++) {
 				@for (int c = -1; c <= Game.BoardSize; c++) {
 					(int col, int row) = (c, r);
-					<Tile BoardPosition="grid[col, row]"
-						  RotateAntiClockwise="() => Game = Game.RotateAntiClockwise()"
-						  RotateClockwise="() => Game = Game.RotateClockwise()"
-						  PushTheTile="() => Game = Game.PushTheTile(col, row)"
-						  BoardPosWithExtraMazeTile="Game.Board.PositionWithExtra" />
+					<Tile BoardSize="Game.BoardSize"
+						  BoardPosition="grid[col, row]"
+						  RotateAntiClockwise="() => Rotate(-90)"
+						  RotateClockwise="() => Rotate(90)"
+						  PushTheTile="() => PushTheTile(col, row)"
+						  DropTheTile="() => positionWithExtra = positionWithExtra with { Col = col, Row = row } "
+						  BoardPosWithExtraMazeTile="positionWithExtra" />
 				}
 			}
 		</div>
@@ -20,9 +22,28 @@
 
 @code {
 	public required LabyrinthGame Game { get; set; }
+	private BoardPosWithExtraMazeTile positionWithExtra = default!;
 
 	BoardPosition[,] grid => Game.AsGrid();
+	int currentPlayer = 0;
 	bool GameOver = false;
 
-	void StartNewGame() => Game = new([new(BluePlayer)]);
+	void StartNewGame()
+	{
+		Game = new([new(BluePlayer), new(RedPlayer), new(GreenPlayer), new(YellowPlayer)]);
+		positionWithExtra = Game.Board.PositionWithExtra;
+	}
+
+	void PushTheTile(int col, int row)
+	{
+		Game = Game.PushTheTile(col, row);
+		positionWithExtra = Game.Board.PositionWithExtra;
+		currentPlayer = (currentPlayer + 1) % Game.Players.Count;
+	}
+
+	void Rotate(int amount)
+	{
+		Game = Game.Rotate(amount);
+		positionWithExtra = positionWithExtra with { MazeTile = Game.Board.PositionWithExtra.MazeTile };
+	}
 }

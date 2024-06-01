@@ -1,7 +1,9 @@
 @if (BoardPosition is BoardPosWithExtraMazeTile extra) {
 	<ExtraMazeTilePiece MazeTile="extra.MazeTile" RotateAntiClockwise="() => RotateAntiClockwise.InvokeAsync()" RotateClockwise="() => RotateClockwise.InvokeAsync()" />
+} else if (BoardPosition is BoardPosWithPush && BoardPosition.IsAtTheSamePosition(BoardPosWithExtraMazeTile)) {
+	<PushTile BoardPosition="BoardPosWithExtraMazeTile" Push="() => PushTheTile.InvokeAsync()" RotateAntiClockwise="() => RotateAntiClockwise.InvokeAsync()" RotateClockwise="() => RotateClockwise.InvokeAsync()" BoardSize="BoardSize" />
 } else if (BoardPosition is BoardPosWithPush) {
-	<PushTile MazeTile="BoardPosWithExtraMazeTile.MazeTile" Push="() => PushTheTile.InvokeAsync()" />
+	<PushTile BoardPosition="BoardPosition" Push="() => PushTheTile.InvokeAsync()" OnDrop="() => DropTheTile.InvokeAsync()" BoardSize="BoardSize" />
 } else if (BoardPosition is EmptyBoardPos) {
 	<div />
 } else if (BoardPosition is BoardPosWithMazeTile tile) {
@@ -9,11 +11,12 @@
 }
 
 @code {
-
 	[Parameter] public EventCallback RotateClockwise { get; set; }
 	[Parameter] public EventCallback RotateAntiClockwise { get; set; }
 	[Parameter] public EventCallback PushTheTile { get; set; }
+	[Parameter] public EventCallback DropTheTile { get; set; }
 
 	[Parameter, EditorRequired] public required BoardPosition BoardPosition { get; set; } 
 	[Parameter, EditorRequired] public required BoardPosWithExtraMazeTile BoardPosWithExtraMazeTile { get; set; }
+	[Parameter, EditorRequired] public required int BoardSize { get; set; }
 }

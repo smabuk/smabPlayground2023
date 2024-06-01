@@ -1,0 +1,8 @@
+<i class="bi bi-caret-up-fill" aria-hidden="true"
+   data-push-direction="@Direction.ToString()[0]"
+   @onclick="() => Push.InvokeAsync()"/>
+
+@code {
+	[Parameter] public EventCallback Push { get; set; }
+	[Parameter] public Direction Direction  { get; set; }
+}

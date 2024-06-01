@@ -2,5 +2,9 @@ div {
 	position: relative;
 	align-content: center;
 	text-align: center;
-	opacity: 60%;
+	opacity: 100%;
+	background-color: #9f9191;
+	border-radius: 15%;
+	user-select: none;
+	overflow: hidden;
 }
