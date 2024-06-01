@@ -19,44 +19,34 @@ public static class LabyrinthBoardExtensions
 
 		MazeTile[,] maze = (MazeTile[,])board.Maze.Clone();
 
-		List<MazeTile> tiles;
-		MazeTile newExtra;
-		int newCol = col;
-		int newRow = row;
+		List<MazeTile> oldTiles = (col == lowerBound || col == upperBound)
+			? [.. maze.GetRow(row)]
+			: [.. maze.GetCol(col)];
 
-		if (col == lowerBound) {
-			tiles = [.. maze.GetRow(row)];
-			newExtra = tiles[^1];
-			tiles = [board.PositionWithExtra.MazeTile, .. tiles];
-			newCol = upperBound;
-		} else if (col == upperBound) {
-			tiles = [.. maze.GetRow(row)];
-			newExtra = tiles[0];
-			tiles = [.. tiles[1..], board.PositionWithExtra.MazeTile];
-			newCol = lowerBound;
-		} else if (row == lowerBound) {
-			tiles = [.. maze.GetCol(col)];
-			newExtra = tiles[^1];
-			tiles = [board.PositionWithExtra.MazeTile, .. tiles];
-			newRow = upperBound;
-		} else {
-			tiles = [.. maze.GetCol(col)];
-			newExtra = tiles[0];
-			tiles = [.. tiles[1..], board.PositionWithExtra.MazeTile];
-			newRow = lowerBound;
-		}
+		MazeTile newExtra = (col == lowerBound || row == lowerBound)
+			? oldTiles[^1]
+			: oldTiles[0];
 
+		List<MazeTile> newTiles = (col == lowerBound || row == lowerBound)
+			? [board.PositionWithExtra.MazeTile, .. oldTiles]
+			: [.. oldTiles[1..], board.PositionWithExtra.MazeTile];
+
+
+		int newExtraCol = col;
+		int newExtraRow = row;
 		if (col == lowerBound || col == upperBound) {
+			newExtraCol = col == lowerBound ? upperBound : lowerBound;
 			for (int i = 0; i < upperBound; i++) {
-				maze[i, row] = tiles[i];
+				maze[i, row] = newTiles[i];
 			}
 		} else {
+			newExtraRow = row == lowerBound ? upperBound : lowerBound;
 			for (int i = 0; i < upperBound; i++) {
-				maze[col, i] = tiles[i];
+				maze[col, i] = newTiles[i];
 			}
 		}
 
-		return board with { Maze = maze, PositionWithExtra = new(newCol, newRow, newExtra) };
+		return board with { Maze = maze, PositionWithExtra = new(newExtraCol, newExtraRow, newExtra) };
 	}
 
 	public static LabyrinthBoard RotateExtraMazeTile(this LabyrinthBoard board, int amount = 90)
