@@ -1,7 +1,9 @@
 #labyrinth {
 	--board-colour: darkblue;
-	--hover-colour: red;
-	--board-size: min(100%, 95dvw, 80dvh);
+	--player-colour-blue: #0074ba;
+	--player-colour-red: #f8312f;
+	--player-colour-green: #00d26a;
+	--player-colour-yellow: #fcd53f;
 	position: relative;
 }
 
@@ -11,7 +13,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	padding: 0.3rem;
-	width: var(--board-size);
+	width: min(100%, 95dvw, 80dvh);
 	aspect-ratio: 1/1;
 	background-color: var(--board-colour);
 	color: var(--bs-primary);
@@ -20,4 +22,5 @@
 	grid-template-rows: repeat(9, 1fr);
 	border: solid 1px orange;
 	border-radius: 2%;
+	user-select-none;
 }
