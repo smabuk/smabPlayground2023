@@ -3,7 +3,7 @@
 		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(GameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 	</div>
 	@if (Game is not null) {
-		<div id="board" data-player="@FormatFullName(Game.Players[currentPlayer].Home)[0]">
+		<div id="board" data-player="@FormatFullName(Game.Players[currentPlayer].Home)[0]" push="@push">
 			@for (int r = -1; r <= Game.BoardSize; r++) {
 				@for (int c = -1; c <= Game.BoardSize; c++) {
 					(int col, int row) = (c, r);
@@ -26,19 +26,24 @@
 
 	BoardPosition[,] grid => Game.AsGrid();
 	int currentPlayer = 0;
+	bool push = false;
 	bool GameOver = false;
 
 	void StartNewGame()
 	{
+		currentPlayer = 0;
 		Game = new([new(BluePlayer), new(RedPlayer), new(GreenPlayer), new(YellowPlayer)]);
 		positionWithExtra = Game.Board.PositionWithExtra;
 	}
 
-	void PushTheTile(int col, int row)
+	async Task PushTheTile(int col, int row)
 	{
+		push = true;
+		await Task.Delay(500);
 		Game = Game.PushTheTile(col, row);
 		positionWithExtra = Game.Board.PositionWithExtra;
 		currentPlayer = (currentPlayer + 1) % Game.Players.Count;
+		push = false;
 	}
 
 	void Rotate(int amount)

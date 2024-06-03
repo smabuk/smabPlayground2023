@@ -6,4 +6,7 @@ public static class BoardPositionExtensions
 
 	public static bool IsAtTheSamePosition(this BoardPosition position, BoardPosition position2)
 		=> position.Col == position2.Col && position.Row == position2.Row;
+
+	public static bool IsOnTheSameRowOrCol(this BoardPosition position, BoardPosition position2)
+		=> position.Col == position2.Col || position.Row == position2.Row;
 }

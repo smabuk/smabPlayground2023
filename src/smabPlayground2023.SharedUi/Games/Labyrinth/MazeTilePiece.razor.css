@@ -40,18 +40,22 @@ span {
 }
 
 [data-rotation="0"] {
+	--rotate: 0deg;
 	transform: rotate(0deg);
 }
 
 [data-rotation="90"] {
+	--rotate: 90deg;
 	transform: rotate(90deg);
 }
 
 [data-rotation="180"] {
+	--rotate: 180deg;
 	transform: rotate(180deg);
 }
 
 [data-rotation="270"] {
+	--rotate: 270deg;
 	transform: rotate(270deg);
 }
 
@@ -61,5 +65,29 @@ span {
 
 [rotate] {
 	transform: rotate();
-	transition: 0.2s ease;
+	transition: var(--rotation-duration);
+}
+
+[push] [data-slide] {
+	z-index: 100;
+}
+
+[push] [data-slide="N"] {
+	transform: translateY(calc(-100% - var(--grid-column-gap, 0.3rem))) rotate(var(--rotate));
+	transition: var(--push-duration);
+}
+
+[push] [data-slide="E"] {
+	transform: translateX(calc(100% + var(--grid-column-gap, 0.3rem))) rotate(var(--rotate));
+	transition: var(--push-duration);
+}
+
+[push] [data-slide="S"] {
+	transform: translateY(calc(100% + var(--grid-column-gap, 0.3rem))) rotate(var(--rotate));
+	transition: var(--push-duration);
+}
+
+[push] [data-slide="W"] {
+	transform: translateX(calc(-100% - var(--grid-column-gap, 0.3rem))) rotate(var(--rotate));
+	transition: var(--push-duration);
 }

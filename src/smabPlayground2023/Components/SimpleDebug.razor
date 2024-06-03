@@ -21,9 +21,16 @@
 	<li>The current culture is <strong>@CultureInfo.CurrentCulture</strong></li>
 	<li>The current UI culture is <strong>@CultureInfo.CurrentUICulture</strong></li>
 	<li>The current server time is <strong>@DateTime.Now.ToString("F") (@TimeZoneName())</strong></li>
+	<li>HttpContext user-agent<strong>(@HttpContext?.Request.Headers["user-agent"])</strong></li>
 </ul>
 
 @code {
+
+	/// <summary>
+	/// According to the documentation this only works on statically rendered pages
+	/// </summary>
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
 
 	protected string GetFullOSVersion()
 	{

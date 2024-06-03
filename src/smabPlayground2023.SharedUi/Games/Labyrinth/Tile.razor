@@ -7,7 +7,7 @@
 } else if (BoardPosition is EmptyBoardPos) {
 	<div />
 } else if (BoardPosition is BoardPosWithMazeTile tile) {
-	<MazeTilePiece MazeTile="tile.MazeTile" />
+	<MazeTilePiece MazeTile="tile.MazeTile" Slide="ArrowDirection()" />
 }
 
 @code {
@@ -19,4 +19,21 @@
 	[Parameter, EditorRequired] public required BoardPosition BoardPosition { get; set; } 
 	[Parameter, EditorRequired] public required BoardPosWithExtraMazeTile BoardPosWithExtraMazeTile { get; set; }
 	[Parameter, EditorRequired] public required int BoardSize { get; set; }
+
+	Direction ArrowDirection()
+	{
+		if (BoardPosition.IsOnTheSameRowOrCol(BoardPosWithExtraMazeTile)) {
+			return (BoardPosWithExtraMazeTile.Col, BoardPosWithExtraMazeTile.Row) switch
+			{
+				(-1, _) => East,
+				(_, -1) => South,
+				_ when BoardPosWithExtraMazeTile.Col == BoardSize => West,
+				_ when BoardPosWithExtraMazeTile.Row == BoardSize => North,
+				_ => NoDirection,
+			};
+		}
+
+		return NoDirection;
+    }
+
 }

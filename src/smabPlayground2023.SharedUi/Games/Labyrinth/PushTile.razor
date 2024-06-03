@@ -1,6 +1,6 @@
 <div @ondragenter:preventDefault
-	 @ondragleave:preventDefault
-	 @ondragover:preventDefault
+@ondragleave:preventDefault
+@ondragover:preventDefault
 	 @ondragenter="() => {}"
 	 @ondragleave="() => {}"
 	 @ondragover="() => {}"
@@ -12,9 +12,10 @@
 					   draggable="true"
 					   rotate="@rotate"
 					   data-rotation="@(newOrientation ?? extra.MazeTile.Orientation)"
+					   Slide="@ArrowDirection()"
 					   OnClick="async () => { await AnimateRotation(90); await RotateClockwise.InvokeAsync(); }"
 					   OnContextMenu="async () => { await AnimateRotation(-90); await RotateAntiClockwise.InvokeAsync(); }" />
-		<PushButton Direction="ArrowDirection()" Push="() => Push.InvokeAsync()" />
+		<PushButton Direction="ArrowDirection()" Push="async () => { await Push.InvokeAsync(); }" />
 	} else {
 		<PushButton Direction="ArrowDirection()" />
 	}
@@ -34,8 +35,8 @@
 
 	Direction ArrowDirection() => (BoardPosition.Col, BoardPosition.Row) switch
 	{
-		(-1,  _) => East,
-		( _, -1) => South,
+		(-1, _) => East,
+		(_, -1) => South,
 		_ when BoardPosition.Col == BoardSize => West,
 		_ when BoardPosition.Row == BoardSize => North,
 		_ => throw new ArgumentException()

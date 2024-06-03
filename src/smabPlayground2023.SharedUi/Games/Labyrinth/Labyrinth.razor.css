@@ -4,6 +4,9 @@
 	--player-colour-red: #f8312f;
 	--player-colour-green: #00d26a;
 	--player-colour-yellow: #fcd53f;
+	--push-duration: 0.5s ease;
+	--rotation-duration: 0.4s;
+	--grid-column-gap: 0.3rem;
 	position: relative;
 }
 
@@ -12,12 +15,12 @@
 	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 0.3rem;
+	padding: var(--grid-column-gap, 0.3rem);
 	width: min(100%, 95dvw, 80dvh);
 	aspect-ratio: 1/1;
 	background-color: var(--board-colour);
 	color: var(--bs-primary);
-	grid-gap: 0.3rem;
+	grid-gap: var(--grid-column-gap, 0.3rem);
 	grid-template-columns: repeat(9, 1fr);
 	grid-template-rows: repeat(9, 1fr);
 	border: solid 1px orange;
