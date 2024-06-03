@@ -50,6 +50,47 @@ public  class LabyrinthTests
 	{
 		MazeTile tile = _shuffledTiles.Where(m => m.Treasure == treasure).Single() with { Orientation = 90 };
 		tile.Exits.ShouldBe(expectedDirections);
-		tile.PathDirections().ShouldBe(expectedPath);
+		tile.Paths().ToShortString().ShouldBe(expectedPath);
+	}
+
+	[Theory]
+	[InlineData(Direction.NoDirection, 0, Direction.NoDirection)]
+	[InlineData(Direction.North,   0, Direction.North)]
+	[InlineData(Direction.North,  90, Direction.East)]
+	[InlineData(Direction.North, 180, Direction.South)]
+	[InlineData(Direction.North, 270, Direction.West)]
+	[InlineData(Direction.North | Direction.East | Direction.West, 90, Direction.North | Direction.East | Direction.South)]
+	[InlineData(Direction.North | Direction.East | Direction.South | Direction.West, 270, Direction.North | Direction.East | Direction.South | Direction.West)]
+	[InlineData(Direction.North, -90, Direction.West)]
+	public void Direction_GivenRotation_ShouldBe(Direction direction, int rotation, Direction expectedDirection)
+	{
+		direction.Rotate(rotation).ShouldBe(expectedDirection);
+	}
+
+	[Theory]
+	[InlineData(Direction.NoDirection, "")]
+	[InlineData(Direction.North, "N")]
+	[InlineData(Direction.East,  "E")]
+	[InlineData(Direction.South, "S")]
+	[InlineData(Direction.West,  "W")]
+	[InlineData(Direction.North | Direction.East | Direction.West, "NEW")]
+	[InlineData(Direction.North | Direction.East | Direction.South | Direction.West, "NESW")]
+	public void Direction_ToShortString_ShouldBe(Direction direction, string expectedString)
+	{
+		direction.ToShortString().ShouldBe(expectedString);
+	}
+
+	[Theory]
+	[InlineData(Direction.NoDirection, 0, Direction.NoDirection)]
+	[InlineData(Direction.North,   0, Direction.North)]
+	[InlineData(Direction.North,  90, Direction.East)]
+	[InlineData(Direction.North, 180, Direction.South)]
+	[InlineData(Direction.North, 270, Direction.West)]
+	[InlineData(Direction.North | Direction.East | Direction.West, 90, Direction.North | Direction.East | Direction.South)]
+	[InlineData(Direction.North | Direction.East | Direction.South | Direction.West, 270, Direction.North | Direction.East | Direction.South | Direction.West)]
+	public void Tile_GivenOrientation_Paths_ShouldBe(Direction exits, int orientation, Direction expectedPaths)
+	{
+		MazeTile tile = new(Treasure.Bat, exits, orientation);
+		tile.Paths().ShouldBe(expectedPaths);
 	}
 }
