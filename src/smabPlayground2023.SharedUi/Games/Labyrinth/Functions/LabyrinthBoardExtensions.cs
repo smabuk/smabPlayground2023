@@ -10,7 +10,7 @@ public static class LabyrinthBoardExtensions
 		int tileIndex = 0;
 		for (int row = 0; row < boardSize; row++) {
 			for (int col = 0; col < boardSize; col++) {
-				maze[col, row] = IsFixed(col, row)
+				maze[col, row] = IsFixedTilePosition(col, row)
 					? FixedTiles[FixedTilesIndex(boardSize, col, row)]
 					: mazeTiles[tileIndex++];
 			}
@@ -18,7 +18,7 @@ public static class LabyrinthBoardExtensions
 
 		return new LabyrinthBoard(maze, new(-1, boardSize, mazeTiles[^1]));
 
-		static bool IsFixed(int col, int row) => col % 2 == 0 && row % 2 == 0;
+		static bool IsFixedTilePosition(int col, int row) => col % 2 == 0 && row % 2 == 0;
 		static int FixedTilesIndex(int boardSize, int col, int row) => (row * (boardSize + 1) / 4) + (col / 2);
 	}
 
@@ -95,7 +95,7 @@ public static class LabyrinthBoardExtensions
 
 	public static List<MazeTile> CreateShuffledMazeTiles()
 	{
-		MazeTile[] tiles = [
+		Span<MazeTile> tiles = [
 			new(Spider,    EastSouth,     RandomOrientation()),
 			new(Ghost,     NorthEastWest, RandomOrientation()),
 			new(Sorceress, NorthEastWest, RandomOrientation()),
@@ -118,13 +118,13 @@ public static class LabyrinthBoardExtensions
 		Random.Shared.Shuffle(tiles);
 		return [.. tiles];
 
-		int RandomOrientation() => Random.Shared.Next(0, 4) * 90;
+		static int RandomOrientation() => Random.Shared.Next(0, 4) * 90;
 	}
 
-	public static IEnumerable<TreasureCard> CreateTreasureCardDeck()
+	public static IEnumerable<TreasureCard> CreateTreasureCardDeck(int noOfCards = 24)
 	{
-		TreasureCard[] deck = [.. TreasureExtensions.GetAllTreasures().Select(t => new TreasureCard(t))];
+		Span <TreasureCard> deck = [.. TreasureExtensions.GetAllTreasures().Select(t => new TreasureCard(t))];
 		Random.Shared.Shuffle(deck);
-		return [.. deck[..24]];
+		return [.. deck[..noOfCards]];
 	}
 }
