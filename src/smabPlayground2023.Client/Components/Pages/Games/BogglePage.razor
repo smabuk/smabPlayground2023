@@ -1,5 +1,6 @@
 ﻿@page "/games/boggle/{BoggleType?}"
 @* @layout BlankLayout *@
+@using static Smab.DiceAndTiles.Games.Boggle.BoggleType
 @rendermode InteractiveAuto
 
 <SmabPageTitle>@boggleFriendlyName</SmabPageTitle>
@@ -9,21 +10,21 @@
 @code {
 	[Parameter] public string BoggleType { get; set; } = BoggleTypes.BigBoggleDeluxe;
 
-	public BoggleDice.BoggleType BoggleSetType { get; set; } = BoggleDice.BoggleType.Classic4x4;
+	public BoggleType BoggleSetType { get; set; } = Classic4x4;
 
 	private string boggleFriendlyName => BoggleSetType switch
 	{
-		BoggleDice.BoggleType.Classic4x4         => "Boggle Classic",
-		BoggleDice.BoggleType.BigBoggleDeluxe    => "Big Boggle Deluxe",
-		BoggleDice.BoggleType.SuperBigBoggle2012 => "Super Big Boggle",
-		BoggleDice.BoggleType.New4x4             => "New Boggle 4x4",
-		BoggleDice.BoggleType.BigBoggleOriginal  => "Big Boggle",
-		BoggleDice.BoggleType.BigBoggleChallenge => "Big Boggle Challenge",
+		Classic4x4         => "Boggle Classic",
+		BigBoggleDeluxe    => "Big Boggle Deluxe",
+		SuperBigBoggle2012 => "Super Big Boggle",
+		New4x4             => "New Boggle 4x4",
+		BigBoggleOriginal  => "Big Boggle",
+		BigBoggleChallenge => "Big Boggle Challenge",
 		_ => "Boggle"
 	};
 
 	protected override void OnParametersSet()
 	{
-		BoggleSetType = BoggleType?.ToBoggleType() ?? BoggleDice.BoggleType.BigBoggleDeluxe;
+		BoggleSetType = BoggleType?.ToBoggleType() ?? BigBoggleDeluxe;
 	}
 }

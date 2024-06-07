@@ -13,8 +13,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (BoggleDice.WordScore wordScore in OrderedWordList) {
-			<tr data-reason="@(wordScore.Reason is BoggleDice.ScoreReason.Success ? null : wordScore.Reason.ToString().ToLowerInvariant())">
+		@foreach (WordScore wordScore in OrderedWordList) {
+			<tr data-reason="@(wordScore.Reason is ScoreReason.Success ? null : wordScore.Reason.ToString().ToLowerInvariant())">
 				<td>@wordScore.Score</td>
 				<td>@wordScore.Word</td>
 				<td>@GetReason(wordScore.Reason)</td>
@@ -28,7 +28,7 @@
 	public bool GameOver { get; set; } = false;
 
 	[Parameter]
-	public IEnumerable<BoggleDice.WordScore> WordScores { get; set; } = [];
+	public IEnumerable<WordScore> WordScores { get; set; } = [];
 
 	[Parameter]
 	public int Score { get; set; } = 0;
@@ -37,17 +37,17 @@
 	public TimeSpan TimeRemaining { get; set; } = TimeSpan.Zero;
 
 	private bool isDangerZone => TimeRemaining < TimeSpan.FromSeconds(10); 
-	private IEnumerable<BoggleDice.WordScore> OrderedWordList
+	private IEnumerable<WordScore> OrderedWordList
 		=> GameOver ? WordScores.OrderBy(w => w.Word) : WordScores.Reverse();
 
-	private string GetReason(BoggleDice.ScoreReason reason)
+	private string GetReason(ScoreReason reason)
 	{
 		return reason switch {
-			BoggleDice.ScoreReason.Success       => "",
-			BoggleDice.ScoreReason.AlreadyPlayed => "Duplicate word",
-			BoggleDice.ScoreReason.Misspelt      => "Spelling error",
-			BoggleDice.ScoreReason.TooShort      => "Too short",
-			BoggleDice.ScoreReason.Unplayable    => "Unplayable",
+			ScoreReason.Success       => "",
+			ScoreReason.AlreadyPlayed => "Duplicate word",
+			ScoreReason.Misspelt      => "Spelling error",
+			ScoreReason.TooShort      => "Too short",
+			ScoreReason.Unplayable    => "Unplayable",
 			_ => ""
 		};
 	}

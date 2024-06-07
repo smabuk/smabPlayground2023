@@ -51,16 +51,16 @@
 
 @using Position = (int Col, int Row)
 @code {
-	[Parameter] public BoggleDice.BoggleType BoggleSetType { get; set; } = BoggleDice.BoggleType.Classic4x4;
+	[Parameter] public BoggleType BoggleSetType { get; set; } = BoggleType.Classic4x4;
 
 	private string boggleFriendlyName => BoggleSetType switch
 	{
-		BoggleDice.BoggleType.Classic4x4         => "Boggle Classic",
-		BoggleDice.BoggleType.BigBoggleDeluxe    => "Big Boggle Deluxe",
-		BoggleDice.BoggleType.SuperBigBoggle2012 => "Super Big Boggle",
-		BoggleDice.BoggleType.New4x4             => "New Boggle 4x4",
-		BoggleDice.BoggleType.BigBoggleOriginal  => "Big Boggle",
-		BoggleDice.BoggleType.BigBoggleChallenge => "Big Boggle Challenge",
+		BoggleType.Classic4x4         => "Boggle Classic",
+		BoggleType.BigBoggleDeluxe    => "Big Boggle Deluxe",
+		BoggleType.SuperBigBoggle2012 => "Super Big Boggle",
+		BoggleType.New4x4             => "New Boggle 4x4",
+		BoggleType.BigBoggleOriginal  => "Big Boggle",
+		BoggleType.BigBoggleChallenge => "Big Boggle Challenge",
 		_ => "Boggle"
 	};
 
@@ -86,7 +86,7 @@
 
 		timeSpan = BoggleSetType switch
 		{
-			BoggleDice.BoggleType.SuperBigBoggle2012 => TimeSpan.FromMinutes(4),
+			BoggleType.SuperBigBoggle2012 => TimeSpan.FromMinutes(4),
 			_ => TimeSpan.FromMinutes(3),
 		};
 
@@ -126,7 +126,7 @@
 			return;
 		}
 
-		BoggleDice.WordScore wordScore = boggleDice.PlayWord(currentWord);
+		WordScore wordScore = boggleDice.PlayWord(currentWord);
 		#if DEBUG
 			Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
 		#endif
