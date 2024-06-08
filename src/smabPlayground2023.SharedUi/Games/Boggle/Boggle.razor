@@ -126,7 +126,7 @@
 			return;
 		}
 
-		WordScore wordScore = boggleDice.PlayWord(currentWord);
+		(boggleDice, WordScore wordScore) = boggleDice.PlayWord(currentWord);
 		#if DEBUG
 			Console.WriteLine($"Word:  {currentWord}  Score: {wordScore.Score} Reason: {wordScore.Reason}");
 		#endif

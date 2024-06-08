@@ -15,7 +15,7 @@
 							<QLessDie
 								DisplayLetter = "@(positionedDie is null ? NO_DIE : positionedDie.Die.Display)"
 								IsDraggable   = "@(positionedDie is not null)"
-								IsError       = "@(gameStatus is QLessDice.Errors gs ? gs.DiceWithErrors.Any(d => d.Row == row && d.Col == col) ? true : false : false)"
+								IsError       = "@(gameStatus is Errors gs ? gs.DiceWithErrors.Any(d => d.Row == row && d.Col == col) ? true : false : false)"
 								IsMoving      = "@(positionedDie?.Die.Id is not null && positionedDie.Die.Id == dragId)"
 								OnDragStartCallback = "() => DragStart(positionedDie?.Die.Id)"
 								OnDropCallback      = "() => DropOnBoard(col, row)"
@@ -58,8 +58,8 @@
 
 	private const string NO_DIE      = " ";
 
-	private bool gameOver => gameStatus is QLessDice.Win;
-	private QLessDice.Status gameStatus = default!;
+	private bool gameOver => gameStatus is Win;
+	private QLessDiceStatus gameStatus = default!;
 	private QLessDice qLessDice = null!;
 
 	private DieId? dragId = null;
@@ -90,7 +90,7 @@
 	private void DropOnBoard(int col, int row)
 	{
 		if (dragId is not null) {
-			_ = qLessDice.PlaceOnBoard(new DieId(dragId), col, row);
+			(_, qLessDice) = qLessDice.PlaceOnBoard(new DieId(dragId), col, row);
 			dragId     = null;
 			isClickToMoveInProgress = false;
 			gameStatus = qLessDice.GameStatus();
@@ -100,7 +100,7 @@
 	private void DropOnRack(int col)
 	{
 		if (dragId is not null) {
-			_ = qLessDice.PlaceOnRack(new DieId(dragId), col);
+			(_, qLessDice) = qLessDice.PlaceOnRack(new DieId(dragId), col);
 			dragId = null;
 			isClickToMoveInProgress = false;
 			gameStatus = qLessDice.GameStatus();
