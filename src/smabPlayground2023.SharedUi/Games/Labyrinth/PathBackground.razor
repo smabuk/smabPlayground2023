@@ -1,17 +1,26 @@
-@if (MazeTile.Exits.HasFlag(Direction.North)) {
-	<i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" />
-}
-@if (MazeTile.Exits.HasFlag(Direction.West)) {
-	<i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" />
-}
-@if (MazeTile.Exits.HasFlag(Direction.East)) {
-	<i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" />
-}
-@if (MazeTile.Exits.HasFlag(Direction.South)) {
-	<i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" />
+@if	(PathPrefix is not null) {
+	<img src="_content/smabPlayground2023.SharedUi/labyrinth/@($"{PathPrefix}{MazeTile.Exits.ToShortString()}").png" title="tile-background" />
+} else {
+	@if (MazeTile.Exits.HasFlag(Direction.North)) {
+		<i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" />
+	}
+	@if (MazeTile.Exits.HasFlag(Direction.West)) {
+		<i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" />
+	}
+	@if (MazeTile.Exits.HasFlag(Direction.East)) {
+		<i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" />
+	}
+	@if (MazeTile.Exits.HasFlag(Direction.South)) {
+		<i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" />
+	}
 }
 
 @code {
 	[Parameter, EditorRequired]
 	public required MazeTile MazeTile { get; set; }
+
+	[Parameter]
+	public string? PathPrefix { get; set; } = "path-";
+
+
 }

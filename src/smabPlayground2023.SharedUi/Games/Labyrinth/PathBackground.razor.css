@@ -1,3 +1,15 @@
+img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	z-index: 10;
+	margin: 0;
+	padding: 0;
+}
+
 [data-direction] {
 	position: absolute;
 	color: #ded7be;
