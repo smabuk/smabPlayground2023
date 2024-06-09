@@ -1,17 +1,34 @@
-@if (MazeTile.Exits.HasFlag(Direction.North)) {
-	<i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" />
-}
-@if (MazeTile.Exits.HasFlag(Direction.West)) {
-	<i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" />
-}
-@if (MazeTile.Exits.HasFlag(Direction.East)) {
-	<i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" />
-}
-@if (MazeTile.Exits.HasFlag(Direction.South)) {
-	<i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" />
+@if	(BackgroundImageName is null) {
+	@if (MazeTile.Exits.HasFlag(Direction.North)) {
+		<i class="bi bi-arrow-up" aria-hidden="true" data-direction="N" />
+	}
+	@if (MazeTile.Exits.HasFlag(Direction.West)) {
+		<i class="bi bi-arrow-left" aria-hidden="true" data-direction="W" />
+	}
+	@if (MazeTile.Exits.HasFlag(Direction.East)) {
+		<i class="bi bi-arrow-right" aria-hidden="true" data-direction="E" />
+	}
+	@if (MazeTile.Exits.HasFlag(Direction.South)) {
+		<i class="bi bi-arrow-down" aria-hidden="true" data-direction="S" />
+	}
+} else {
+	<img src="_content/smabPlayground2023.SharedUi/labyrinth/path-new.png" title="tile-background"/>
 }
 
 @code {
 	[Parameter, EditorRequired]
 	public required MazeTile MazeTile { get; set; }
+
+	string? BackgroundImageName => MazeTile.Exits switch
+	{
+		NorthEastWest => "_content/smabPlayground2023.SharedUi/labyrinth/path-new.png",
+		NorthSouth => "_content/smabPlayground2023.SharedUi/labyrinth/path-ns.png",
+		EastSouth => "_content/smabPlayground2023.SharedUi/labyrinth/path-ns.png",
+		South | West => "_content/smabPlayground2023.SharedUi/labyrinth/path-sw.png",
+		_ => null,
+	};
+
+	// <img src="_content/smabPlayground2023.SharedUi/labyrinth/path-new.png" style="transform: rotate(270deg)" />
+
+
 }
