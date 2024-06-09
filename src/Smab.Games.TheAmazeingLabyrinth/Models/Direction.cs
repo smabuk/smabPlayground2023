@@ -1,4 +1,4 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
+﻿namespace Smab.Games.TheAmazeingLabyrinth.Models;
 
 [Flags]
 public enum Direction

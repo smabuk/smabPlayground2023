@@ -1,8 +1,8 @@
-﻿using smabPlayground2023.SharedUi.Games.Labyrinth;
-using smabPlayground2023.SharedUi.Games.Labyrinth.Functions;
-using smabPlayground2023.SharedUi.Games.Labyrinth.Models;
+﻿using Smab.Games.TheAmazeingLabyrinth;
+using Smab.Games.TheAmazeingLabyrinth.Functions;
+using Smab.Games.TheAmazeingLabyrinth.Models;
 
-using static smabPlayground2023.SharedUi.Games.Labyrinth.Functions.LabyrinthBoardExtensions;
+using static Smab.Games.TheAmazeingLabyrinth.Functions.LabyrinthBoardExtensions;
 
 namespace smabPlayground2023.Tests.GameTests;
 

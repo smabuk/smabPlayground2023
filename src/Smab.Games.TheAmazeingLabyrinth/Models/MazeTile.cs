@@ -1,4 +1,4 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Models;
+﻿namespace Smab.Games.TheAmazeingLabyrinth.Models;
 
 public sealed record MazeTile(Treasure Treasure, Direction Exits, int Orientation)
 {
