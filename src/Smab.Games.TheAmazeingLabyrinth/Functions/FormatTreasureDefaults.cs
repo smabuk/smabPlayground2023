@@ -1,4 +1,4 @@
-﻿namespace smabPlayground2023.SharedUi.Games.Labyrinth.Functions;
+﻿namespace Smab.Games.TheAmazeingLabyrinth.Functions;
 
 public delegate string FormatTreasure(Treasure treasure);
 
