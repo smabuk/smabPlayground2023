@@ -1,0 +1,9 @@
+div {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 1/1;
+/* 	background-color: transparent;
+	color: white;
+	overflow: hidden;
+ */	user-select: none;
+}

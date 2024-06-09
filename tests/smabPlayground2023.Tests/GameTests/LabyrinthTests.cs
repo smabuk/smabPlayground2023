@@ -13,7 +13,8 @@ public  class LabyrinthTests
 	[Fact]
 	public void Game_Should()
 	{
-		LabyrinthGame game = new([new(Treasure.BluePlayer)]);
+		LabyrinthGame game = new();
+		game = game.AddPlayers(Treasure.BluePlayer);
 
 		game.BoardSize.ShouldBe(7);
 		game.Board.PositionWithExtra.Col.ShouldBe(-1);

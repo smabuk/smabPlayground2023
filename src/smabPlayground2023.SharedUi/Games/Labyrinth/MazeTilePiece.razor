@@ -9,6 +9,12 @@
 	 @attributes="AdditionalAttributes">
 	 <PathBackground MazeTile="MazeTile" />
 	<span>@((MarkupString)FormatTreasure(MazeTile.Treasure))</span>
+	@if (Players is not []) {
+		foreach (Player player in Players) {
+			<PlayerImage Player="player" />
+		}
+	}
+
 </div>
 
 @code {
@@ -23,6 +29,10 @@
 
 	[Parameter]
 	public FormatTreasure FormatTreasure { get; set; } = FormatTreasureDefaults.DefaultEmoji;
+
+	[CascadingParameter]
+	public required List<Player> Players { get; set; }
+
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? AdditionalAttributes { get; set; }

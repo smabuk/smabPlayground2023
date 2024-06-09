@@ -34,6 +34,42 @@ public static class LabyrinthGameExtensions
 		return grid;
 	}
 
+	public static BoardPosition? GetBoardPositionByTreasure(this LabyrinthGame game, Treasure treasure)
+	{
+		LabyrinthBoard board = game.Board;
+		int boardSize = game.BoardSize;
+		for (int row = 0; row < boardSize; row++) {
+			List<MazeTile> tiles = [.. board.GetRow(row)];
+			for (int col = 0; col < boardSize; col++) {
+				if (tiles[col].Treasure == treasure) {
+					return new BoardPosWithMazeTile(col, row, tiles[col]);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public static LabyrinthGame AddPlayers(this LabyrinthGame game, params Treasure[] players)
+	{
+		List <Player> newPlayers = [
+			.. game.Players,
+			.. players.Select(t => new Player(t, int.MinValue, int.MinValue))
+		];
+
+		for (int i = 0; i < newPlayers.Count; i++) {
+			Player player = newPlayers[i];
+			if (player.Col < 0) {
+				BoardPosition position = game.GetBoardPositionByTreasure(player.Home)!;
+				int col = position.Col;
+				int row = position.Row;
+				newPlayers[i] = player with { Col = col, Row = row };
+			}
+		}
+
+		return game with { Players = [.. newPlayers.DistinctBy(p => p.Home)] };
+	}
+
 	public static LabyrinthGame PushTheTile(this LabyrinthGame game, int col, int row) => game with { Board = game.Board.Push(col, row) };
 	public static LabyrinthGame Rotate(this LabyrinthGame game, int amount) => game with { Board = game.Board.RotateExtraMazeTile(amount) };
 	public static LabyrinthGame RotateClockwise(this LabyrinthGame game) => game with { Board = game.Board.RotateExtraMazeTile(90) };

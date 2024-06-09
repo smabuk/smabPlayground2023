@@ -1,3 +1,4 @@
+<CascadingValue Value="Players" TValue="List<Player>">
 @if (BoardPosition is BoardPosWithExtraMazeTile extra) {
 	<ExtraMazeTilePiece MazeTile="extra.MazeTile" RotateAntiClockwise="() => RotateAntiClockwise.InvokeAsync()" RotateClockwise="() => RotateClockwise.InvokeAsync()" />
 } else if (BoardPosition is BoardPosWithPush && BoardPosition.IsAtTheSamePosition(BoardPosWithExtraMazeTile)) {
@@ -9,6 +10,7 @@
 } else if (BoardPosition is BoardPosWithMazeTile tile) {
 	<MazeTilePiece MazeTile="tile.MazeTile" Slide="ArrowDirection()" />
 }
+</CascadingValue>
 
 @code {
 	[Parameter] public EventCallback RotateClockwise { get; set; }
@@ -19,6 +21,7 @@
 	[Parameter, EditorRequired] public required BoardPosition BoardPosition { get; set; } 
 	[Parameter, EditorRequired] public required BoardPosWithExtraMazeTile BoardPosWithExtraMazeTile { get; set; }
 	[Parameter, EditorRequired] public required int BoardSize { get; set; }
+	[Parameter, EditorRequired] public required List<Player> Players { get; set; }
 
 	Direction ArrowDirection()
 	{

@@ -18,4 +18,11 @@
 		<PackageReference Include="Smab.DiceAndTiles" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="wwwroot\labyrinth\player-BluePlayer.png">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>
