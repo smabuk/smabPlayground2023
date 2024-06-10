@@ -5,6 +5,7 @@
 	--player-colour-green: #00d26a;
 	--player-colour-yellow: #fcd53f;
 	--push-duration: 0.5s ease;
+	--rotation: 0;
 	--rotation-duration: 0.4s;
 	--grid-column-gap: 0.3rem;
 	position: relative;

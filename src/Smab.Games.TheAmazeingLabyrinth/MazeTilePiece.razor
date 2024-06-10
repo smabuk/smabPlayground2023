@@ -1,20 +1,22 @@
-<div data-treasure="@(MazeTile.Treasure is not Treasure.NoTreasure ? MazeTile.Treasure : null)"
-	 data-directions="@MazeTile.Paths().ToShortString()"
-	 data-playerhome="@MazeTile.Treasure.IsPlayer()"
-	 data-rotation="@MazeTile.Orientation"
-	 data-slide="@(Slide is not NoDirection ? Slide.ToShortString() : null)"
-	 @onclick="async () => { await OnClick.InvokeAsync(); }"
-	 @oncontextmenu="async () => { await OnContextMenu.InvokeAsync(); }"
-	 @oncontextmenu:preventDefault="@Extra"
-	 @attributes="AdditionalAttributes">
-	 <PathBackground MazeTile="MazeTile" />
-	<span>@((MarkupString)FormatTreasure(MazeTile.Treasure))</span>
+<div class="mazetile-container"
+	 data-treasure="@(MazeTile.Treasure is not Treasure.NoTreasure ? MazeTile.Treasure : null)"
+	 data-slide="@(Slide is not NoDirection ? Slide.ToShortString() : null)">
+	<div class="mazetile"
+		 data-directions="@MazeTile.Paths().ToShortString()"
+		 data-playerhome="@MazeTile.Treasure.IsPlayer()"
+		 data-rotation="@MazeTile.Orientation"
+		 @onclick="async () => { await OnClick.InvokeAsync(); }"
+		 @oncontextmenu="async () => { await OnContextMenu.InvokeAsync(); }"
+		 @oncontextmenu:preventDefault="@Extra"
+		 @attributes="AdditionalAttributes">
+		<PathBackground MazeTile="MazeTile" />
+		<span>@((MarkupString)FormatTreasure(MazeTile.Treasure))</span>
+	</div>
 	@if (Players is not []) {
 		foreach (Player player in Players) {
 			<PlayerImage Player="player" />
 		}
 	}
-
 </div>
 
 @code {
