@@ -68,6 +68,25 @@ public static class LabyrinthBoardExtensions
 		return board with { Maze = maze, PositionWithExtra = new(newExtraCol, newExtraRow, newExtra) };
 	}
 
+	public static Direction PushDirection(this LabyrinthBoard board, int col, int row)
+	{
+		if (board.PositionWithExtra.Col == col && board.PositionWithExtra.Row == row) {
+			return NoDirection;
+		}
+
+		int lowerBound = -1;
+		int upperBound = board.Maze.GetUpperBound(0) + 1;
+
+		return (col, row) switch
+		{
+			_ when col == lowerBound && row % 2 == 1 => East,
+			_ when col == upperBound && row % 2 == 1 => West,
+			_ when row == lowerBound && col % 2 == 1 => South,
+			_ when row == upperBound && col % 2 == 1 => North,
+			_ => NoDirection,
+		};
+	}
+
 	public static LabyrinthBoard RotateExtraMazeTile(this LabyrinthBoard board, int amount = 90)
 		=> board with { PositionWithExtra = board.PositionWithExtra with { MazeTile = board.PositionWithExtra.MazeTile.Rotate(amount) } };
 

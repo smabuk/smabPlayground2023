@@ -33,7 +33,7 @@
 	void StartNewGame()
 	{
 		currentPlayer = 0;
-		Game = new();
+		Game = new([new Player(BluePlayer, 1, 6)]);
 		Game = Game.AddPlayers(BluePlayer, RedPlayer, GreenPlayer, YellowPlayer);
 		positionWithExtra = Game.Board.PositionWithExtra;
 	}

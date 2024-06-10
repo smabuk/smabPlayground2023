@@ -70,7 +70,26 @@ public static class LabyrinthGameExtensions
 		return game with { Players = [.. newPlayers.DistinctBy(p => p.Home)] };
 	}
 
-	public static LabyrinthGame PushTheTile(this LabyrinthGame game, int col, int row) => game with { Board = game.Board.Push(col, row) };
+	internal static List<Player> PushThePlayers(this LabyrinthGame game, int col, int row)
+	{
+		List<Player> players = new(game.Players.Count);
+		Direction direction = game.Board.PushDirection(col, row);
+		foreach (Player player in game.Players) {
+			if (player.Col == col && direction is North or South) {
+				int newRow = (player.Row + (direction == North ? -1 : 1) + game.BoardSize) % game.BoardSize;
+				players.Add(player with { Row = newRow });
+			} else if (player.Row == row && direction is East or West) {
+				int newCol = (player.Col + (direction == West ? -1 : 1) + game.BoardSize) % game.BoardSize;
+				players.Add(player with { Col = newCol });
+			} else {
+				players.Add(player);
+			}
+		}
+
+		return players;
+	}
+
+	public static LabyrinthGame PushTheTile(this LabyrinthGame game, int col, int row) => game with { Board = game.Board.Push(col, row), Players = [.. game.PushThePlayers(col, row)] };
 	public static LabyrinthGame Rotate(this LabyrinthGame game, int amount) => game with { Board = game.Board.RotateExtraMazeTile(amount) };
 	public static LabyrinthGame RotateClockwise(this LabyrinthGame game) => game with { Board = game.Board.RotateExtraMazeTile(90) };
 	public static LabyrinthGame RotateAntiClockwise(this LabyrinthGame game) => game with { Board = game.Board.RotateExtraMazeTile(-90) };

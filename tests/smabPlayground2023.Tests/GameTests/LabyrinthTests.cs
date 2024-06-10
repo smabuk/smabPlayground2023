@@ -94,4 +94,60 @@ public  class LabyrinthTests
 		MazeTile tile = new(Treasure.Bat, exits, orientation);
 		tile.Paths().ShouldBe(expectedPaths);
 	}
+
+	[Theory]
+	[InlineData(-1,  1, Direction.East)]
+	[InlineData(-1,  2, Direction.NoDirection)]
+	[InlineData(-1,  3, Direction.East)]
+	[InlineData(-1,  5, Direction.East)]
+	[InlineData( 7,  1, Direction.West)]
+	[InlineData( 1, -1, Direction.South)]
+	[InlineData( 1,  7, Direction.North)]
+	public void PushDirection_ShouldBe(int col, int row, Direction expectedDirection)
+	{
+		LabyrinthGame game = new();
+		game.Board.PushDirection(col, row).ShouldBe(expectedDirection);
+	}
+
+	[Fact]
+	public void Game_Player_Should_MoveTo()
+	{
+		LabyrinthGame game = new([new Player(Treasure.BluePlayer, 1, 0)]);
+		game = game.AddPlayers(Treasure.GreenPlayer);
+
+		game.Players.Count.ShouldBe(2);
+		Player bluePlayer = GetBluePlayer(game);
+		Player greenPlayer = GetGreenPlayer(game);
+
+		bluePlayer.Col.ShouldBe(1);
+		bluePlayer.Row.ShouldBe(0);
+
+		greenPlayer.Col.ShouldBe(0);
+		greenPlayer.Row.ShouldBe(0);
+
+		game = game.PushTheTile(1, -1);
+		bluePlayer = GetBluePlayer(game);
+		bluePlayer.Col.ShouldBe(1);
+		bluePlayer.Row.ShouldBe(1);
+
+		for (int i = 0; i < 5; i++) {
+			game = game.PushTheTile(1, -1);
+		}
+
+		bluePlayer = GetBluePlayer(game);
+		bluePlayer.Col.ShouldBe(1);
+		bluePlayer.Row.ShouldBe(6);
+
+
+		game = game.PushTheTile(1, -1);
+		bluePlayer = GetBluePlayer(game);
+		bluePlayer.Col.ShouldBe(1);
+		// Wraps around and row becomes 0
+		bluePlayer.Row.ShouldBe(0);
+
+		static Player GetBluePlayer(LabyrinthGame game) => game.Players.First(p => p.Home is Treasure.BluePlayer);
+		static Player GetGreenPlayer(LabyrinthGame game) => game.Players.First(p => p.Home is Treasure.GreenPlayer);
+	}
+
+
 }
