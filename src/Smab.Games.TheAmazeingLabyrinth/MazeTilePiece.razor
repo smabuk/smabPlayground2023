@@ -1,7 +1,7 @@
-<div class="mazetile-container"
-	 data-treasure="@(MazeTile.Treasure is not Treasure.NoTreasure ? MazeTile.Treasure : null)"
-	 data-slide="@(Slide is not NoDirection ? Slide.ToShortString() : null)">
+<div class="mazetile-container">
 	<div class="mazetile"
+		 data-treasure="@(MazeTile.Treasure is not Treasure.NoTreasure ? MazeTile.Treasure : null)"
+		 data-slide="@(Slide is not NoDirection ? Slide.ToShortString() : null)"
 		 data-directions="@MazeTile.Paths().ToShortString()"
 		 data-playerhome="@MazeTile.Treasure.IsPlayer()"
 		 data-rotation="@MazeTile.Orientation"
@@ -12,11 +12,13 @@
 		<PathBackground MazeTile="MazeTile" />
 		<span>@((MarkupString)FormatTreasure(MazeTile.Treasure))</span>
 	</div>
-	@if (Players is not []) {
-		foreach (Player player in Players) {
-			<PlayerImage Player="player" />
+	<div>
+		@if (Players is not []) {
+			foreach (Player player in Players) {
+				<PlayerImage Player="player" />
+			}
 		}
-	}
+	</div>
 </div>
 
 @code {
