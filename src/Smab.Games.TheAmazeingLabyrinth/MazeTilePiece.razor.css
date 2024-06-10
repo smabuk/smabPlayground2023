@@ -81,21 +81,21 @@ span {
 }
 
 [push] [data-slide="N"] {
-	transform: translateY(calc(-100% - var(--grid-column-gap, 0.3rem))) rotate(var(--rotate));
+	transform: translateY(calc(-100% - var(--grid-column-gap, 0.3rem))) rotate(var(--rotate, 0));
 	transition: var(--push-duration);
 }
 
 [push] [data-slide="E"] {
-	transform: translateX(calc(100% + var(--grid-column-gap, 0.3rem))) rotate(var(--rotate));
+	transform: translateX(calc(100% + var(--grid-column-gap, 0.3rem))) rotate(var(--rotate, 0));
 	transition: var(--push-duration);
 }
 
 [push] [data-slide="S"] {
-	transform: translateY(calc(100% + var(--grid-column-gap, 0.3rem))) rotate(var(--rotate));
+	transform: translateY(calc(100% + var(--grid-column-gap, 0.3rem))) rotate(var(--rotate, 0));
 	transition: var(--push-duration);
 }
 
 [push] [data-slide="W"] {
-	transform: translateX(calc(-100% - var(--grid-column-gap, 0.3rem))) rotate(var(--rotate));
+	transform: translateX(calc(-100% - var(--grid-column-gap, 0.3rem))) rotate(var(--rotate, 0));
 	transition: var(--push-duration);
 }
