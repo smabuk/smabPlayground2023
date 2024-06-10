@@ -89,7 +89,15 @@ public static class LabyrinthGameExtensions
 		return players;
 	}
 
-	public static LabyrinthGame PushTheTile(this LabyrinthGame game, int col, int row) => game with { Board = game.Board.Push(col, row), Players = [.. game.PushThePlayers(col, row)] };
+	public static LabyrinthGame PushTheTile(this LabyrinthGame game, int col, int row)
+		=> game with
+		{
+			Board = game.Board.Push(col, row),
+			Players = [.. game.PushThePlayers(col, row)],
+			CurrentPlayerIndex = (game.CurrentPlayerIndex + 1) % game.Players.Count,
+			State = State.MovePlayer,
+		};
+
 	public static LabyrinthGame Rotate(this LabyrinthGame game, int amount) => game with { Board = game.Board.RotateExtraMazeTile(amount) };
 	public static LabyrinthGame RotateClockwise(this LabyrinthGame game) => game with { Board = game.Board.RotateExtraMazeTile(90) };
 	public static LabyrinthGame RotateAntiClockwise(this LabyrinthGame game) => game with { Board = game.Board.RotateExtraMazeTile(-90) };

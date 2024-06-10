@@ -3,7 +3,7 @@
 		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">@(GameOver ? "CONGRATULATIONS - New Game" : "New Game")</button>
 	</div>
 	@if (Game is not null) {
-		<div id="board" data-player="@FormatFullName(Game.Players[currentPlayer].Home)[0]" push="@push">
+		<div id="board" data-player="@FormatFullName(Game.CurrentPlayer.Home)[0]" push="@push">
 			@for (int r = -1; r <= Game.BoardSize; r++) {
 				@for (int c = -1; c <= Game.BoardSize; c++) {
 					(int col, int row) = (c, r);
@@ -26,13 +26,11 @@
 	private BoardPosWithExtraMazeTile positionWithExtra = default!;
 
 	BoardPosition[,] grid => Game.AsGrid();
-	int currentPlayer = 0;
 	bool push = false;
 	bool GameOver = false;
 
 	void StartNewGame()
 	{
-		currentPlayer = 0;
 		Game = new([new Player(BluePlayer, 1, 6)]);
 		Game = Game.AddPlayers(BluePlayer, RedPlayer, GreenPlayer, YellowPlayer);
 		positionWithExtra = Game.Board.PositionWithExtra;
@@ -44,7 +42,7 @@
 		await Task.Delay(500);
 		Game = Game.PushTheTile(col, row);
 		positionWithExtra = Game.Board.PositionWithExtra;
-		currentPlayer = (currentPlayer + 1) % Game.Players.Count;
+		// currentPlayer = (currentPlayer + 1) % Game.Players.Count;
 		push = false;
 	}
 

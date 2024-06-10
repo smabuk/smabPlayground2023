@@ -17,6 +17,7 @@
 	[Parameter] public EventCallback RotateAntiClockwise { get; set; }
 	[Parameter] public EventCallback PushTheTile { get; set; }
 	[Parameter] public EventCallback DropTheTile { get; set; }
+	[Parameter] public EventCallback DropThePlayer { get; set; }
 
 	[Parameter, EditorRequired] public required BoardPosition BoardPosition { get; set; } 
 	[Parameter, EditorRequired] public required BoardPosWithExtraMazeTile BoardPosWithExtraMazeTile { get; set; }
