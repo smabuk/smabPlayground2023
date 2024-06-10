@@ -1,6 +1,18 @@
-<img src="_content/Smab.Games.TheAmazeingLabyrinth/player-@(Player.Home).png" title="@(FormatFullName(Player.Home))" data-player="@Player.Home" />
+@if (IsCurrentPlayer) {
+	<img src="_content/Smab.Games.TheAmazeingLabyrinth/player-@(Player.Home).png"
+		 title="@(FormatFullName(Player.Home))"
+		 data-player="@Player.Home" />
+} else {
+	<img src="_content/Smab.Games.TheAmazeingLabyrinth/player-@(Player.Home).png"
+		 title="@(FormatFullName(Player.Home))"
+		 draggable="false"
+		 data-player="@Player.Home" />
+}
 
 @code {
 	[Parameter, EditorRequired]
 	public required Player Player { get; set; }
+
+	[Parameter]
+	public bool IsCurrentPlayer { get; set; } = false;
 }
