@@ -30,4 +30,22 @@ public class JsonTests
 		JsonSerializer.Serialize(new { String = "something", Number = 10 }, JsonSerializerOptions.Web)
 			.ShouldBe("""{"string":"something","number":10}""");
 	}
+
+	[Fact]
+	public void Json_Should_RespectNullableAnnotations()
+	{
+		JsonSerializer.Serialize(new SomeObject(null!, 10, 20), JsonSerializerOptions.Web)
+			.ShouldBe("""{"string":null,"number":10,"optionalNumber":20}""");
+
+		JsonSerializerOptions webOptionsWithRespectNullable = new(JsonSerializerDefaults.Web)
+		{
+			RespectNullableAnnotations = true
+		};
+		_ = Should.Throw<JsonException>(() =>
+			JsonSerializer.Serialize(new SomeObject(null!, 10, 20), webOptionsWithRespectNullable)
+			.ShouldBe("""{"string":null,"number":10,"optionalNumber":20}""")
+			);
+	}
+
+	private record class SomeObject(string String, int Number, int? OptionalNumber = null);
 }
