@@ -103,6 +103,7 @@
 	{
 		Stream stream = await httpContent.ReadAsStreamAsync();
 
+		ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 		using ExcelPackage package = new(stream);
 		ExcelWorksheet? worksheet = package.Workbook.Worksheets["Watched Movies"];
 
