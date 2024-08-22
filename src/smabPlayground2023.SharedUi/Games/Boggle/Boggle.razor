@@ -2,10 +2,15 @@
 @implements IDisposable
 
 <div class="row">
-	@if (gameOver) {
-		<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">New Game</button>
+	@if (RendererInfo.IsInteractive)
+	{
+		@if (gameOver) {
+			<button class="btn btn-primary" type="button" @onclick="() => StartNewGame()">New Game</button>
+		} else {
+			<button class="btn btn-primary" type="button" @onclick="() => EndGame()">End Game</button>
+		}
 	} else {
-		<button class="btn btn-primary" type="button" @onclick="() => EndGame()">End Game</button>
+		<button class="btn btn-primary" type="button" disabled>Loading ...</button>
 	}
 </div>
 @if (boggleDice is not null) {
