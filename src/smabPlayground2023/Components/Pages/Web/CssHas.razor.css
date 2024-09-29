@@ -1,0 +1,35 @@
+form {
+	display: block;
+}
+
+input {
+	width: 25dvw;
+}
+
+#email:invalid {
+	border: 2px solid red;
+}
+
+#email-hint {
+	display: none;
+	color: red;
+}
+
+form:has(#email:invalid:not(:focus)) #email-hint {
+	display: block;
+}
+
+
+
+#bucket {
+	color: lawngreen;
+	&:has(span:nth-of-type(5)) {
+		color: orange;
+	}
+	&:has(span:nth-of-type(7)) {
+		color: darkorange;
+	}
+	&:has(span:nth-of-type(9)) {
+		color: red;
+	}
+}

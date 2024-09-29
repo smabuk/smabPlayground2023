@@ -1,0 +1,39 @@
+﻿@page "/web/csshas"
+@rendermode InteractiveServer
+<SmabPageTitle>Examples of using Css :has</SmabPageTitle>
+
+<h3>Email address that turns red if invalid and you aren't editing it</h3>
+<form>
+	<label for="email">Email Address</label>
+	<br />
+	<input type="email" id="email" value="something@somewhere.world"/>
+	<div id="email-hint">Please enter a valid email address</div>
+</form>
+
+<br/>
+<h3>Text that changes colour depending on how many children the container has</h3>
+<button type="button" @onclick="() => noOfItems = (noOfItems < maxItems) ? noOfItems + 1 : noOfItems">Add item to bucket</button>
+<div id="bucket">
+	This is a bucket that is filling up!
+	@for (int i = 1; i <= noOfItems; i++)
+	{
+		<span>@i</span>
+	}
+</div>
+
+
+@code {
+	private int noOfItems = 1;
+	private int maxItems = 9;
+
+	private readonly string[] descConcepts = ["Pure CSS"];
+	private readonly string[] descTechnologies = ["css", ":has()"];
+}
+
+<Description Concepts="@descConcepts">
+	<TextContent>
+		<p>
+			Using :has() to style containers or their elements based on the children of the container.
+		</p>
+	</TextContent>
+</Description>
