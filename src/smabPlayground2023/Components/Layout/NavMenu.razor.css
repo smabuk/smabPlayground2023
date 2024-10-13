@@ -17,20 +17,19 @@
 	}
 
 .top-row {
-	height: 3.5rem;
+	min-height: 3.5rem;
 	background-color: rgba(0,0,0,0.4);
 }
 
 .navbar-brand {
 	font-size: 1.1rem;
-	img
 
-{
-	position: absolute;
-	height: 2.5rem;
-	top: 0.5rem;
-	left: 0.5rem;
-}
+	& img {
+		position: absolute;
+		height: 2.5rem;
+		top: 0.5rem;
+		left: 0.5rem;
+	}
 
 }
 
