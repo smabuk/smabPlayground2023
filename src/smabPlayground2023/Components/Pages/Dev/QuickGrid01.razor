@@ -53,7 +53,7 @@
 				Movies[Random.Shared.Next(Movies.Length)],
 				Random.Shared.Next(1963, 2023),
 				Random.Shared.Next(0, 5) == 3 ? "3D" : ""
-		)).AsQueryable();
+		)).ToArray().AsQueryable();
 	}
 
 	private string GetRowCssClass(MovieJournal item)
