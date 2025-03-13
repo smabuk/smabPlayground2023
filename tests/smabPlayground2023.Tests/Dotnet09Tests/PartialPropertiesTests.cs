@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace smabPlayground2023.Tests.Dotnet90Tests;
+namespace smabPlayground2023.Tests.Dotnet09Tests;
 public partial class PartialPropertiesTests
 {
 	[GeneratedRegex("abc|def")]
