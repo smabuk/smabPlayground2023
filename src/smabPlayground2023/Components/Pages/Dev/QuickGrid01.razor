@@ -8,7 +8,8 @@
 
 @if (Journals is not null) {
 	<div>
-		<QuickGrid Items="@Journals">
+		@* <QuickGrid Items="@Journals" RowClass="@(j => j.Year >= DateTime.Now.Year - 10 ? "recent" : "")"> *@
+		<QuickGrid Items="@Journals" RowClass="GetRowCssClass">
 			<PropertyColumn Property="@(j => j.EntryNo)" Sortable="true" />
 			<PropertyColumn Property="@(j => j.Date)"    Sortable="true"  Format="yyyy-MM-dd"  />
 			<PropertyColumn Property="@(j => j.Title)"   Sortable="true" />
@@ -55,6 +56,10 @@
 		)).AsQueryable();
 	}
 
+	private string GetRowCssClass(MovieJournal item)
+	{
+		return item.Year >= DateTime.Now.Year - 10 ? "recent" : "";
+	}
 
 	#region StateManagement
 	private PersistingComponentStateSubscription _stateSubscription;
@@ -75,8 +80,8 @@
 		return false;
 	}
 
-    public void Dispose() => _stateSubscription.Dispose();
-    #endregion StateManagement
+	public void Dispose() => _stateSubscription.Dispose();
+	#endregion StateManagement
 
 	private readonly string[] descConcepts = [
 		"Grids",
