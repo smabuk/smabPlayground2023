@@ -6,25 +6,44 @@
 
 <SmabPageTitle>QuickGrid 01</SmabPageTitle>
 
-@if (Journals is not null) {
+@if (FilteredJournals is not null) {
 	<div>
 		@* <QuickGrid Items="@Journals" RowClass="@(j => j.Year >= DateTime.Now.Year - 10 ? "recent" : "")"> *@
-		<QuickGrid Items="@Journals" RowClass="GetRowCssClass">
+		<QuickGrid @ref="grid" Items="@FilteredJournals" RowClass="GetRowCssClass">
 			<PropertyColumn Property="@(j => j.EntryNo)" Sortable="true" />
 			<PropertyColumn Property="@(j => j.Date)"    Sortable="true"  Format="yyyy-MM-dd"  />
 			<PropertyColumn Property="@(j => j.Title)"   Sortable="true" />
 			<PropertyColumn Property="@(j => j.Version)" Sortable="true" />
-			<PropertyColumn Property="@(j => j.Year)"    Sortable="true" />
+			<PropertyColumn Property="@(j => j.Year)"    Sortable="true">
+				<ColumnOptions>
+					<label>
+						<input type="checkbox" @bind="onlyRecent" @onclick="FilterChangedAsync" /> Recent only
+					</label>
+				</ColumnOptions>
+			</PropertyColumn>
 		</QuickGrid>
 	</div>
 }
 
 @code {
 	record MovieJournal(int EntryNo, DateOnly Date, string Title, int Year, string? Version);
-	private IQueryable<MovieJournal>? Journals { get; set; }
 
-	public string[] Movies = [
-		"Jaws",
+	QuickGrid<MovieJournal>? grid;
+	bool onlyRecent = false;
+	private IQueryable<MovieJournal>? Journals { get; set; }
+	private IQueryable<MovieJournal>? FilteredJournals {
+		get
+		{
+			if (onlyRecent) {
+				return Journals?.Where(item => item.Year >= DateTime.Now.Year - 10);
+			}
+
+			return Journals;
+		}
+	}
+
+    public string[] Movies = [
+        "Jaws",
 		"The Terminator",
 		"Star Wars",
 		"Elemental",
@@ -37,33 +56,35 @@
 		"Teenage Mutant Ninja Turtles",
 	];
 
-	protected override void OnInitialized()
-	{
-		if (LoadState()) {
-			return;
-		}
+    protected override void OnInitialized()
+    {
+        if (LoadState()) {
+            return;
+        }
 
-		_stateSubscription = appState.RegisterOnPersisting(SaveState);
+        _stateSubscription = appState.RegisterOnPersisting(SaveState);
 
-		DateOnly startDate = DateOnly.FromDateTime(DateTime.Now);
-		Journals = Enumerable.Range(1, 45).Select(index => 
-			new MovieJournal(
-				index,
-				startDate.AddDays(0 - index),
-				Movies[Random.Shared.Next(Movies.Length)],
-				Random.Shared.Next(1963, 2023),
-				Random.Shared.Next(0, 5) == 3 ? "3D" : ""
-		)).ToArray().AsQueryable();
-	}
+        DateOnly startDate = DateOnly.FromDateTime(DateTime.Now);
+        Journals = Enumerable.Range(1, 45).Select(index => 
+            new MovieJournal(
+                index,
+                startDate.AddDays(0 - index),
+                Movies[Random.Shared.Next(Movies.Length)],
+                Random.Shared.Next(1963, 2023),
+                Random.Shared.Next(0, 5) == 3 ? "3D" : ""
+        )).ToArray().AsQueryable();
+    }
 
-	private string GetRowCssClass(MovieJournal item)
-	{
-		return item.Year >= DateTime.Now.Year - 10 ? "recent" : "";
-	}
+    private string GetRowCssClass(MovieJournal item)
+    {
+        return item.Year >= DateTime.Now.Year - 10 ? "recent" : "";
+    }
 
-	#region StateManagement
-	private PersistingComponentStateSubscription _stateSubscription;
-	private Task SaveState()
+    private Task FilterChangedAsync() => grid!.RefreshDataAsync();
+
+    #region StateManagement
+    private PersistingComponentStateSubscription _stateSubscription;
+    private Task SaveState()
 	{
 		appState.PersistAsJson(nameof(QuickGrid01), Journals);
 		return Task.CompletedTask;

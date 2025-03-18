@@ -1,5 +1,14 @@
 ::deep .col-title {
-	color: var(--sb-body-text);
+	color: var(--sb-body-color);
+}
+
+::deep .col-options-button {
+	background-color: white !important;
+}
+
+::deep .col-options {
+	color: var(--sb-body-color);
+	background-color: var(--sb-body-bg);
 }
 
 ::deep .col-sort-desc .sort-indicator,
