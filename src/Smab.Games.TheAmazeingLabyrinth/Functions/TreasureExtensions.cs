@@ -2,8 +2,22 @@
 
 public static class TreasureExtensions
 {
-	public static IEnumerable<Treasure> GetAllTreasures()
-		=> Enum.GetValues<Treasure>().Where(t => t is > NoTreasure and < NoPlayer);
+	extension(Treasure treasure)
+	{
+		public bool IsPlayer() => treasure is > NoPlayer;
 
-	public static bool IsPlayer(this Treasure t) => t is > NoPlayer;
+		public static IEnumerable<Treasure> GetAllTreasures()
+			=> Enum.GetValues<Treasure>().Where(t => t is > NoTreasure and < NoPlayer);
+	}
+
+	extension(TreasureCard)
+	{
+		public static IEnumerable<TreasureCard> CreateTreasureCardDeck(int noOfCards = 24)
+		{
+			Span<TreasureCard> deck = [.. GetAllTreasures().Select(t => new TreasureCard(t))];
+			Random.Shared.Shuffle(deck);
+			return [.. deck[..noOfCards]];
+		}
+	}
+
 }

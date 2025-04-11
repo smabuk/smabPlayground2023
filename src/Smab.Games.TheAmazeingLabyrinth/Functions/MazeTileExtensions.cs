@@ -2,7 +2,10 @@
 
 public static class MazeTileExtensions
 {
-	public static MazeTile Rotate(this MazeTile tile, int amount) => tile with { Orientation = (tile.Orientation + amount + 360) % 360 };
+	extension(MazeTile tile)
+	{
+		public MazeTile Rotate(int amount) => tile with { Orientation = (tile.Orientation + amount + 360) % 360 };
 
-	public static Direction Paths(this MazeTile tile) => tile.Exits.Rotate(tile.Orientation);
+		public Direction Paths() => tile.Exits.Rotate(tile.Orientation);
+	}
 }
