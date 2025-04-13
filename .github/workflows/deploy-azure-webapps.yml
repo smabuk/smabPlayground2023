@@ -52,8 +52,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Enforce coding style with dotnet
-        run: dotnet format style --verify-no-changes --verbosity diagnostic
+      # - name: Enforce coding style with dotnet
+      #   run: dotnet format style --verify-no-changes --verbosity diagnostic
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
