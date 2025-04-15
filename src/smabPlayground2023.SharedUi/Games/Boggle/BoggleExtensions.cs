@@ -6,15 +6,17 @@ namespace smabPlayground2023.SharedUi.Games.Boggle;
 
 internal static class BoggleExtensions
 {
-	public static string NoArrowDirection = "NONE";
+	private static readonly string NoArrowDirection = "NONE";
 
-	internal static BoggleSlot SetNoArrowDirection(this BoggleSlot boggleSlot)
-		=> boggleSlot with { ArrowDirection = NoArrowDirection };
-
-	internal static BoggleSlot SetArrowDirection(this BoggleSlot boggleSlot, Position? prevPosition, int newCol, int newRow)
+	extension(BoggleSlot boggleSlot)
 	{
-		string arrowDirection = prevPosition.HasValue
-			? (newCol - prevPosition.Value.Col, newRow - prevPosition.Value.Row) switch
+		internal BoggleSlot SetNoArrowDirection()
+			=> boggleSlot with { ArrowDirection = NoArrowDirection };
+
+		internal BoggleSlot SetArrowDirection(Position? prevPosition, int newCol, int newRow)
+		{
+			string arrowDirection = prevPosition.HasValue
+				? (newCol - prevPosition.Value.Col, newRow - prevPosition.Value.Row) switch
 				{
 					( 0,  0) => "END",
 					( 0, -1) => "N",
@@ -27,7 +29,8 @@ internal static class BoggleExtensions
 					(-1, -1) => "NW",
 					_ => ""
 				}
-			: "START";
-		return boggleSlot with { ArrowDirection = arrowDirection };
+				: "START";
+			return boggleSlot with { ArrowDirection = arrowDirection };
+		}
 	}
 }
