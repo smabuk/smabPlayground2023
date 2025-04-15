@@ -11,11 +11,7 @@ public class NullConditionalAssignmentTests
 	[Fact]
 	public void Assignment_ShouldSucceed()
 	{
-		Customer? customer = new()
-		{
-			Name = "Not null"
-		};
-
+		Customer? customer = new();
 		customer?.Name = "Default Name";
 		customer?.Name.ShouldBe("Default Name");
 	}
