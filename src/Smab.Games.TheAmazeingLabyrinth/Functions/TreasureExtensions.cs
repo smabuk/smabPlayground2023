@@ -4,10 +4,8 @@ public static class TreasureExtensions
 {
 	extension(Treasure treasure)
 	{
-		public bool IsPlayer() => treasure is > NoPlayer;
-
-		public static IEnumerable<Treasure> GetAllTreasures()
-			=> Enum.GetValues<Treasure>().Where(t => t is > NoTreasure and < NoPlayer);
+		public bool IsPlayer   => treasure is > NoPlayer;
+		public bool IsTreasure => treasure is > NoTreasure and < NoPlayer;
 	}
 
 	extension(TreasureCard)
@@ -18,6 +16,8 @@ public static class TreasureExtensions
 			Random.Shared.Shuffle(deck);
 			return [.. deck[..noOfCards]];
 		}
-	}
 
+		public static IEnumerable<Treasure> GetAllTreasures()
+			=> Enum.GetValues<Treasure>().Where(t => t.IsTreasure);
+	}
 }

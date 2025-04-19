@@ -28,7 +28,7 @@
 	[Parameter, EditorRequired] public required int BoardSize { get; set; }
 	[Parameter, EditorRequired] public required List<Player> Players { get; set; }
 
-	Direction ArrowDirection()
+	Directions ArrowDirection()
 	{
 		if (BoardPosition.IsOnTheSameRowOrCol(BoardPosWithExtraMazeTile)) {
 			return (BoardPosWithExtraMazeTile.Col, BoardPosWithExtraMazeTile.Row) switch

@@ -75,7 +75,7 @@ public static class LabyrinthGameExtensions
 		internal List<Player> PushThePlayers(int col, int row)
 		{
 			List<Player> players = new(game.Players.Count);
-			Direction direction = game.Board.PushDirection(col, row);
+			Directions direction = game.Board.PushDirection(col, row);
 			foreach (Player player in game.Players) {
 				if (player.Col == col && direction is North or South) {
 					int newRow = (player.Row + (direction == North ? -1 : 1) + game.BoardSize) % game.BoardSize;
@@ -97,11 +97,11 @@ public static class LabyrinthGameExtensions
 				Board = game.Board.Push(col, row),
 				Players = [.. game.PushThePlayers(col, row)],
 				CurrentPlayerIndex = (game.CurrentPlayerIndex + 1) % game.Players.Count,
-				State = State.MovePlayer,
+				State = GameState.MovePlayer,
 			};
 
-		public LabyrinthGame Rotate(int amount) => game with { Board = game.Board.RotateExtraMazeTile(amount) };
-		public LabyrinthGame RotateClockwise() => game with { Board = game.Board.RotateExtraMazeTile(90) };
+		public LabyrinthGame Rotate(int amount)    => game with { Board = game.Board.RotateExtraMazeTile(amount) };
+		public LabyrinthGame RotateClockwise()     => game with { Board = game.Board.RotateExtraMazeTile(90) };
 		public LabyrinthGame RotateAntiClockwise() => game with { Board = game.Board.RotateExtraMazeTile(-90) };
 	}
 }

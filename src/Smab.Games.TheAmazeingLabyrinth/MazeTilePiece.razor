@@ -3,7 +3,7 @@
 		 data-treasure="@(MazeTile.Treasure is not Treasure.NoTreasure ? MazeTile.Treasure : null)"
 		 data-slide="@(Slide is not NoDirection ? Slide.ToShortString() : null)"
 		 data-directions="@MazeTile.Paths().ToShortString()"
-		 data-playerhome="@MazeTile.Treasure.IsPlayer()"
+		 data-playerhome="@MazeTile.Treasure.IsPlayer"
 		 data-rotation="@MazeTile.Orientation"
 		 @onclick="async () => { await OnClick.InvokeAsync(); }"
 		 @oncontextmenu="async () => { await OnContextMenu.InvokeAsync(); }"
@@ -29,7 +29,7 @@
 	public bool Extra { get; set; } = false;
 
 	[Parameter]
-	public Direction Slide { get; set; } = NoDirection;
+	public Directions Slide { get; set; } = NoDirection;
 
 	[Parameter]
 	public FormatTreasure FormatTreasure { get; set; } = FormatTreasureDefaults.DefaultEmoji;

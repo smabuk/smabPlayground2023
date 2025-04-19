@@ -1,6 +1,6 @@
 ﻿namespace Smab.Games.TheAmazeingLabyrinth.Models;
 
-public enum State
+public enum GameState
 {
 	None,
 	MoveTile,

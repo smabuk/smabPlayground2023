@@ -9,7 +9,7 @@ public sealed record LabyrinthGame(
 	public ImmutableList<Player> Players { get; init; } = Players ?? [];
 	public ImmutableList<TreasureCard> TreasureCards { get; init; } = TreasureCards ?? [.. TreasureCard.CreateTreasureCardDeck()];
 	public int CurrentPlayerIndex { get; internal init; } = 0;
-	public State State { get; internal init; } = State.MoveTile;
+	public GameState State { get; internal init; } = GameState.MoveTile;
 	public int BoardSize => Board.Maze.GetUpperBound(0) + 1;
 	public Player CurrentPlayer => Players[CurrentPlayerIndex];
 }

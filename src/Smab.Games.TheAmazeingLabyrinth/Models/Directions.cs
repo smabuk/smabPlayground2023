@@ -1,7 +1,7 @@
 ﻿namespace Smab.Games.TheAmazeingLabyrinth.Models;
 
 [Flags]
-public enum Direction
+public enum Directions
 {
 	NoDirection = 0,
 

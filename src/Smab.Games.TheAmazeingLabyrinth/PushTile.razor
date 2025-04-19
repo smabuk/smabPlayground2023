@@ -33,7 +33,7 @@
 	bool rotate = false;
 	int? newOrientation = null;
 
-	Direction ArrowDirection() => (BoardPosition.Col, BoardPosition.Row) switch
+	Directions ArrowDirection() => (BoardPosition.Col, BoardPosition.Row) switch
 	{
 		(-1, _) => East,
 		(_, -1) => South,

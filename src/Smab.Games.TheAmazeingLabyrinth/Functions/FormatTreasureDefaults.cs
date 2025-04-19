@@ -6,7 +6,7 @@ public static class FormatTreasureDefaults
 {
 	public static FormatTreasure FormatFullName => treasure => treasure switch
 	{
-		NoTreasure          => "",
+		NoTreasure    => "",
 		TreasureChest => "Treasure Chest",
 		BluePlayer    => "Blue Player",
 		GreenPlayer   => "Green Player",
@@ -17,7 +17,7 @@ public static class FormatTreasureDefaults
 
 	public static FormatTreasure DefaultEmoji => treasure => treasure switch
 	{
-		NoTreasure          => "",
+		NoTreasure    => "",
 		Bat           => "\uD83E\uDD87",
 		Beetle        => "\uD83E\uDEB2",
 		Book          => "\uD83D\uDCD3",
@@ -43,10 +43,10 @@ public static class FormatTreasureDefaults
 		Sword         => "\uD83D\uDDE1\uFE0F",                         // Dagger
 		TreasureChest => "\uD83D\uDCB7",                               // Pound Banknotes
 
-		BluePlayer   => "\uD83D\uDD35",                                // Blue Circle
-		GreenPlayer  => "\uD83D\uDFE2",
-		RedPlayer    => "\uD83D\uDD34",
-		YellowPlayer => "\uD83D\uDFE1",
+		BluePlayer    => "\uD83D\uDD35",                               // Blue Circle
+		GreenPlayer   => "\uD83D\uDFE2",
+		RedPlayer     => "\uD83D\uDD34",
+		YellowPlayer  => "\uD83D\uDFE1",
 		_ => $"{treasure}",
 	};
 }

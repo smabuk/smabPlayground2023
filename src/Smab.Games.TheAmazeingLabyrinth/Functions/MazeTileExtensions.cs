@@ -6,6 +6,6 @@ public static class MazeTileExtensions
 	{
 		public MazeTile Rotate(int amount) => tile with { Orientation = (tile.Orientation + amount + 360) % 360 };
 
-		public Direction Paths() => tile.Exits.Rotate(tile.Orientation);
+		public Directions Paths() => tile.Exits.Rotate(tile.Orientation);
 	}
 }
