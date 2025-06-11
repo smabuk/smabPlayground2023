@@ -72,6 +72,8 @@ public static class LabyrinthGameExtensions
 			return game with { Players = [.. newPlayers.DistinctBy(p => p.Home)] };
 		}
 
+		public LabyrinthGame AddPlayers(Treasure player) => game.AddPlayers([player]);
+
 		internal List<Player> PushThePlayers(int col, int row)
 		{
 			List<Player> players = new(game.Players.Count);
