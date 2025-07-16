@@ -37,6 +37,8 @@ if (app.Environment.IsDevelopment()) {
 	_ = app.UseResponseCompression();
 }
 
+app.UseStatusCodePagesWithReExecute("/not-found", createScopeForErrors: true);
+
 app.UseHttpsRedirection();
 
 app.UseAntiforgery();
