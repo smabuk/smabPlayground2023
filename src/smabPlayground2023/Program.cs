@@ -16,6 +16,8 @@ builder.Services.AddResponseCompression(options =>
 	options.EnableForHttps = true;
 });
 
+builder.Services.AddValidation();
+
 builder.Services.AddLocalization();
 builder.Services.AddHealthChecks();
 
