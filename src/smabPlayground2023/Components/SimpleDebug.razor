@@ -12,6 +12,7 @@
 	<li>The operating system is <strong>@GetFullOSVersion()</strong></li>
 	<li>The runtime system version is <strong>@RuntimeEnvironment.GetSystemVersion()</strong></li>
 	<li>The runtime identifier is <strong data-warning="@RuntimeInformation.RuntimeIdentifier.Contains("x86")">@RuntimeInformation.RuntimeIdentifier</strong></li>
+	<li>Is published as self-contained?: <strong data-warning="@GetIsSelfContained().Equals("True")">@GetIsSelfContained()</strong></li>
 	<li>The OS architecture is <strong>@RuntimeInformation.OSArchitecture</strong></li>
 	<li>The process architecture is <strong data-warning="@RuntimeInformation.ProcessArchitecture.Equals(Architecture.X86)">@RuntimeInformation.ProcessArchitecture</strong></li>
 	@if ((Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "").Equals("true", StringComparison.InvariantCultureIgnoreCase)) {
@@ -55,4 +56,12 @@
 		TimeZoneInfo.Local.IsDaylightSavingTime(DateTime.Now)
 		? TimeZoneInfo.Local.DaylightName
 		: TimeZoneInfo.Local.StandardName;
+
+    protected string GetIsSelfContained()
+    {
+        object? isSelfContained = AppContext.GetData("IsSelfContained");
+        if (isSelfContained is bool b)
+            return b ? "True" : "False";
+        return "Unknown or Not applicable";
+    }
 }
