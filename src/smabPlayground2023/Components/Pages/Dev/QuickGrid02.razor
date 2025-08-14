@@ -28,7 +28,7 @@
 	QuickGrid<MovieJournal>? grid;
 	bool onlyRecent = false;
 
-	[SupplyParameterFromPersistentComponentState]
+	[PersistentState]
 	public MovieJournal[]? MoviesList { get; set; }
 
 	private IEnumerable<MovieJournal>? FilteredJournals =>
@@ -78,14 +78,14 @@
 	];
 
 	private readonly string[] descTechnologies = [
-		"[SupplyParameterFromPersistentComponentState] attribute",
+		"[PersistentState] attribute",
 	];
 }
 
 <Description Technologies="@descTechnologies" Concepts="@descConcepts">
 	<TextContent>
 		<p>
-			Using the new [SupplyParameterFromPersistentComponentState] attribute.
+			Using the new [PersistentState] attribute.
 		</p>
 	</TextContent>
 </Description>
