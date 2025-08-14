@@ -8,7 +8,7 @@
 	<div>
 		<QuickGrid @ref="grid" Items="@FilteredJournals.AsQueryable()" RowClass="GetRowCssClass">
 			<PropertyColumn Property="@(j => j.EntryNo)" Sortable="true" />
-			<PropertyColumn Property="@(j => j.Date)"    Sortable="true"  Format="yyyy-MM-dd"  />
+			<PropertyColumn Property="@(j => j.Date)"    Sortable="true" Format="yyyy-MM-dd" />
 			<PropertyColumn Property="@(j => j.Title)"   Sortable="true" />
 			<PropertyColumn Property="@(j => j.Version)" Sortable="true" />
 			<PropertyColumn Property="@(j => j.Year)"    Sortable="true">
@@ -52,29 +52,24 @@
 
 	protected override void OnInitialized()
 	{
-		Console.WriteLine($"MoviesList is null: {MoviesList is null}");
-        DateOnly startDate = DateOnly.FromDateTime(DateTime.Now);
+		DateOnly startDate = DateOnly.FromDateTime(DateTime.Now);
 		MoviesList ??= [.. Enumerable.Range(1, 45).Select(index =>
-            new MovieJournal(
-                index,
-                startDate.AddDays(0 - index),
-                Movies[Random.Shared.Next(Movies.Length)],
-				Random.Shared.Next(1963, DateTime.Now.Year),
-                Random.Shared.Next(0, 5) == 3 ? "3D" : ""
-        ))];
+		new MovieJournal(
+			index,
+			startDate.AddDays(0 - index),
+			Movies[Random.Shared.Next(Movies.Length)],
+			Random.Shared.Next(1963, DateTime.Now.Year),
+			Random.Shared.Next(0, 5) == 3 ? "3D" : ""
+		))];
+	}
 
-		Console.WriteLine($"MoviesList first {MoviesList.First()}");
-    }
+	private string GetRowCssClass(MovieJournal item)
+		=> item.Year >= DateTime.Now.Year - 10 ? "recent" : "";
 
-    private string GetRowCssClass(MovieJournal item)
-    {
-        return item.Year >= DateTime.Now.Year - 10 ? "recent" : "";
-    }
+	private Task FilterChangedAsync() => grid!.RefreshDataAsync();
 
-    private Task FilterChangedAsync() => grid!.RefreshDataAsync();
-
- 	private readonly string[] descConcepts = [
-		"State",
+	private readonly string[] descConcepts = [
+	   "State",
 	];
 
 	private readonly string[] descTechnologies = [
