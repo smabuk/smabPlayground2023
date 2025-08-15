@@ -14,7 +14,10 @@
 			<PropertyColumn Property="@(j => j.Year)"    Sortable="true">
 				<ColumnOptions>
 					<label>
-						<input type="checkbox" @bind="onlyRecent" @onclick="FilterChangedAsync" /> Recent only
+						<input type="checkbox"
+							@bind="onlyRecent"
+							@onclick="FilterChangedAsync"
+							@bind:after="() => grid!.HideColumnOptionsAsync()" /> Recent only
 					</label>
 				</ColumnOptions>
 			</PropertyColumn>
@@ -69,11 +72,12 @@
 	private Task FilterChangedAsync() => grid!.RefreshDataAsync();
 
 	private readonly string[] descConcepts = [
-	   "State",
+	   "State persistence",
 	];
 
 	private readonly string[] descTechnologies = [
 		"[PersistentState] attribute",
+		".NET 10",
 	];
 }
 
