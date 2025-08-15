@@ -1,4 +1,6 @@
-﻿using Xunit.Abstractions;
+﻿using System.Net;
+
+using Xunit.Abstractions;
 
 namespace smabPlayground2023.Tests.WebTests;
 public class RoutingTests(ITestOutputHelper testOutputHelper) : WebTestBase
@@ -20,6 +22,17 @@ public class RoutingTests(ITestOutputHelper testOutputHelper) : WebTestBase
 		IDocument document = await AngleSharp.OpenAsync(req => req.Content(html));
 		string? title = document.Title;
 		title.ShouldBe(expectedTitle, StringCompareShould.IgnoreCase);
+	}
+
+	[Fact]
+	public async Task BadUrl_Returns_NotFound_Page()
+	{
+		HttpClient client = Factory.CreateClient();
+		HttpResponseMessage response = await client.GetAsync("/bad-url");
+		response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+
+		string html = await response.Content.ReadAsStringAsync();
+		html.ShouldContain("I was once was found, but now I'm lost.");
 	}
 
 }
