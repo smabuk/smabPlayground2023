@@ -37,7 +37,6 @@ public class LinqTests
 	{
 		IEnumerable<(int Index, string Word)> actual = LoremIpsumText
 			.Split(new char[] { ' ', '.', ',' }, StringSplitOptions.RemoveEmptyEntries)
-			.Select(word => word.ToLowerInvariant())
 			.Index();
 
 		actual.Count().ShouldBe(27);
