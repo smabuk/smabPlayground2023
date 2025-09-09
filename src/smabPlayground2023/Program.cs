@@ -11,10 +11,7 @@ builder.Services
 	.AddInteractiveServerComponents()
 	.AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddResponseCompression(options =>
-{
-	options.EnableForHttps = true;
-});
+builder.Services.AddResponseCompression(options => options.EnableForHttps = true);
 
 builder.Services.AddValidation();
 
