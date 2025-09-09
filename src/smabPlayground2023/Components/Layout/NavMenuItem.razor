@@ -1,5 +1,5 @@
 ﻿<div class="nav-item px-3">
-	<NavLink class="nav-link" href="@Path" Match="@Match">
+	<NavLink class="nav-link" href="@Path" Match="@Match" data-enhance-nav="@(DisableEnhancedNav ? "false" : null)">
 		<span class="@iconClass" aria-hidden="true">@icon</span> @Text
 	</NavLink>
 </div>
@@ -9,6 +9,7 @@
 	[Parameter, EditorRequired] public string Text { get; set; } = "";
 	[Parameter, EditorRequired] public string Icon { get; set; } = "";
 	[Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+	[Parameter] public bool DisableEnhancedNav { get; set; } = false;
 
 	string iconClass => Icon.StartsWith("bi", StringComparison.OrdinalIgnoreCase) switch
 	{
