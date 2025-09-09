@@ -41,7 +41,7 @@ if (app.Environment.IsDevelopment()) {
 	_ = app.UseResponseCompression();
 }
 
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForErrors: true);
+app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 
 app.UseHttpsRedirection();
 
