@@ -74,10 +74,9 @@ app.Run();
 
 public partial class Program
 {
-	private static readonly string[] cultures = CultureInfo
+	private static readonly string[] cultures = [.. CultureInfo
 		.GetCultures(CultureTypes.AllCultures)
-		.Select(c => c.Name)
-		.ToArray();
+		.Select(c => c.Name)];
 
 	public static string SiteName { get; set; } = "smabPlayground2023";
 
