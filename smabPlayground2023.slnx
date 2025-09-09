@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/deploy-azure-webapps.yml" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Smab.Games.TheAmazeingLabyrinth/Smab.Games.TheAmazeingLabyrinth.csproj" />
+    <Project Path="src/smabPlayground2023.Client/smabPlayground2023.Client.csproj" />
+    <Project Path="src/smabPlayground2023.SharedUi/smabPlayground2023.SharedUi.csproj" />
+    <Project Path="src/smabPlayground2023/smabPlayground2023.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/smabPlayground2023.Tests/smabPlayground2023.Tests.csproj" />
+  </Folder>
+</Solution>
