@@ -24,6 +24,11 @@ builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
+// Register KeepAlive infrastructure (replaces standalone polling service).
+//builder.Services.AddKeepAliveInfrastructure();
+// (Optional) Remove the next line if using integrated KeepAlive polling only:
+// builder.Services.AddHostedService<HealthCheckPollingService>();
+
 Smab.DictionaryOfWords.IDictionaryService dictionaryOfWords = new Smab.DictionaryOfWords.CSW21.CSW21Dictionary();
 _ = builder.Services.AddSingleton(dictionaryOfWords);
 
@@ -59,7 +64,9 @@ app.UseRequestLocalization(
 		.AddSupportedUICultures(cultures)
 	);
 
-app.MapHealthChecks("/healthz");
+app.MapHealthChecks("/healthz")
+	//.KeepAlive("/healthz")
+	;
 
 app.Run();
 
