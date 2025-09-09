@@ -14,6 +14,9 @@
 	<li>The runtime identifier is <strong data-warning="@RuntimeInformation.RuntimeIdentifier.Contains("x86")">@RuntimeInformation.RuntimeIdentifier</strong></li>
 	<li>Is published as self-contained?: <strong data-warning="@GetIsSelfContained().Equals("True")">@GetIsSelfContained()</strong></li>
 	<li>The OS architecture is <strong>@RuntimeInformation.OSArchitecture</strong></li>
+	<li>Is the architecture Windows? <strong>@OperatingSystem.IsWindows()</strong></li>
+	<li>Is the architecture Linux? <strong>@OperatingSystem.IsLinux()</strong></li>
+	<li>Is the architecture Android? <strong>@OperatingSystem.IsAndroid()</strong></li>
 	<li>The process architecture is <strong data-warning="@RuntimeInformation.ProcessArchitecture.Equals(Architecture.X86)">@RuntimeInformation.ProcessArchitecture</strong></li>
 	@if ((Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "").Equals("true", StringComparison.OrdinalIgnoreCase)) {
 		<li>The process is running <strong>in a container</strong></li>
