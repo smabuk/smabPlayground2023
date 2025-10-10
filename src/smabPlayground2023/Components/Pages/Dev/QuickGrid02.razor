@@ -32,7 +32,7 @@
 	QuickGrid<MovieJournal>? grid;
 	bool onlyRecent = false;
 
-	[PersistentState]
+	[PersistentState(AllowUpdates = true)]
 	public MovieJournal[]? MoviesList { get; set; }
 
 	private IEnumerable<MovieJournal>? FilteredJournals =>
@@ -78,6 +78,7 @@
 
 	private readonly string[] descTechnologies = [
 		"[PersistentState] attribute",
+		"[PersistentState(AllowUpdates = true)]",
 		".NET 10",
 	];
 }
@@ -86,6 +87,14 @@
 	<TextContent>
 		<p>
 			Using the new [PersistentState] attribute.
+		</p>
+		<p>
+			By default, persistent component state is only loaded by interactive components when they're initially loaded on the page. This prevents important state, such as data in an edited webform, from being overwritten if additional enhanced navigation events to the same page occur after the component is loaded.
+		</p>
+		<p>
+			[PersistentState(AllowUpdates = true)]
+
+			If the data is read-only and doesn't change frequently, opt-in to allow updates during enhanced navigation by setting AllowUpdates = true on the [PersistentState] attribute. This is useful for scenarios such as displaying cached data that's expensive to fetch but doesn't change often.
 		</p>
 	</TextContent>
 </Description>
