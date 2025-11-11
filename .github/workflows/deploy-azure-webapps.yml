@@ -22,7 +22,7 @@ name: Build and deploy ASP.Net Core app to an Azure Web App
 env:
   AZURE_WEBAPP_NAME: smabPlayground2023            # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: '.'                   # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '10.0.100-rc.1.25451.107'        # set this to the .NET Core version to use
+  DOTNET_VERSION: '10.0.*'                         # set this to the .NET Core version to use
 
 on:
   push:
@@ -59,7 +59,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish src/${{ env.AZURE_WEBAPP_NAME }} -c Release -r win-x86 --self-contained true -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish src/${{ env.AZURE_WEBAPP_NAME }} -c Release -r win-x86 -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
